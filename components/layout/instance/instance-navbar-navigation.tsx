@@ -4,52 +4,53 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/utils/ui";
 
-export default function DashboardNavbarNavigation() {
+export default function InstanceNavbarNavigation({
+  instanceId,
+}: {
+  instanceId: string;
+}) {
   const segment = useSelectedLayoutSegment();
 
   const items = [
     {
       name: "Dashboard",
-      href: "/dashboard",
+      href: `/app/${instanceId}`,
       isActive: segment === "(dashboard)",
     },
     {
-      name: "Instances",
-      href: "/dashboard/instances",
-      isActive: segment === "instances",
-    },
-    {
       name: "Workflows",
-      href: "/dashboard/workflows",
+      href: `/app/${instanceId}/workflows`,
       isActive: segment === "workflows",
     },
     {
       name: "Executions",
-      href: "/dashboard/executions",
+      href: `/app/${instanceId}/executions`,
       isActive: segment === "executions",
     },
     {
       name: "Events",
-      href: "/dashboard/events",
+      href: `/app/${instanceId}/events`,
       isActive: segment === "events",
     },
     {
       name: "Alerts",
-      href: "/dashboard/alerts",
+      href: `/app/${instanceId}/alerts`,
       isActive: segment === "alerts",
     },
     {
       name: "Settings",
-      href: "/dashboard/settings",
+      href: `/app/${instanceId}/settings`,
       isActive: segment === "settings",
     },
   ];
 
   return (
-    <div className="flex gap-1">
-      {items.map((item) => (
-        <NavigationItem key={item.name} {...item} />
-      ))}
+    <div className="border-b">
+      <div className="mx-auto flex w-full max-w-6xl gap-1">
+        {items.map((item) => (
+          <NavigationItem key={item.name} {...item} />
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { ServerIcon } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { getInstances } from "@/queries/instance";
 import type { Instance } from "@/types";
@@ -21,7 +22,10 @@ function InstanceCard({ instance }: { instance: Instance }) {
   const instanceUrl = instance.url.replace("https://", "");
 
   return (
-    <div className="flex gap-3 rounded-lg border border-border/50 bg-muted/35 p-3">
+    <Link
+      className="flex gap-3 rounded-lg border border-border/50 bg-muted/35 p-3"
+      href={`/app/${instance.id}`}
+    >
       <div className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted">
         <ServerIcon className="size-6" />
       </div>
@@ -43,6 +47,6 @@ function InstanceCard({ instance }: { instance: Instance }) {
           Last Check: {formatRelativeTime(instance.last_status_check_at ?? "")}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }
