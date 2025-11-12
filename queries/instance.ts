@@ -24,3 +24,26 @@ export async function getInstances() {
 
   return data;
 }
+
+export async function getInstance(instanceId: string) {
+  "use cache: private";
+  cacheLife("max");
+
+  const supabase = await supabaseClient();
+  const user = await getUser();
+
+  if (!user) {
+    redirect("/signin");
+  }
+
+  cacheTag(`instance:${instanceId}`);
+
+  const { data } = await supabase
+    .from("instances")
+    .select("*")
+    .eq("id", instanceId)
+    .maybeSingle()
+    .throwOnError();
+
+  return data;
+}

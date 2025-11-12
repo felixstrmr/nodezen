@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/utils/ui";
 
-export default function AppNavbarNavigation() {
+export default function InstancesNavbarNavigation() {
   const segment = useSelectedLayoutSegment();
 
   const items = [
     {
       name: "Instances",
-      href: "/instances",
+      href: "/app",
       isActive: segment === null,
     },
   ];

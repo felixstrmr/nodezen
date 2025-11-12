@@ -1,4 +1,6 @@
-import AppNavbarNavigation from "@/components/layout/app/app-navbar-navigation";
+import { Suspense } from "react";
+import InstancesNavbar from "@/components/layout/instances/instances-navbar";
+import InstancesNavbarSkeleton from "@/components/layout/instances/instances-navbar-skeleton";
 
 export default function InstancesLayout({
   children,
@@ -7,7 +9,9 @@ export default function InstancesLayout({
 }) {
   return (
     <div className="flex size-full flex-col overflow-hidden">
-      <AppNavbarNavigation />
+      <Suspense fallback={<InstancesNavbarSkeleton />}>
+        <InstancesNavbar />
+      </Suspense>
       {children}
     </div>
   );
