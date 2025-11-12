@@ -18,7 +18,7 @@ export async function getWorkflows() {
 
   const { data } = await supabase
     .from("workflows")
-    .select("*, instance_id:instances(name)")
+    .select("*, instance_id:instances(id, name)")
     .order("created_at", { ascending: false })
     .throwOnError();
 

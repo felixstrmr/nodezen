@@ -4,10 +4,7 @@ import WorkflowsPageSkeleton from "@/components/features/workflows/workflows-pag
 
 export default function Page() {
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-col space-y-3 overflow-hidden py-6">
-      <div className="flex h-8 items-center justify-between">
-        <h2 className="font-bold text-xl tracking-tight">Workflows</h2>
-      </div>
+    <div className="mx-auto flex size-full max-w-6xl py-6">
       <Suspense fallback={<WorkflowsPageSkeleton />}>
         <WorkflowsPage />
       </Suspense>
