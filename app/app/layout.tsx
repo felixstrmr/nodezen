@@ -8,7 +8,7 @@ export default function InstancesLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 overflow-hidden">
       <Suspense fallback={<AppNavbarSkeleton />}>
         <AppNavbar />
       </Suspense>
