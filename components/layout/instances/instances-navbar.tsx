@@ -17,8 +17,8 @@ export default async function InstancesNavbar() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 pt-3">
         <div className="flex items-center justify-between">
           <Link className="flex items-center gap-2" href="/app">
-            <div className="size-6 rounded-sm bg-primary" />
-            <h1 className="font-bold text-lg tracking-tight">NodeZen</h1>
+            <div className="size-8 rounded-md bg-primary" />
+            <h1 className="font-bold text-2xl tracking-tight">NodeZen</h1>
           </Link>
           <div className="flex items-center gap-3">
             <Link

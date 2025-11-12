@@ -36,7 +36,10 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
           </Badge>
         </div>
         <p className="text-muted-foreground text-sm">
-          Created {formatRelativeTime(workflow.n8n_created_at ?? "")}
+          Last run:{" "}
+          {workflow.last_execution_at
+            ? formatRelativeTime(workflow.last_execution_at)
+            : "Never"}
         </p>
       </div>
       <div className="mr-3 flex items-center">

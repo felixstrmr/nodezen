@@ -35,10 +35,10 @@ export default async function InstanceNavbar({
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <Link className="flex items-center" href="/app">
-              <div className="size-6 rounded-sm bg-primary" />
+              <div className="size-8 rounded-md bg-primary" />
             </Link>
-            <p className="mr-2 ml-4 text-muted-foreground">/</p>
-            <div className="flex h-8 items-center justify-center gap-2 rounded-md px-2 hover:bg-muted">
+            <p className="mr-2 ml-4 text-lg text-muted-foreground">/</p>
+            <div className="flex h-8 items-center justify-center gap-2 px-2">
               <p className="text-sm">{activeInstance.name}</p>
               <Badge className="capitalize" variant="outline">
                 <div
