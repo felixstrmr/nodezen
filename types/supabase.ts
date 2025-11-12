@@ -18,27 +18,39 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          mode: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id: string
-          user_id: string
+          n8n_started_at: string
+          n8n_stopped_at: string | null
+          status: Database["public"]["Enums"]["execution_statuses"]
+          workflow_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          mode: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id: string
-          user_id?: string
+          n8n_started_at: string
+          n8n_stopped_at?: string | null
+          status: Database["public"]["Enums"]["execution_statuses"]
+          workflow_id: string
         }
         Update: {
           created_at?: string
           id?: string
+          mode?: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id?: string
-          user_id?: string
+          n8n_started_at?: string
+          n8n_stopped_at?: string | null
+          status?: Database["public"]["Enums"]["execution_statuses"]
+          workflow_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "executions_user_id_fkey"
-            columns: ["user_id"]
+            foreignKeyName: "executions_workflow_id_fkey"
+            columns: ["workflow_id"]
             isOneToOne: false
-            referencedRelation: "users"
+            referencedRelation: "workflows"
             referencedColumns: ["id"]
           },
         ]
@@ -50,7 +62,7 @@ export type Database = {
           description: string | null
           id: string
           last_status_check_at: string
-          name: string | null
+          name: string
           status: Database["public"]["Enums"]["instance_statuses"]
           url: string
           user_id: string
@@ -61,7 +73,7 @@ export type Database = {
           description?: string | null
           id?: string
           last_status_check_at: string
-          name?: string | null
+          name: string
           status: Database["public"]["Enums"]["instance_statuses"]
           url: string
           user_id?: string
@@ -72,7 +84,7 @@ export type Database = {
           description?: string | null
           id?: string
           last_status_check_at?: string
-          name?: string | null
+          name?: string
           status?: Database["public"]["Enums"]["instance_statuses"]
           url?: string
           user_id?: string
@@ -111,36 +123,54 @@ export type Database = {
       workflows: {
         Row: {
           created_at: string
+          description: string | null
           id: string
           instance_id: string
           is_active: boolean
-          is_archvied: boolean
+          is_archived: boolean
           last_execution_at: string | null
-          last_execution_status: string | null
+          last_execution_status:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null
+          n8n_created_at: string | null
+          n8n_updated_at: string | null
           n8n_workflow_id: string
-          user_id: string
+          name: string
+          updated_at: string | null
         }
         Insert: {
           created_at?: string
+          description?: string | null
           id?: string
           instance_id: string
           is_active: boolean
-          is_archvied: boolean
+          is_archived: boolean
           last_execution_at?: string | null
-          last_execution_status?: string | null
+          last_execution_status?:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null
+          n8n_created_at?: string | null
+          n8n_updated_at?: string | null
           n8n_workflow_id: string
-          user_id?: string
+          name: string
+          updated_at?: string | null
         }
         Update: {
           created_at?: string
+          description?: string | null
           id?: string
           instance_id?: string
           is_active?: boolean
-          is_archvied?: boolean
+          is_archived?: boolean
           last_execution_at?: string | null
-          last_execution_status?: string | null
+          last_execution_status?:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null
+          n8n_created_at?: string | null
+          n8n_updated_at?: string | null
           n8n_workflow_id?: string
-          user_id?: string
+          name?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -148,13 +178,6 @@ export type Database = {
             columns: ["instance_id"]
             isOneToOne: false
             referencedRelation: "instances"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "workflows_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
             referencedColumns: ["id"]
           },
         ]
@@ -167,6 +190,20 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      execution_modes:
+        | "manual"
+        | "trigger"
+        | "internal"
+        | "error"
+        | "retry"
+        | "webhook"
+        | "cli"
+      execution_statuses:
+        | "error"
+        | "success"
+        | "waiting"
+        | "running"
+        | "canceled"
       instance_statuses: "connected" | "disconnected"
     }
     CompositeTypes: {
@@ -295,6 +332,22 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      execution_modes: [
+        "manual",
+        "trigger",
+        "internal",
+        "error",
+        "retry",
+        "webhook",
+        "cli",
+      ],
+      execution_statuses: [
+        "error",
+        "success",
+        "waiting",
+        "running",
+        "canceled",
+      ],
       instance_statuses: ["connected", "disconnected"],
     },
   },

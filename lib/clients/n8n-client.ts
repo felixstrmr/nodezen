@@ -66,4 +66,47 @@ export class n8nClient {
 
     return data;
   }
+
+  async getExecutionsByWorkflowId(
+    workflowId: string,
+    cursor?: string
+  ): Promise<Execution[]> {
+    const response = await fetch(
+      `${this.url}/api/v1/executions?limit=100&workflowId=${workflowId}${cursor ? `&cursor=${cursor}` : ""}`,
+      {
+        headers: {
+          "X-N8N-API-KEY": this.apiKey,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to get executions by workflow id");
+    }
+
+    const { data, nextCursor } = await response.json();
+
+    if (nextCursor) {
+      const nextExecutions = await this.getExecutionsByWorkflowId(
+        workflowId,
+        nextCursor
+      );
+      return [...data, ...nextExecutions];
+    }
+
+    return data;
+  }
+
+  async getLastExecutionByWorkflowId(
+    workflowId: string
+  ): Promise<Execution | null> {
+    const executions = await this.getExecutionsByWorkflowId(workflowId);
+
+    return (
+      executions.sort(
+        (a, b) =>
+          new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime()
+      )[0] ?? null
+    );
+  }
 }

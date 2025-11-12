@@ -20,17 +20,7 @@ export const checkInstancesStatusTask = schedules.task({
       const client = new n8nClient(instance.url, instance.api_key);
       const isConnected = await client.testConnection();
 
-      if (isConnected) {
-        await supabase
-          .from("instances")
-          .update({
-            status: "connected",
-            last_status_check_at: new Date().toISOString(),
-          })
-          .eq("id", instance.id);
-
-        console.log(`Instance ${instance.id} is connected`);
-      } else {
+      if (!isConnected) {
         await supabase
           .from("instances")
           .update({
@@ -40,7 +30,18 @@ export const checkInstancesStatusTask = schedules.task({
           .eq("id", instance.id);
 
         console.log(`Instance ${instance.id} is disconnected`);
+        continue;
       }
+
+      await supabase
+        .from("instances")
+        .update({
+          status: "connected",
+          last_status_check_at: new Date().toISOString(),
+        })
+        .eq("id", instance.id);
+
+      console.log(`Instance ${instance.id} is connected`);
     }
   },
 });

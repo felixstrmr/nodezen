@@ -1,8 +1,9 @@
-import { cacheTag } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { supabaseClient } from "@/lib/clients/supabase-client";
 
 export async function getUser() {
   "use cache: private";
+  cacheLife("max");
 
   const supabase = await supabaseClient();
 

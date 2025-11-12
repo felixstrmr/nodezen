@@ -8,7 +8,7 @@ export default async function InstancesPage() {
   const instances = await getInstances();
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <div className="grid size-full grid-cols-3 gap-3">
       {instances.map((instance) => (
         <InstanceCard instance={instance} key={instance.id} />
       ))}
@@ -20,7 +20,7 @@ function InstanceCard({ instance }: { instance: Instance }) {
   const instanceUrl = instance.url.replace("https://", "");
 
   return (
-    <div className="flex gap-3 rounded-lg border border-border/50 bg-muted/50 p-3">
+    <div className="flex gap-3 rounded-lg border border-border/50 bg-muted/35 p-3">
       <div className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted">
         <ServerIcon className="size-6" />
       </div>
