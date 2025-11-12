@@ -2,6 +2,7 @@ import { ServerIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getInstances } from "@/queries/instance";
 import type { Instance } from "@/types";
+import { formatRelativeTime } from "@/utils/date";
 import { cn } from "@/utils/ui";
 
 export default async function InstancesPage() {
@@ -38,6 +39,9 @@ function InstanceCard({ instance }: { instance: Instance }) {
           </Badge>
         </div>
         <p className="text-muted-foreground text-sm">{instanceUrl}</p>
+        <p className="mt-3 text-muted-foreground text-sm">
+          Last Check: {formatRelativeTime(instance.last_status_check_at ?? "")}
+        </p>
       </div>
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 
-import { parseAsString, useQueryStates } from "nuqs";
 import ExecutionStatusIcon from "@/components/icons/execution-status-icon";
 import { Badge } from "@/components/ui/badge";
 import type { Workflow } from "@/types";
@@ -11,36 +10,9 @@ export default function WorkflowCards({
 }: {
   workflows: Workflow[];
 }) {
-  const [filters] = useQueryStates({
-    instanceId: parseAsString.withDefault(""),
-    sort: parseAsString,
-  });
-
-  const filteredWorkflows = workflows.filter((workflow) => {
-    if (!filters.instanceId) {
-      return true;
-    }
-
-    return workflow.instance_id.id === filters.instanceId;
-  });
-
-  const sortedWorkflows = filteredWorkflows.sort((a, b) => {
-    if (filters.sort === "status") {
-      return (b.last_execution_status ?? "").localeCompare(
-        a.last_execution_status ?? ""
-      );
-    }
-
-    if (filters.sort === "created") {
-      return (b.n8n_created_at ?? "").localeCompare(a.n8n_created_at ?? "");
-    }
-
-    return 0;
-  });
-
   return (
     <div className="flex size-full flex-col gap-1.5 overflow-y-auto">
-      {sortedWorkflows.map((workflow) => (
+      {workflows.map((workflow) => (
         <WorkflowCard key={workflow.id} workflow={workflow} />
       ))}
     </div>

@@ -1,59 +1,47 @@
-"use client";
-
-import { ListFilterIcon, ServerIcon } from "lucide-react";
-import { parseAsString, useQueryStates } from "nuqs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import type { Instance } from "@/types";
+import type { Workflow } from "@/types";
 
 export default function WorkflowsHeader({
-  instances,
+  workflows,
 }: {
-  instances: Instance[];
+  workflows: Workflow[];
 }) {
-  const [filters, setFilters] = useQueryStates({
-    instanceId: parseAsString.withDefault(""),
-    sort: parseAsString,
-  });
+  const totalWorkflows = workflows.filter((workflow) => !workflow.is_archived);
+
+  const activeWorkflows = workflows.filter((workflow) => workflow.is_active);
+  const failedWorkflows = workflows.filter(
+    (workflow) => workflow.last_execution_status === "error"
+  );
 
   return (
-    <div className="flex items-center justify-between">
-      <h2 className="font-bold text-xl tracking-tight">Workflows</h2>
-      <div className="flex items-center gap-2">
-        <Select
-          onValueChange={(value) => setFilters({ sort: value })}
-          value={filters.sort ?? undefined}
-        >
-          <SelectTrigger>
-            <ListFilterIcon className="size-3.5" />
-            <SelectValue placeholder="Sort" />
-          </SelectTrigger>
-          <SelectContent align="end">
-            <SelectItem value="status">Status</SelectItem>
-            <SelectItem value="created">Created</SelectItem>
-          </SelectContent>
-        </Select>
-        <Select
-          onValueChange={(value) => setFilters({ instanceId: value })}
-          value={filters.instanceId}
-        >
-          <SelectTrigger>
-            <ServerIcon className="size-3.5" />
-            <SelectValue placeholder="Instance" />
-          </SelectTrigger>
-          <SelectContent align="end">
-            {instances.map((instance) => (
-              <SelectItem key={instance.id} value={instance.id}>
-                {instance.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <div className="flex flex-col">
+      <h2 className="flex h-8 items-center font-bold text-xl tracking-tight">
+        Workflows
+      </h2>
+      <div className="grid grid-cols-4 gap-3">
+        <div className="w-full rounded-lg border border-border/50 bg-muted/35 p-3">
+          <p className="text-muted-foreground text-sm">Total</p>
+          <p className="font-bold text-2xl text-foreground">
+            {totalWorkflows.length}
+          </p>
+        </div>
+        <div className="w-full rounded-lg border border-border/50 bg-muted/35 p-3">
+          <p className="text-muted-foreground text-sm">Active</p>
+          <p className="font-bold text-2xl text-foreground">
+            {activeWorkflows.length}
+          </p>
+        </div>
+        <div className="w-full rounded-lg border border-border/50 bg-muted/35 p-3">
+          <p className="text-muted-foreground text-sm">Failed</p>
+          <p className="font-bold text-2xl text-foreground">
+            {failedWorkflows.length}
+          </p>
+        </div>
+        <div className="w-full rounded-lg border border-border/50 bg-muted/35 p-3">
+          <p className="text-muted-foreground text-sm">Sucess Rate</p>
+          <p className="font-bold text-2xl text-foreground">
+            {Math.round((activeWorkflows.length / workflows.length) * 100)}%
+          </p>
+        </div>
       </div>
     </div>
   );
