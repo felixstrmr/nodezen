@@ -1,0 +1,9 @@
+export default function Page() {
+  return (
+    <div className="mx-auto w-full max-w-6xl py-6">
+      <div className="flex h-8 items-center justify-between">
+        <h2 className="font-bold text-xl tracking-tight">Executions</h2>
+      </div>
+    </div>
+  );
+}
