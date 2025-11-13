@@ -2,6 +2,7 @@ import { ActivityIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import Avatar from "@/components/common/avatar";
+import DashboardNavbarInstances from "@/components/layout/dashboard/dashboard-navbar-instances";
 import { buttonVariants } from "@/components/ui/button";
 import { getInstances } from "@/queries/instance";
 import { getUser } from "@/queries/user";
@@ -22,9 +23,10 @@ export default async function DashboardNavbar() {
             <div className="flex size-8 items-center justify-center rounded-md bg-primary">
               <ActivityIcon className="size-4 text-primary-foreground" />
             </div>
-            <h1 className="font-bold text-2xl tracking-tight">NodeZen</h1>
+            <h1 className="font-semibold text-2xl tracking-tight">NodeZen</h1>
           </Link>
           <div className="flex items-center gap-3">
+            <DashboardNavbarInstances instances={instances} />
             <Link
               className={buttonVariants({ variant: "ghost" })}
               href={"https://nodezen.userjot.com"}
