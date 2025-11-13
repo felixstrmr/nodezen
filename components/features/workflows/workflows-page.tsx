@@ -11,10 +11,14 @@ export default async function WorkflowsPage({
 
   const workflows = await getWorkflows(instanceId);
 
+  const filteredWorkflows = workflows.filter(
+    (workflow) => !workflow.is_archived
+  );
+
   return (
     <div className="flex size-full flex-col gap-3">
-      <WorkflowsHeader workflows={workflows} />
-      <WorkflowCards workflows={workflows} />
+      <WorkflowsHeader workflows={filteredWorkflows} />
+      <WorkflowCards workflows={filteredWorkflows} />
     </div>
   );
 }

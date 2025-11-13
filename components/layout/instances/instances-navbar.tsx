@@ -1,3 +1,4 @@
+import { ActivityIcon } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import Avatar from "@/components/common/avatar";
@@ -17,7 +18,9 @@ export default async function InstancesNavbar() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 pt-3">
         <div className="flex items-center justify-between">
           <Link className="flex items-center gap-2" href="/app">
-            <div className="size-8 rounded-md bg-primary" />
+            <div className="flex size-8 items-center justify-center rounded-md bg-primary">
+              <ActivityIcon className="size-4 text-primary-foreground" />
+            </div>
             <h1 className="font-bold text-2xl tracking-tight">NodeZen</h1>
           </Link>
           <div className="flex items-center gap-3">

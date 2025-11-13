@@ -29,12 +29,7 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
         />
       </div>
       <div className="w-full">
-        <div className="flex items-center gap-2">
-          <h3 className="mb-0.5 font-bold tracking-tight">{workflow.name}</h3>
-          <Badge className="capitalize" variant="secondary">
-            {workflow.instance_id.name}
-          </Badge>
-        </div>
+        <h3 className="mb-0.5 font-bold tracking-tight">{workflow.name}</h3>
         <p className="text-muted-foreground text-sm">
           Last run:{" "}
           {workflow.last_execution_at
