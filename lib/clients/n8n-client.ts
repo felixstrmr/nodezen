@@ -28,11 +28,14 @@ export class n8nClient {
   }
 
   async getWorkflows(): Promise<Workflow[]> {
-    const response = await fetch(`${this.url}/api/v1/workflows`, {
-      headers: {
-        "X-N8N-API-KEY": this.apiKey,
-      },
-    });
+    const response = await fetch(
+      `${this.url}/api/v1/workflows?excludePinnedData=true`,
+      {
+        headers: {
+          "X-N8N-API-KEY": this.apiKey,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to get workflows");

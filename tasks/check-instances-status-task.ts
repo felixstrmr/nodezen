@@ -16,32 +16,45 @@ export const checkInstancesStatusTask = schedules.task({
       .select("*")
       .throwOnError();
 
-    for (const instance of instances) {
-      const client = new n8nClient(instance.url, instance.api_key);
-      const isConnected = await client.testConnection();
+    const results = await Promise.allSettled(
+      instances.map(async (instance) => {
+        const client = new n8nClient(instance.url, instance.api_key);
+        const isConnected = await client.testConnection();
 
-      if (!isConnected) {
-        await supabase
+        return {
+          id: instance.id,
+          status: isConnected ? "connected" : "disconnected",
+        };
+      })
+    );
+
+    const now = new Date().toISOString();
+    const updatePromises = results.map((result, index) => {
+      const instance = instances[index];
+
+      if (result.status === "fulfilled") {
+        const { status } = result.value;
+        console.log(`Instance ${instance.id} is ${status}`);
+
+        return supabase
           .from("instances")
           .update({
-            status: "disconnected",
-            last_status_check_at: new Date().toISOString(),
+            status: status as Database["public"]["Enums"]["instance_statuses"],
+            last_status_check_at: now,
           })
           .eq("id", instance.id);
-
-        console.log(`Instance ${instance.id} is disconnected`);
-        continue;
       }
+      console.error(`Failed to check instance ${instance.id}:`, result.reason);
 
-      await supabase
+      return supabase
         .from("instances")
         .update({
-          status: "connected",
-          last_status_check_at: new Date().toISOString(),
+          status: "disconnected",
+          last_status_check_at: now,
         })
         .eq("id", instance.id);
+    });
 
-      console.log(`Instance ${instance.id} is connected`);
-    }
+    await Promise.allSettled(updatePromises);
   },
 });

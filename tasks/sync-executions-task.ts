@@ -8,8 +8,8 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncInstancesExecutionsTask = schedules.task({
-  id: "sync-instances-executions-task",
+export const syncExecutionsTask = schedules.task({
+  id: "sync-executions-task",
   run: async () => {
     const { data: instances } = await supabase
       .from("instances")

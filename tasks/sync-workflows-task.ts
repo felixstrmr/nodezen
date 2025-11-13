@@ -8,8 +8,8 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncInstancesWorkflowsTask = schedules.task({
-  id: "sync-instances-workflows-task",
+export const syncWorkflowsTask = schedules.task({
+  id: "sync-workflows-task",
   run: async () => {
     const { data: instances } = await supabase
       .from("instances")
@@ -45,7 +45,7 @@ export const syncInstancesWorkflowsTask = schedules.task({
       const workflows = await client.getWorkflows();
 
       for (const workflow of workflows) {
-        if (!workflow.id) {
+        if (!workflow.id || workflow.isArchived) {
           continue;
         }
 
