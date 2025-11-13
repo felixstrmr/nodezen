@@ -19,6 +19,7 @@ export async function getInstances() {
   const { data } = await supabase
     .from("instances")
     .select("*")
+    .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .throwOnError();
 
@@ -42,6 +43,7 @@ export async function getInstance(instanceId: string) {
     .from("instances")
     .select("*")
     .eq("id", instanceId)
+    .eq("user_id", user.id)
     .maybeSingle()
     .throwOnError();
 
