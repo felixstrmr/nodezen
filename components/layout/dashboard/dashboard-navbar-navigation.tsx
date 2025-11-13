@@ -4,42 +4,43 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { cn } from "@/utils/ui";
 
-export default function InstanceNavbarNavigation({
-  instanceId,
-}: {
-  instanceId: string;
-}) {
+export default function DashboardNavbarNavigation() {
   const segment = useSelectedLayoutSegment();
 
   const items = [
     {
       name: "Dashboard",
-      href: `/app/${instanceId}`,
+      href: "/dashboard",
       isActive: segment === "(dashboard)",
     },
     {
+      name: "Instances",
+      href: "/dashboard/instances",
+      isActive: segment === "instances",
+    },
+    {
       name: "Workflows",
-      href: `/app/${instanceId}/workflows`,
+      href: "/dashboard/workflows",
       isActive: segment === "workflows",
     },
     {
       name: "Executions",
-      href: `/app/${instanceId}/executions`,
+      href: "/dashboard/executions",
       isActive: segment === "executions",
     },
     {
       name: "Events",
-      href: `/app/${instanceId}/events`,
+      href: "/dashboard/events",
       isActive: segment === "events",
     },
     {
       name: "Alerts",
-      href: `/app/${instanceId}/alerts`,
+      href: "/dashboard/alerts",
       isActive: segment === "alerts",
     },
     {
       name: "Settings",
-      href: `/app/${instanceId}/settings`,
+      href: "/dashboard/settings",
       isActive: segment === "settings",
     },
   ];

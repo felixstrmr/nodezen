@@ -1,14 +1,8 @@
 import ExecutionCards from "@/components/features/executions/executions-cards";
-import { getExecutionsByWorkflowId } from "@/queries/execution";
+import { getExecutions } from "@/queries/execution";
 
-export default async function ExecutionsPage({
-  params,
-}: {
-  params: Promise<{ instanceId: string }>;
-}) {
-  const { instanceId } = await params;
-
-  const executions = await getExecutionsByWorkflowId(instanceId);
+export default async function ExecutionsPage() {
+  const executions = await getExecutions();
 
   return (
     <div className="flex size-full flex-col gap-3 overflow-hidden">

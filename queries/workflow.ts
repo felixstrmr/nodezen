@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseClient } from "@/lib/clients/supabase-client";
 import { getUser } from "@/queries/user";
 
-export async function getWorkflows(instanceId: string) {
+export async function getWorkflows() {
   "use cache: private";
   cacheLife("max");
 
@@ -14,13 +14,12 @@ export async function getWorkflows(instanceId: string) {
     redirect("/signin");
   }
 
-  cacheTag(`workflows:${instanceId}`);
+  cacheTag(`workflows:${user.id}`);
 
   const { data } = await supabase
     .from("workflows")
     .select("*, instance_id:instances(id, name)")
     .order("created_at", { ascending: false })
-    .eq("instance_id", instanceId)
     .throwOnError();
 
   return data;

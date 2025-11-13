@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function InstancesNavbarSkeleton() {
+export default function DashboardNavbarSkeleton() {
   return (
     <div className="border-b">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 pt-3">
