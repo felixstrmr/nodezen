@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { task } from "@trigger.dev/sdk";
+import { schedules } from "@trigger.dev/sdk";
 import { n8nClient } from "@/lib/clients/n8n-client";
 import type { Database } from "@/types/supabase";
 
@@ -8,7 +8,7 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncInstancesExecutionsTask = task({
+export const syncInstancesExecutionsTask = schedules.task({
   id: "sync-instances-executions-task",
   run: async () => {
     const { data: instances } = await supabase
