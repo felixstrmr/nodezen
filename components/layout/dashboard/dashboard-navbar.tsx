@@ -3,11 +3,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import Avatar from "@/components/common/avatar";
 import { buttonVariants } from "@/components/ui/button";
+import { getInstances } from "@/queries/instance";
 import { getUser } from "@/queries/user";
 import DashboardNavbarNavigation from "./dashboard-navbar-navigation";
 
 export default async function DashboardNavbar() {
-  const user = await getUser();
+  const [user, instances] = await Promise.all([getUser(), getInstances()]);
 
   if (!user) {
     redirect("/signin");
