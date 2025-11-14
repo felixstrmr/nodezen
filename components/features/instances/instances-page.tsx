@@ -9,7 +9,7 @@ export default async function InstancesPage() {
   const instances = await getInstances();
 
   return (
-    <div className="grid size-full grid-cols-3 gap-3">
+    <div className="grid size-full grid-cols-2 gap-3">
       {instances.map((instance) => (
         <InstanceCard instance={instance} key={instance.id} />
       ))}

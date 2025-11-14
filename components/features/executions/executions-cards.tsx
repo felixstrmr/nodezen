@@ -10,7 +10,7 @@ export default function ExecutionCards({
   executions: Execution[];
 }) {
   return (
-    <div className="flex size-full flex-col gap-1.5 overflow-y-auto">
+    <div className="flex size-full flex-col gap-1.5 overflow-y-auto rounded-2xl border p-3">
       {executions.map((execution) => (
         <ExecutionCard execution={execution} key={execution.id} />
       ))}

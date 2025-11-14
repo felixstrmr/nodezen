@@ -15,7 +15,7 @@ export default function ExecutionsHeader({
   const successRate = Math.round((successExecutions / totalExecutions) * 100);
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-6">
       <h2 className="flex h-8 items-center font-semibold text-xl tracking-tight">
         Executions
       </h2>

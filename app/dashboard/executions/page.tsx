@@ -4,7 +4,7 @@ import ExecutionsPageSkeleton from "@/components/features/executions/executions-
 
 export default function Page() {
   return (
-    <div className="mx-auto flex size-full max-w-6xl flex-col gap-3 overflow-hidden py-6">
+    <div className="mx-auto flex size-full max-w-6xl flex-col overflow-hidden py-6">
       <Suspense fallback={<ExecutionsPageSkeleton />}>
         <ExecutionsPage />
       </Suspense>

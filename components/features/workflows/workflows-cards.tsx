@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import ExecutionStatusIcon from "@/components/icons/execution-status-icon";
 import { Badge } from "@/components/ui/badge";
 import type { Workflow } from "@/types";
@@ -11,7 +12,7 @@ export default function WorkflowCards({
   workflows: Workflow[];
 }) {
   return (
-    <div className="flex size-full flex-col gap-1.5 overflow-y-auto">
+    <div className="flex size-full flex-col gap-1.5 overflow-y-auto rounded-2xl border p-3">
       {workflows.map((workflow) => (
         <WorkflowCard key={workflow.id} workflow={workflow} />
       ))}
@@ -21,7 +22,10 @@ export default function WorkflowCards({
 
 function WorkflowCard({ workflow }: { workflow: Workflow }) {
   return (
-    <div className="flex gap-3 rounded-lg border border-border/50 bg-muted/35 p-3">
+    <Link
+      className="flex gap-3 rounded-lg border border-border/50 bg-neutral-900 p-3"
+      href={`/dashboard/workflows/${workflow.id}`}
+    >
       <div className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted">
         <ExecutionStatusIcon
           className="size-6"
@@ -45,6 +49,6 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
           {workflow.is_active ? "Active" : "Inactive"}
         </Badge>
       </div>
-    </div>
+    </Link>
   );
 }
