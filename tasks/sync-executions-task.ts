@@ -54,7 +54,7 @@ export const syncExecutionsTask = schedules.task({
         );
 
         for (const execution of executions) {
-          if (!execution.id) {
+          if (!execution.id || execution.mode === "manual") {
             continue;
           }
 
