@@ -5,7 +5,6 @@ import {
   differenceInMonths,
   differenceInWeeks,
   differenceInYears,
-  format,
 } from "date-fns";
 
 const DAYS_IN_WEEK = 7;
@@ -60,12 +59,103 @@ export function formatRelativeTime(date: Date | string): string {
   return `${prefix}${absoluteYears}y${suffix}`;
 }
 
-/**
- * Formats a date to ISO date string (YYYY-MM-DD) for consistent comparison
- * @param date - Date object or date string
- * @returns ISO date string in YYYY-MM-DD format
- */
-export function formatToIsoDate(date: Date | string): string {
-  const targetDate = typeof date === "string" ? new Date(date) : date;
-  return format(targetDate, "yyyy-MM-dd");
+type TimeUnit = "ms" | "s" | "m" | "h" | "d";
+
+export function dateDifference(
+  date1: Date,
+  date2: Date,
+  unit: TimeUnit = "ms"
+): number {
+  const diffInMs = Math.abs(date2.getTime() - date1.getTime());
+
+  const conversions = {
+    ms: 1,
+    s: 1000,
+    m: 1000 * 60,
+    h: 1000 * 60 * 60,
+    d: 1000 * 60 * 60 * 24,
+  };
+
+  return diffInMs / conversions[unit];
+}
+
+export function signedDateDifference(
+  date1: Date,
+  date2: Date,
+  unit: TimeUnit = "ms"
+): number {
+  const diffInMs = date2.getTime() - date1.getTime();
+
+  const conversions = {
+    ms: 1,
+    s: 1000,
+    m: 1000 * 60,
+    h: 1000 * 60 * 60,
+    d: 1000 * 60 * 60 * 24,
+  };
+
+  return diffInMs / conversions[unit];
+}
+
+export function dateDifferenceBreakdown(
+  date1: Date,
+  date2: Date
+): Record<TimeUnit, number> {
+  const diffInMs = Math.abs(date2.getTime() - date1.getTime());
+
+  return {
+    ms: diffInMs,
+    s: diffInMs / 1000,
+    m: diffInMs / (1000 * 60),
+    h: diffInMs / (1000 * 60 * 60),
+    d: diffInMs / (1000 * 60 * 60 * 24),
+  };
+}
+
+export type FormattedDateDifference = {
+  value: number;
+  unit: TimeUnit;
+  formatted: string;
+};
+
+export function formatDateDifference(
+  date1: Date,
+  date2: Date,
+  precision = 2
+): FormattedDateDifference {
+  const diffInMs = Math.abs(date2.getTime() - date1.getTime());
+
+  const SECOND = 1000;
+  const MINUTE = 60 * SECOND;
+  const HOUR = 60 * MINUTE;
+  const DAY = 24 * HOUR;
+
+  let value: number;
+  let unit: TimeUnit;
+
+  if (diffInMs < SECOND) {
+    value = diffInMs;
+    unit = "ms";
+  } else if (diffInMs < MINUTE) {
+    value = diffInMs / SECOND;
+    unit = "s";
+  } else if (diffInMs < HOUR) {
+    value = diffInMs / MINUTE;
+    unit = "m";
+  } else if (diffInMs < DAY) {
+    value = diffInMs / HOUR;
+    unit = "h";
+  } else {
+    value = diffInMs / DAY;
+    unit = "d";
+  }
+
+  const roundedValue = Number(value.toFixed(precision));
+  const formatted = `${roundedValue}${unit}`;
+
+  return {
+    value: roundedValue,
+    unit,
+    formatted,
+  };
 }

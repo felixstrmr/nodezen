@@ -39,7 +39,7 @@ export default function ExecutionsHeader({
           </p>
         </div>
         <div className="w-full rounded-lg border border-border/50 bg-muted/35 p-3">
-          <p className="text-muted-foreground text-sm">Sucess Rate</p>
+          <p className="text-muted-foreground text-sm">Success Rate</p>
           <p className="font-bold text-2xl text-foreground">{successRate}%</p>
         </div>
       </div>
