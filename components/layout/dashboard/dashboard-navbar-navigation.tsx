@@ -47,7 +47,7 @@ export default function DashboardNavbarNavigation() {
 
   return (
     <div className="border-b">
-      <div className="mx-auto flex w-full max-w-6xl gap-1">
+      <div className="mx-auto flex w-full max-w-7xl gap-1">
         {items.map((item) => (
           <NavigationItem key={item.name} {...item} />
         ))}

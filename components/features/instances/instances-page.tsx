@@ -22,8 +22,8 @@ function InstanceCard({ instance }: { instance: Instance }) {
 
   return (
     <div className="flex gap-3 rounded-lg border border-border/50 bg-muted/35 p-3">
-      <div className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted">
-        <ServerIcon className="size-6" />
+      <div className="flex size-8 shrink-0 items-center justify-center rounded-sm bg-muted">
+        <ServerIcon className="size-4 text-muted-foreground" />
       </div>
       <div className="w-full">
         <div className="flex w-full items-center justify-between">

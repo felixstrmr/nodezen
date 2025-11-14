@@ -1,9 +1,9 @@
 import {
   CircleCheckIcon,
   CircleQuestionMarkIcon,
+  CircleXIcon,
   ClockIcon,
   Loader2Icon,
-  OctagonXIcon,
   XIcon,
 } from "lucide-react";
 import type { ExecutionStatus } from "@/types/n8n";
@@ -18,7 +18,7 @@ export default function ExecutionStatusIcon({
 }) {
   const Icon =
     {
-      error: OctagonXIcon,
+      error: CircleXIcon,
       success: CircleCheckIcon,
       waiting: ClockIcon,
       running: Loader2Icon,

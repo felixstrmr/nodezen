@@ -1,7 +1,7 @@
 "use client";
 
+import { PauseIcon, PlayIcon } from "lucide-react";
 import Link from "next/link";
-import ExecutionStatusIcon from "@/components/icons/execution-status-icon";
 import { Badge } from "@/components/ui/badge";
 import type { Workflow } from "@/types";
 import { formatRelativeTime } from "@/utils/date";
@@ -27,10 +27,7 @@ function WorkflowCard({ workflow }: { workflow: Workflow }) {
       href={`/dashboard/workflows/${workflow.id}`}
     >
       <div className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted">
-        <ExecutionStatusIcon
-          className="size-6"
-          status={workflow.last_execution_status}
-        />
+        {workflow.is_active ? <PlayIcon /> : <PauseIcon />}
       </div>
       <div className="w-full">
         <div className="flex items-center gap-2">

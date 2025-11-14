@@ -3,6 +3,7 @@ import ExecutionStatusIcon from "@/components/icons/execution-status-icon";
 import { Badge } from "@/components/ui/badge";
 import type { Execution } from "@/types";
 import { formatDateDifference } from "@/utils/date";
+import { cn } from "@/utils/ui";
 
 export default function ExecutionCards({
   executions,
@@ -22,8 +23,13 @@ function ExecutionCard({ execution }: { execution: Execution }) {
   return (
     <div className="grid grid-cols-3 items-center gap-3 rounded-lg border border-border/50 bg-muted/35 p-3">
       <div className="flex items-start gap-3">
-        <div className="flex size-12 shrink-0 items-center justify-center rounded-sm bg-muted">
-          <ExecutionStatusIcon className="size-6" status={execution.status} />
+        <div
+          className={cn(
+            "flex size-8 shrink-0 items-center justify-center rounded-md",
+            execution.status === "success" ? "bg-green-950" : "bg-red-950"
+          )}
+        >
+          <ExecutionStatusIcon className="size-4" status={execution.status} />
         </div>
         <div className="space-y-1.5">
           <div className="flex items-center gap-2">

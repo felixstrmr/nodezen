@@ -17,7 +17,7 @@ export default async function DashboardNavbar() {
 
   return (
     <div className="flex flex-col gap-3 border-b">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 pt-3">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 pt-3">
         <div className="flex items-center justify-between">
           <Link className="flex items-center gap-2" href="/dashboard">
             <div className="flex size-8 items-center justify-center rounded-md bg-primary">
