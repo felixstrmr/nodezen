@@ -22,11 +22,11 @@ export default async function InstancesPage({
     <div className="grid grid-cols-2 gap-4">
       {instances.map((instance) => (
         <div
-          className="rounded-lg border border-border/50 bg-accent/50 p-4"
+          className="rounded-lg border border-border/50 bg-accent/30 p-4"
           key={instance.id}
         >
           <div className="flex gap-3">
-            <div className="flex size-8 items-center justify-center rounded-md bg-muted">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
               <ServerIcon className="size-4 text-muted-foreground" />
             </div>
             <div className="w-full">

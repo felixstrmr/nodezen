@@ -10,7 +10,7 @@ export default function WorkspaceLayout({
   params: Promise<{ workspaceSlug: string }>;
 }) {
   return (
-    <div className="flex size-full flex-col">
+    <div className="flex size-full flex-col overflow-hidden">
       <Suspense fallback={<DashboardNavbarSkeleton />}>
         <DashboardNavbar params={params} />
       </Suspense>

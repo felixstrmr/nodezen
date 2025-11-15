@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      executions: {
+        Row: {
+          created_at: string
+          id: string
+          mode: Database["public"]["Enums"]["execution_modes"]
+          n8n_execution_id: string
+          started_at: string
+          status: Database["public"]["Enums"]["execution_statuses"]
+          stopped_at: string | null
+          workflow: string
+          workspace: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mode: Database["public"]["Enums"]["execution_modes"]
+          n8n_execution_id: string
+          started_at: string
+          status: Database["public"]["Enums"]["execution_statuses"]
+          stopped_at?: string | null
+          workflow: string
+          workspace: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mode?: Database["public"]["Enums"]["execution_modes"]
+          n8n_execution_id?: string
+          started_at?: string
+          status?: Database["public"]["Enums"]["execution_statuses"]
+          stopped_at?: string | null
+          workflow?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executions_workflow_fkey"
+            columns: ["workflow"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "executions_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       instances: {
         Row: {
           api_key: string
@@ -209,6 +260,20 @@ export type Database = {
       }
     }
     Enums: {
+      execution_modes:
+        | "manual"
+        | "trigger"
+        | "internal"
+        | "error"
+        | "retry"
+        | "webhook"
+        | "cli"
+      execution_statuses:
+        | "error"
+        | "success"
+        | "waiting"
+        | "running"
+        | "canceled"
       instance_statuses: "connected" | "disconnected"
       workspace_user_roles: "owner" | "admin" | "member" | "viewer"
     }
@@ -338,6 +403,22 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      execution_modes: [
+        "manual",
+        "trigger",
+        "internal",
+        "error",
+        "retry",
+        "webhook",
+        "cli",
+      ],
+      execution_statuses: [
+        "error",
+        "success",
+        "waiting",
+        "running",
+        "canceled",
+      ],
       instance_statuses: ["connected", "disconnected"],
       workspace_user_roles: ["owner", "admin", "member", "viewer"],
     },
