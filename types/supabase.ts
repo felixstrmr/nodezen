@@ -147,6 +147,10 @@ export type Database = {
           id: string
           instance: string
           is_active: boolean
+          last_execution_at: string | null
+          last_execution_status:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null
           n8n_workflow_id: string
           name: string
           workspace: string
@@ -156,6 +160,10 @@ export type Database = {
           id?: string
           instance: string
           is_active: boolean
+          last_execution_at?: string | null
+          last_execution_status?:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null
           n8n_workflow_id: string
           name: string
           workspace: string
@@ -165,6 +173,10 @@ export type Database = {
           id?: string
           instance?: string
           is_active?: boolean
+          last_execution_at?: string | null
+          last_execution_status?:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null
           n8n_workflow_id?: string
           name?: string
           workspace?: string

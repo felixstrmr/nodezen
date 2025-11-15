@@ -27,22 +27,33 @@ export const syncWorkflowsTask = schedules.task({
 
       const workflows = await client.getWorkflows();
 
-      const workflowsToUpsert = workflows
-        .filter((workflow) => !workflow.isArchived)
-        .map((workflow) => ({
-          instance: instance.id,
-          name: workflow.name,
-          is_active: workflow.active,
-          n8n_workflow_id: workflow.id,
-          workspace: instance.workspace,
-        })) as Database["public"]["Tables"]["workflows"]["Insert"][];
+      for (const workflow of workflows) {
+        if (!(workflow.id && !workflow.isArchived)) {
+          continue;
+        }
 
-      await supabase
-        .from("workflows")
-        .upsert(workflowsToUpsert, {
-          onConflict: "instance,n8n_workflow_id",
-        })
-        .throwOnError();
+        const lastExecution = await client.getLastExecutionByWorkflowId(
+          workflow.id
+        );
+
+        await supabase
+          .from("workflows")
+          .upsert(
+            {
+              instance: instance.id,
+              name: workflow.name,
+              is_active: workflow.active,
+              n8n_workflow_id: workflow.id,
+              workspace: instance.workspace,
+              last_execution_at: lastExecution?.startedAt,
+              last_execution_status: lastExecution?.status,
+            },
+            {
+              onConflict: "instance,n8n_workflow_id",
+            }
+          )
+          .throwOnError();
+      }
     }
   },
 });
