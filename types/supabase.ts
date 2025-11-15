@@ -90,6 +90,51 @@ export type Database = {
           },
         ]
       }
+      workflows: {
+        Row: {
+          created_at: string
+          id: string
+          instance: string
+          is_active: boolean
+          n8n_workflow_id: string
+          name: string
+          workspace: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          instance: string
+          is_active: boolean
+          n8n_workflow_id: string
+          name: string
+          workspace: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          instance?: string
+          is_active?: boolean
+          n8n_workflow_id?: string
+          name?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workflows_instance_fkey"
+            columns: ["instance"]
+            isOneToOne: false
+            referencedRelation: "instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workflows_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspace_users: {
         Row: {
           created_at: string

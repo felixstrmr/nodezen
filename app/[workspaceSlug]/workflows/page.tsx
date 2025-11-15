@@ -1,9 +1,20 @@
-export default function Page() {
+import { Suspense } from "react";
+import WorkflowsPage from "@/components/features/workflows/workflows-page";
+import WorkflowsPageSkeleton from "@/components/features/workflows/workflows-page-skeleton";
+
+export default function Page({
+  params,
+}: {
+  params: Promise<{ workspaceSlug: string }>;
+}) {
   return (
-    <div className="mx-auto w-full max-w-7xl py-6">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 py-6">
       <div className="flex h-8 items-center justify-between">
         <h1 className="font-semibold text-xl tracking-tight">Workflows</h1>
       </div>
+      <Suspense fallback={<WorkflowsPageSkeleton />}>
+        <WorkflowsPage params={params} />
+      </Suspense>
     </div>
   );
 }
