@@ -46,10 +46,9 @@ export const syncExecutionsTask = schedules.task({
           workspace: instance.workspace,
         })) as Database["public"]["Tables"]["executions"]["Insert"][];
 
-        await supabase
-          .from("executions")
-          .insert(executionsToInsert)
-          .throwOnError();
+        await supabase.from("executions").upsert(executionsToInsert, {
+          onConflict: "n8n_execution_id,workspace",
+        });
       }
     }
   },
