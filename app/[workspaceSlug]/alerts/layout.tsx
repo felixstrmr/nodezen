@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import AlertsNavbar from "@/components/layout/alerts/alerts-navbar";
 
 export const metadata: Metadata = {
@@ -17,7 +18,9 @@ export default function AlertsLayout({
       <div className="flex h-8 items-center justify-between">
         <h1 className="font-semibold text-xl tracking-tight">Alerts</h1>
       </div>
-      <AlertsNavbar params={params} />
+      <Suspense>
+        <AlertsNavbar params={params} />
+      </Suspense>
       {children}
     </div>
   );
