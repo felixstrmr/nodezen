@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
-import { logger, schedules } from "@trigger.dev/sdk";
+import { logger, schemaTask } from "@trigger.dev/sdk";
+import z from "zod";
 import { n8nClient } from "@/lib/clients/n8n-client";
 import type { Database } from "@/types/supabase";
 import { decrypt } from "@/utils/encryption";
@@ -46,15 +47,21 @@ async function checkInstanceWithRetry(
   }
 }
 
-export const checkInstancesStatus = schedules.task({
+export const checkInstancesStatus = schemaTask({
   id: "check-instances-status",
-  run: async () => {
+  schema: z.object({
+    workspaceId: z.uuid().min(1),
+  }),
+  run: async (payload) => {
+    const { workspaceId } = payload;
+
     const startTime = Date.now();
 
     try {
       const { data: instances } = await supabase
         .from("instances")
         .select("*")
+        .eq("workspace", workspaceId)
         .throwOnError();
 
       if (!instances || instances.length === 0) {
@@ -62,7 +69,6 @@ export const checkInstancesStatus = schedules.task({
         return { checked: 0, connected: 0, disconnected: 0 };
       }
 
-      // Check all instances concurrently with controlled concurrency
       const CONCURRENCY_LIMIT = 5;
       const results: {
         id: string;
@@ -77,7 +83,6 @@ export const checkInstancesStatus = schedules.task({
           batch.map(async (instance) => {
             const result = await checkInstanceWithRetry(instance);
 
-            // Detect status changes
             const statusChanged = instance.status !== result.status;
             const now = new Date().toISOString();
 
@@ -87,7 +92,6 @@ export const checkInstancesStatus = schedules.task({
                 last_status_check_at: now,
               };
 
-            // Track when status changes occur
             if (statusChanged) {
               updateData.last_status_check_at = now;
               logger.info(

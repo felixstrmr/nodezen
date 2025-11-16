@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { schedules } from "@trigger.dev/sdk";
+import { checkInstancesStatus } from "@/tasks/check-instances-status";
 import { syncExecutionsTask } from "@/tasks/sync-executions-task";
 import { syncWorkflowsTask } from "@/tasks/sync-workflows-task";
 import type { Database } from "@/types/supabase";
@@ -19,6 +20,7 @@ export const trigger5mDataCycle = schedules.task({
       .throwOnError();
 
     for (const workspace of workspaces) {
+      checkInstancesStatus.triggerAndWait({ workspaceId: workspace.id });
       syncWorkflowsTask.triggerAndWait({ workspaceId: workspace.id });
       syncExecutionsTask.trigger({ workspaceId: workspace.id });
     }
