@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
-import { logger, schedules } from "@trigger.dev/sdk";
+import { logger, schemaTask } from "@trigger.dev/sdk";
+import z from "zod";
 import { n8nClient } from "@/lib/clients/n8n-client";
 import type { Database } from "@/types/supabase";
 import { decrypt } from "@/utils/encryption";
@@ -9,12 +10,18 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const createWorkflowBackupsTask = schedules.task({
+export const createWorkflowBackupsTask = schemaTask({
   id: "create-workflow-backups-task",
-  run: async () => {
+  schema: z.object({
+    workspaceId: z.uuid().min(1),
+  }),
+  run: async (payload) => {
+    const { workspaceId } = payload;
+
     const { data: instances } = await supabase
       .from("instances")
-      .select("*")
+      .select("id, url, api_key, workspace")
+      .eq("workspace", workspaceId)
       .eq("status", "connected")
       .throwOnError();
 
@@ -27,7 +34,7 @@ export const createWorkflowBackupsTask = schedules.task({
 
       const { data: workflows } = await supabase
         .from("workflows")
-        .select("*")
+        .select("id, n8n_workflow_id")
         .eq("instance", instance.id)
         .throwOnError();
 

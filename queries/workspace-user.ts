@@ -19,7 +19,7 @@ export async function getWorkspaceUser(workspaceSlug: string) {
 
   const { data } = await supabase
     .from("workspace_users")
-    .select("*, workspace!inner(slug), user!inner(*)")
+    .select("*, workspace!inner(slug, subscription), user!inner(*)")
     .eq("workspace.slug", workspaceSlug)
     .eq("user.id", user.id)
     .maybeSingle()

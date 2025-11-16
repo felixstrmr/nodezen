@@ -286,6 +286,7 @@ export type Database = {
           name: string
           settings: Json
           slug: string
+          subscription: Database["public"]["Enums"]["workspace_subscriptions"]
         }
         Insert: {
           created_at?: string
@@ -293,6 +294,7 @@ export type Database = {
           name: string
           settings?: Json
           slug?: string
+          subscription?: Database["public"]["Enums"]["workspace_subscriptions"]
         }
         Update: {
           created_at?: string
@@ -300,6 +302,7 @@ export type Database = {
           name?: string
           settings?: Json
           slug?: string
+          subscription?: Database["public"]["Enums"]["workspace_subscriptions"]
         }
         Relationships: []
       }
@@ -329,6 +332,7 @@ export type Database = {
         | "running"
         | "canceled"
       instance_statuses: "connected" | "disconnected"
+      workspace_subscriptions: "free" | "pro" | "premium"
       workspace_user_roles: "owner" | "admin" | "member" | "viewer"
     }
     CompositeTypes: {
@@ -474,6 +478,7 @@ export const Constants = {
         "canceled",
       ],
       instance_statuses: ["connected", "disconnected"],
+      workspace_subscriptions: ["free", "pro", "premium"],
       workspace_user_roles: ["owner", "admin", "member", "viewer"],
     },
   },
