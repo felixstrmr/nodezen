@@ -46,6 +46,35 @@ export class n8nClient {
     return data;
   }
 
+  async getWorkflowById(id: string): Promise<Workflow | null> {
+    try {
+      const response = await fetch(`${this.url}/api/v1/workflows/${id}`, {
+        headers: {
+          "X-N8N-API-KEY": this.apiKey,
+        },
+      });
+
+      if (response.status === 404) {
+        return null;
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to get workflow by id: ${response.status} ${response.statusText}`
+        );
+      }
+
+      const json = await response.json();
+
+      return json.data ?? json;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw error;
+      }
+      throw new Error("Failed to get workflow by id");
+    }
+  }
+
   async getExecutions(cursor?: string): Promise<Execution[]> {
     const response = await fetch(
       `${this.url}/api/v1/executions?limit=100${cursor ? `&cursor=${cursor}` : ""}`,

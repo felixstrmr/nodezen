@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { cn } from "@/utils/ui";
 
 export default function DashboardNavbarNavigation({
@@ -9,43 +9,48 @@ export default function DashboardNavbarNavigation({
 }: {
   workspaceSlug: string;
 }) {
-  const segment = useSelectedLayoutSegment();
+  const pathname = usePathname();
 
   const items = [
     {
       name: "Dashboard",
       href: `/${workspaceSlug}`,
-      isActive: segment === "(dashboard)",
+      isActive: pathname === `/${workspaceSlug}`,
     },
     {
       name: "Instances",
       href: `/${workspaceSlug}/instances`,
-      isActive: segment === "instances",
+      isActive: pathname.startsWith(`/${workspaceSlug}/instances`),
     },
     {
       name: "Workflows",
       href: `/${workspaceSlug}/workflows`,
-      isActive: segment === "workflows",
+      isActive: pathname.startsWith(`/${workspaceSlug}/workflows`),
     },
     {
       name: "Executions",
       href: `/${workspaceSlug}/executions`,
-      isActive: segment === "executions",
-    },
-    {
-      name: "Events",
-      href: `/${workspaceSlug}/events`,
-      isActive: segment === "events",
+      isActive: pathname.startsWith(`/${workspaceSlug}/executions`),
     },
     {
       name: "Alerts",
       href: `/${workspaceSlug}/alerts`,
-      isActive: segment === "alerts",
+      isActive: pathname.startsWith(`/${workspaceSlug}/alerts`),
+    },
+    {
+      name: "Events",
+      href: `/${workspaceSlug}/events`,
+      isActive: pathname.startsWith(`/${workspaceSlug}/events`),
+    },
+    {
+      name: "Backups",
+      href: `/${workspaceSlug}/backups`,
+      isActive: pathname.startsWith(`/${workspaceSlug}/backups`),
     },
     {
       name: "Settings",
       href: `/${workspaceSlug}/settings`,
-      isActive: segment === "settings",
+      isActive: pathname.startsWith(`/${workspaceSlug}/settings`),
     },
   ];
 

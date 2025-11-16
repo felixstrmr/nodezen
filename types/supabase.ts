@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      backups: {
+        Row: {
+          created_at: string
+          id: string
+          path: string
+          size: number
+          workflow: string
+          workspace: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          path: string
+          size: number
+          workflow: string
+          workspace: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          path?: string
+          size?: number
+          workflow?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "backups_workflow_fkey"
+            columns: ["workflow"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "backups_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       executions: {
         Row: {
           created_at: string

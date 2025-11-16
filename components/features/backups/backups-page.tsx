@@ -1,0 +1,115 @@
+import { format } from "date-fns";
+import { FileIcon, FolderIcon, GitBranchIcon } from "lucide-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
+import { getBackups } from "@/queries/backup";
+import { getInstances } from "@/queries/instance";
+import { getWorkflows } from "@/queries/workflow";
+import { formatBytes } from "@/utils/file";
+
+export default async function BackupsPage({
+  params,
+}: {
+  params: Promise<{ workspaceSlug: string; backups: string[] }>;
+}) {
+  const { workspaceSlug, backups } = await params;
+  const paths = backups.slice(1);
+
+  const [instances, workflows, data] = await Promise.all([
+    getInstances(workspaceSlug),
+    getWorkflows(workspaceSlug),
+    getBackups(workspaceSlug),
+  ]);
+
+  function getWorkflowsByInstance(instanceId: string) {
+    return workflows.filter((workflow) => workflow.instance.id === instanceId);
+  }
+
+  function getBackupsByWorkflow(workflowId: string) {
+    return data.filter((backup) => backup.workflow.id === workflowId);
+  }
+
+  function isCurrentBackup(backupId: string) {
+    const backup = data.find((b) => b.id === backupId);
+
+    if (!backup) {
+      return false;
+    }
+
+    const workflowBackups = getBackupsByWorkflow(backup.workflow.id);
+    if (workflowBackups.length === 0) {
+      return false;
+    }
+
+    const newestBackup = workflowBackups[0];
+    return newestBackup.id === backupId;
+  }
+
+  return (
+    <div className="size-full rounded-lg border">
+      <div className="grid grid-cols-[1fr_15rem_15rem] rounded-t-lg bg-accent/30 p-3">
+        <p>Name</p>
+        <p>Size</p>
+        <p>Created</p>
+      </div>
+      {paths.length === 0 && (
+        <div className="flex flex-col">
+          {instances.map((instance) => (
+            <Link
+              className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
+              href={`/${workspaceSlug}/backups/${instance.id}`}
+              key={instance.id}
+            >
+              <div className="flex items-center gap-2">
+                <FolderIcon className="size-4 text-muted-foreground" />
+                {instance.name}
+              </div>
+              <p>-</p>
+              <p>{format(instance.created_at, "PPp")}</p>
+            </Link>
+          ))}
+        </div>
+      )}
+      {paths.length === 1 && (
+        <div className="flex flex-col">
+          {getWorkflowsByInstance(paths[0]).map((workflow) => (
+            <Link
+              className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
+              href={`/${workspaceSlug}/backups/${paths[0]}/${workflow.id}`}
+              key={workflow.id}
+            >
+              <div className="flex items-center gap-2">
+                <GitBranchIcon className="size-4 text-muted-foreground" />
+                {workflow.name}
+              </div>
+              <p>-</p>
+              <p>{format(workflow.created_at, "PPp")}</p>
+            </Link>
+          ))}
+        </div>
+      )}
+      {paths.length === 2 && (
+        <div className="flex flex-col">
+          {getBackupsByWorkflow(paths[1]).map((backup) => (
+            <div
+              className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
+              key={backup.id}
+            >
+              <div className="flex items-center gap-2">
+                <FileIcon className="size-4 text-muted-foreground" />
+                <span>{backup.id}.json</span>
+                {isCurrentBackup(backup.id) && (
+                  <Badge className="rounded-sm border-blue-900 bg-blue-950 px-1 text-blue-500">
+                    Current
+                  </Badge>
+                )}
+              </div>
+              <p>{formatBytes(backup.size)}</p>
+              <p>{format(backup.created_at, "PPp")}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

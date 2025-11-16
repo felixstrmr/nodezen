@@ -12,7 +12,6 @@ export default async function DashboardNavbar({
   params: Promise<{ workspaceSlug: string }>;
 }) {
   const { workspaceSlug } = await params;
-
   const workspaceUser = await getWorkspaceUser(workspaceSlug);
 
   if (!workspaceUser) {
