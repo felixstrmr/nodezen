@@ -20,8 +20,8 @@ export const trigger5mDataCycle = schedules.task({
       .throwOnError();
 
     for (const workspace of workspaces) {
-      checkInstancesStatus.triggerAndWait({ workspaceId: workspace.id });
-      syncWorkflowsTask.triggerAndWait({ workspaceId: workspace.id });
+      checkInstancesStatus.trigger({ workspaceId: workspace.id });
+      syncWorkflowsTask.trigger({ workspaceId: workspace.id });
       syncExecutionsTask.trigger({ workspaceId: workspace.id });
     }
   },

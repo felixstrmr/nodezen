@@ -26,10 +26,17 @@ export default async function BackupsPage({
   }
 
   function getBackupsByWorkflow(workflowId: string) {
-    return data.filter((backup) => backup.workflow.id === workflowId);
+    return data
+      .filter((backup) => backup.workflow.id === workflowId)
+      .map((backup) => ({
+        id: backup.id,
+        name: backup.workflow.name,
+        created_at: backup.created_at,
+        size: backup.size,
+      }));
   }
 
-  function isCurrentBackup(backupId: string) {
+  function isLatestBackup(backupId: string) {
     const backup = data.find((b) => b.id === backupId);
 
     if (!backup) {
@@ -97,10 +104,10 @@ export default async function BackupsPage({
             >
               <div className="flex items-center gap-2">
                 <FileIcon className="size-4 text-muted-foreground" />
-                <span>{backup.id}.json</span>
-                {isCurrentBackup(backup.id) && (
+                <span>{backup.name.replace(/[^a-z0-9_-]/gi, "_")}.json</span>
+                {isLatestBackup(backup.id) && (
                   <Badge className="rounded-sm border-blue-900 bg-blue-950 px-1 text-blue-500">
-                    Current
+                    Latest
                   </Badge>
                 )}
               </div>
