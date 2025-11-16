@@ -1,7 +1,12 @@
+import type { Metadata } from "next/types";
 import { Suspense } from "react";
 import InstancesPage from "@/components/features/instances/instances-page";
 import InstancesPageSkeleton from "@/components/features/instances/instances-page-skeleton";
 import AddInstanceSheet from "@/components/sheets/add-instance-sheet";
+
+export const metadata: Metadata = {
+  title: "Nodezen • Instances",
+};
 
 export default function Page({
   params,

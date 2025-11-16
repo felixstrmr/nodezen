@@ -1,6 +1,11 @@
+import type { Metadata } from "next/types";
 import { Suspense } from "react";
 import WorkflowsPage from "@/components/features/workflows/workflows-page";
 import WorkflowsPageSkeleton from "@/components/features/workflows/workflows-page-skeleton";
+
+export const metadata: Metadata = {
+  title: "Nodezen • Workflows",
+};
 
 export default function Page({
   params,

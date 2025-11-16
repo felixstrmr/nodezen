@@ -1,3 +1,9 @@
+import type { Metadata } from "next/types";
+
+export const metadata: Metadata = {
+  title: "Nodezen • Alerts",
+};
+
 export default function Page() {
   return (
     <div className="mx-auto w-full max-w-7xl py-6">

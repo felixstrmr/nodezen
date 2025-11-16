@@ -1,6 +1,11 @@
+import type { Metadata } from "next/types";
 import { Suspense } from "react";
 import ExecutionsPage from "@/components/features/executions/executions-page";
 import ExecutionsPageSkeleton from "@/components/features/executions/executions-page-skeleton";
+
+export const metadata: Metadata = {
+  title: "Nodezen • Executions",
+};
 
 export default function Page({
   params,

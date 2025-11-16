@@ -1,4 +1,6 @@
+import { format } from "date-fns";
 import ExecutionStatusIcon from "@/components/icons/dynamic/execution-status-icon";
+import { Badge } from "@/components/ui/badge";
 import { getExecutions } from "@/queries/execution";
 import { formatRelativeTime } from "@/utils/date";
 import { formatTimeDifference } from "@/utils/time";
@@ -14,7 +16,8 @@ export default async function ExecutionsPage({
 
   return (
     <div className="max-h-[calc(100vh-12rem)] overflow-y-auto rounded-lg border">
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_10rem_10rem_10rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_20rem_10rem_10rem_10rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
+        <p>Workflow</p>
         <p>Workflow</p>
         <p>Duration</p>
         <p>Mode</p>
@@ -22,7 +25,7 @@ export default async function ExecutionsPage({
       </div>
       {executions.map((execution) => (
         <div
-          className="grid grid-cols-[1fr_10rem_10rem_10rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent/30"
+          className="grid grid-cols-[1fr_20rem_10rem_10rem_10rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent/30"
           key={execution.id}
         >
           <div className="flex items-center gap-2">
@@ -37,8 +40,11 @@ export default async function ExecutionsPage({
             >
               <ExecutionStatusIcon status={execution.status} />
             </div>
-            <p>{execution.workflow.name}</p>
+            <p>{format(execution.started_at, "PPp")}</p>
           </div>
+          <Badge className="rounded-sm px-1 capitalize" variant="secondary">
+            {execution.workflow.name}
+          </Badge>
           <p className="font-mono">
             {execution.stopped_at
               ? formatTimeDifference(
