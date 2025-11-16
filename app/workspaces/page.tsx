@@ -4,10 +4,15 @@ import WorkspacesPageSkeleton from "@/components/features/workspaces/workspaces-
 
 export default function Page() {
   return (
-    <div className="flex size-full items-center justify-center">
-      <Suspense fallback={<WorkspacesPageSkeleton />}>
-        <WorkspacesPage />
-      </Suspense>
+    <div className="flex size-full flex-col items-center justify-center">
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+        <h1 className="font-semibold text-2xl tracking-tight">
+          Select Workspace
+        </h1>
+        <Suspense fallback={<WorkspacesPageSkeleton />}>
+          <WorkspacesPage />
+        </Suspense>
+      </div>
     </div>
   );
 }

@@ -19,7 +19,7 @@ export default async function InstancesPage({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-3">
       {instances.map((instance) => (
         <div
           className="rounded-lg border border-border/50 bg-accent/30 p-4"

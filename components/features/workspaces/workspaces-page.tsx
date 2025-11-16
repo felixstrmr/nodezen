@@ -5,10 +5,10 @@ export default async function WorkspacesPage() {
   const workspaces = await getWorkspaces();
 
   return (
-    <div className="flex gap-1.5">
+    <div className="grid grid-cols-2 gap-3">
       {workspaces.map((workspace) => (
         <Link
-          className="border p-3"
+          className="rounded-lg border p-3"
           href={`/${workspace.slug}`}
           key={workspace.id}
         >

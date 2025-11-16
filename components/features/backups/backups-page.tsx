@@ -1,10 +1,11 @@
-import { format } from "date-fns";
-import { FileIcon, FolderIcon, GitBranchIcon } from "lucide-react";
+import { FileIcon, GitBranchIcon, ServerIcon } from "lucide-react";
 import Link from "next/link";
+import BackupsPageHeader from "@/components/features/backups/backups-page-header";
 import { Badge } from "@/components/ui/badge";
 import { getBackups } from "@/queries/backup";
 import { getInstances } from "@/queries/instance";
 import { getWorkflows } from "@/queries/workflow";
+import { formatRelativeTime } from "@/utils/date";
 import { formatBytes } from "@/utils/file";
 
 export default async function BackupsPage({
@@ -53,70 +54,83 @@ export default async function BackupsPage({
   }
 
   return (
-    <div className="size-full rounded-lg border">
-      <div className="grid grid-cols-[1fr_15rem_15rem] rounded-t-lg border-b bg-accent/30 p-3">
-        <p>Name</p>
-        <p>Size</p>
-        <p>Created</p>
+    <div className="flex size-full flex-col gap-3">
+      <BackupsPageHeader
+        backups={data}
+        instances={instances}
+        workflows={workflows}
+      />
+      <div className="size-full rounded-lg border">
+        <div className="grid grid-cols-[1fr_15rem_15rem] rounded-t-lg border-b bg-accent/30 p-3">
+          <p>Name</p>
+          <p>Size</p>
+          <p>Created</p>
+        </div>
+        {paths.length === 0 && (
+          <div className="flex flex-col">
+            {instances.map((instance) => (
+              <Link
+                className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
+                href={`/${workspaceSlug}/backups/${instance.id}`}
+                key={instance.id}
+              >
+                <div className="flex items-center gap-2">
+                  <ServerIcon className="size-4 text-muted-foreground" />
+                  {instance.name}
+                </div>
+                <p className="font-mono text-sm">-</p>
+                <p className="text-muted-foreground text-sm">
+                  {formatRelativeTime(instance.created_at)}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
+        {paths.length === 1 && (
+          <div className="flex flex-col">
+            {getWorkflowsByInstance(paths[0]).map((workflow) => (
+              <Link
+                className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
+                href={`/${workspaceSlug}/backups/${paths[0]}/${workflow.id}`}
+                key={workflow.id}
+              >
+                <div className="flex items-center gap-2">
+                  <GitBranchIcon className="size-4 text-muted-foreground" />
+                  {workflow.name}
+                </div>
+                <p className="font-mono text-sm">-</p>
+                <p className="text-muted-foreground text-sm">
+                  {formatRelativeTime(workflow.created_at)}
+                </p>
+              </Link>
+            ))}
+          </div>
+        )}
+        {paths.length === 2 && (
+          <div className="flex flex-col">
+            {getBackupsByWorkflow(paths[1]).map((backup) => (
+              <div
+                className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
+                key={backup.id}
+              >
+                <div className="flex items-center gap-2">
+                  <FileIcon className="size-4 text-muted-foreground" />
+                  <span>{backup.name.replace(/[^a-z0-9_-]/gi, "_")}.json</span>
+                  {isLatestBackup(backup.id) && (
+                    <Badge className="rounded-sm border-blue-900 bg-blue-950 px-1 text-blue-500">
+                      Latest
+                    </Badge>
+                  )}
+                </div>
+                <p className="font-mono text-sm">{formatBytes(backup.size)}</p>
+                <p className="text-muted-foreground text-sm">
+                  {formatRelativeTime(backup.created_at)}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-      {paths.length === 0 && (
-        <div className="flex flex-col">
-          {instances.map((instance) => (
-            <Link
-              className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
-              href={`/${workspaceSlug}/backups/${instance.id}`}
-              key={instance.id}
-            >
-              <div className="flex items-center gap-2">
-                <FolderIcon className="size-4 text-muted-foreground" />
-                {instance.name}
-              </div>
-              <p>-</p>
-              <p>{format(instance.created_at, "PPp")}</p>
-            </Link>
-          ))}
-        </div>
-      )}
-      {paths.length === 1 && (
-        <div className="flex flex-col">
-          {getWorkflowsByInstance(paths[0]).map((workflow) => (
-            <Link
-              className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
-              href={`/${workspaceSlug}/backups/${paths[0]}/${workflow.id}`}
-              key={workflow.id}
-            >
-              <div className="flex items-center gap-2">
-                <GitBranchIcon className="size-4 text-muted-foreground" />
-                {workflow.name}
-              </div>
-              <p>-</p>
-              <p>{format(workflow.created_at, "PPp")}</p>
-            </Link>
-          ))}
-        </div>
-      )}
-      {paths.length === 2 && (
-        <div className="flex flex-col">
-          {getBackupsByWorkflow(paths[1]).map((backup) => (
-            <div
-              className="grid grid-cols-[1fr_15rem_15rem] items-center border-b p-3 last:border-b-0 hover:bg-accent/30"
-              key={backup.id}
-            >
-              <div className="flex items-center gap-2">
-                <FileIcon className="size-4 text-muted-foreground" />
-                <span>{backup.name.replace(/[^a-z0-9_-]/gi, "_")}.json</span>
-                {isLatestBackup(backup.id) && (
-                  <Badge className="rounded-sm border-blue-900 bg-blue-950 px-1 text-blue-500">
-                    Latest
-                  </Badge>
-                )}
-              </div>
-              <p>{formatBytes(backup.size)}</p>
-              <p>{format(backup.created_at, "PPp")}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
