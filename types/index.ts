@@ -13,10 +13,17 @@ export type Workflow = Tables<"workflows"> & {
   instance: {
     name: string;
   };
+  workspace: {
+    slug: string;
+  };
 };
 
 export type Backup = Tables<"backups"> & {
   workflow: {
+    id: string;
     name: string;
+  };
+  workspace: {
+    slug: string;
   };
 };

@@ -1,16 +1,10 @@
 import { formatDistance } from "date-fns";
-import type { Backup, Instance, Workflow } from "@/types";
+import type { Backup } from "@/types";
 import { formatBytes } from "@/utils/file";
 
-export default function BackupsPageHeader({
-  instances,
-  workflows,
-  backups,
-}: {
-  instances: Instance[];
-  workflows: Workflow[];
-  backups: Backup[];
-}) {
+export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
+  const workflows = backups.map((backup) => backup.workflow);
+
   return (
     <div className="grid grid-cols-4 gap-3">
       <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">

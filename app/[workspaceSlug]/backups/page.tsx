@@ -4,13 +4,13 @@ import BackupsPage from "@/components/features/backups/backups-page";
 import BackupsPageSkeleton from "@/components/features/backups/backups-page-skeleton";
 
 export const metadata: Metadata = {
-  title: "Nodezen • Executions",
+  title: "Nodezen • Backups",
 };
 
 export default function Page({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string; backups: string[] }>;
+  params: Promise<{ workspaceSlug: string }>;
 }) {
   return (
     <div className="mx-auto flex size-full max-w-7xl flex-col gap-6 overflow-hidden py-6">

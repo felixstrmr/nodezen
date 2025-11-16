@@ -15,15 +15,14 @@ export default async function WorkflowsPage({
 
   return (
     <div className="max-h-[calc(100vh-12rem)] overflow-y-auto rounded-lg border">
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_10rem_10rem_10rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
-        <p>Workflow</p>
-        <p>Instance</p>
-        <p>Last Execution</p>
-        <p>Created</p>
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
+        <p className="text-sm">Workflow</p>
+        <p className="text-sm">Instance</p>
+        <p className="text-sm">Last Execution</p>
       </div>
       {workflows.map((workflow) => (
         <Link
-          className="grid grid-cols-[1fr_10rem_10rem_10rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent/30"
+          className="grid grid-cols-[1fr_12.5rem_12.5rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent/30"
           href={`/${workspaceSlug}/workflows/${workflow.id}`}
           key={workflow.id}
         >
@@ -40,23 +39,19 @@ export default async function WorkflowsPage({
                 <PauseIcon className="size-4 text-muted-foreground" />
               )}
             </div>
-            <div>
-              <p>{workflow.name}</p>
-              <p className="text-muted-foreground text-xs">
-                Last run:{" "}
-                {workflow.last_execution_at
-                  ? formatRelativeTime(workflow.last_execution_at)
-                  : "Never"}
-              </p>
-            </div>
+            <p className="text-sm">{workflow.name}</p>
           </div>
-          <p>{workflow.instance.name}</p>
-          {workflow.last_execution_status ? (
-            <WorkflowStatusBadge workflow={workflow} />
-          ) : (
-            <p>-</p>
-          )}
-          <p>{formatRelativeTime(workflow.created_at)}</p>
+          <p className="text-sm">{workflow.instance.name}</p>
+          <div className="flex items-center gap-2">
+            <p className="text-muted-foreground text-sm">
+              {workflow.last_execution_at
+                ? formatRelativeTime(workflow.last_execution_at)
+                : "Never"}
+            </p>
+            {workflow.last_execution_status && (
+              <WorkflowStatusBadge workflow={workflow} />
+            )}
+          </div>
         </Link>
       ))}
     </div>
