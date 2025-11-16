@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
-import { logger, schedules } from "@trigger.dev/sdk";
+import { logger, schemaTask } from "@trigger.dev/sdk";
+import z from "zod";
 import { n8nClient } from "@/lib/clients/n8n-client";
 import type { Database } from "@/types/supabase";
 import { decrypt } from "@/utils/encryption";
@@ -9,9 +10,14 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncWorkflowsTask = schedules.task({
+export const syncWorkflowsTask = schemaTask({
   id: "sync-workflows-task",
-  run: async () => {
+  schema: z.object({
+    workspaceId: z.uuid().min(1),
+  }),
+  run: async (payload) => {
+    const { workspaceId } = payload;
+
     const startTime = Date.now();
     let totalSynced = 0;
     let totalUpdated = 0;
@@ -21,7 +27,8 @@ export const syncWorkflowsTask = schedules.task({
       const { data: instances } = await supabase
         .from("instances")
         .select("*")
-        .eq("status", "connected") // Only sync connected instances
+        .eq("status", "connected")
+        .eq("workspace", workspaceId)
         .throwOnError();
 
       if (!instances || instances.length === 0) {
@@ -40,7 +47,6 @@ export const syncWorkflowsTask = schedules.task({
 
           const workflows = await client.getWorkflows();
 
-          // Filter out archived workflows and workflows without IDs upfront
           const activeWorkflows = workflows.filter(
             (workflow) => workflow.id && !workflow.isArchived
           );
@@ -52,7 +58,6 @@ export const syncWorkflowsTask = schedules.task({
             continue;
           }
 
-          // Get existing workflows to track what was updated vs newly created
           const { data: existingWorkflows } = await supabase
             .from("workflows")
             .select("n8n_workflow_id")
@@ -83,7 +88,7 @@ export const syncWorkflowsTask = schedules.task({
                 .from("workflows")
                 .upsert(workflowData, {
                   onConflict: "instance,n8n_workflow_id",
-                  ignoreDuplicates: false, // Always update existing records
+                  ignoreDuplicates: false,
                 })
                 .throwOnError();
 
@@ -112,7 +117,6 @@ export const syncWorkflowsTask = schedules.task({
             }
           }
 
-          // Optional: Mark workflows as archived if they're no longer in n8n
           const currentWorkflowIds = new Set(
             activeWorkflows.map((w) => w.id || "")
           );

@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
-import { logger, schedules } from "@trigger.dev/sdk";
+import { logger, schemaTask } from "@trigger.dev/sdk";
+import z from "zod";
 import { n8nClient } from "@/lib/clients/n8n-client";
 import type { Database, Enums } from "@/types/supabase";
 import { decrypt } from "@/utils/encryption";
@@ -9,9 +10,14 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncExecutionsTask = schedules.task({
+export const syncExecutionsTask = schemaTask({
   id: "sync-executions-task",
-  run: async () => {
+  schema: z.object({
+    workspaceId: z.uuid().min(1),
+  }),
+  run: async (payload) => {
+    const { workspaceId } = payload;
+
     const startTime = Date.now();
     let totalSynced = 0;
     let totalErrors = 0;
@@ -20,7 +26,8 @@ export const syncExecutionsTask = schedules.task({
       const { data: instances } = await supabase
         .from("instances")
         .select("*")
-        .eq("status", "connected") // Only sync connected instances
+        .eq("status", "connected")
+        .eq("workspace", workspaceId)
         .throwOnError();
 
       if (!instances || instances.length === 0) {
@@ -50,7 +57,6 @@ export const syncExecutionsTask = schedules.task({
 
           for (const workflow of workflows) {
             try {
-              // Get existing execution IDs to avoid duplicates
               const { data: existingExecutions } = await supabase
                 .from("executions")
                 .select("n8n_execution_id")
@@ -64,7 +70,6 @@ export const syncExecutionsTask = schedules.task({
                 workflow.n8n_workflow_id
               );
 
-              // Filter out executions that already exist
               const newExecutions = executions.filter(
                 (execution) => !existingIds.has(execution.id)
               );
@@ -86,7 +91,6 @@ export const syncExecutionsTask = schedules.task({
                 workspace: instance.workspace,
               })) as Database["public"]["Tables"]["executions"]["Insert"][];
 
-              // Insert in batches of 100 to avoid large transactions
               const BATCH_SIZE = 100;
               for (let i = 0; i < executionsToInsert.length; i += BATCH_SIZE) {
                 const batch = executionsToInsert.slice(i, i + BATCH_SIZE);
