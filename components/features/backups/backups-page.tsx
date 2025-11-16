@@ -54,7 +54,7 @@ export default async function BackupsPage({
 
   return (
     <div className="size-full rounded-lg border">
-      <div className="grid grid-cols-[1fr_15rem_15rem] rounded-t-lg bg-accent/30 p-3">
+      <div className="grid grid-cols-[1fr_15rem_15rem] rounded-t-lg border-b bg-accent/30 p-3">
         <p>Name</p>
         <p>Size</p>
         <p>Created</p>
