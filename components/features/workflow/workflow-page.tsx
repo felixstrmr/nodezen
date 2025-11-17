@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getExecutionsByWorkflowId } from "@/queries/execution";
 import { getWorkflow } from "@/queries/workflow";
 
 export default async function WorkflowPage({
@@ -7,7 +8,10 @@ export default async function WorkflowPage({
   params: Promise<{ workspaceSlug: string; workflowId: string }>;
 }) {
   const { workspaceSlug, workflowId } = await params;
-  const workflow = await getWorkflow(workspaceSlug, workflowId);
+  const [workflow, executions] = await Promise.all([
+    getWorkflow(workspaceSlug, workflowId),
+    getExecutionsByWorkflowId(workspaceSlug, workflowId),
+  ]);
 
   if (!workflow) {
     notFound();
@@ -21,6 +25,7 @@ export default async function WorkflowPage({
         </h1>
       </div>
       <pre>{JSON.stringify(workflow, null, 2)}</pre>
+      <pre>{JSON.stringify(executions, null, 2)}</pre>
     </div>
   );
 }
