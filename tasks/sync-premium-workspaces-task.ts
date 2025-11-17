@@ -10,6 +10,7 @@ const supabase = createClient<Database>(
 
 export const syncPremiumWorkspacesTask = schedules.task({
   id: "sync-premium-workspaces-task",
+  machine: "micro",
   run: async () => {
     logger.info("Starting sync premium workspaces task", {
       timestamp: new Date().toISOString(),
