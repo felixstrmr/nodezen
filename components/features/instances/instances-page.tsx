@@ -63,7 +63,7 @@ export default async function InstancesPage({
             <p className="text-sm">-</p>
             <p className="text-muted-foreground text-sm">Last Sync</p>
             <p className="text-muted-foreground text-sm">
-              {formatRelativeTime(instance.last_status_check_at)}
+              {formatRelativeTime(instance.last_sync_at)}
             </p>
           </div>
         </div>

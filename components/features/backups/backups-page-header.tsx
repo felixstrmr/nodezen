@@ -20,7 +20,9 @@ export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
       <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">
         <p className="text-muted-foreground text-sm">Total Size</p>
         <p className="font-semibold text-lg tracking-tight">
-          {formatBytes(backups.reduce((acc, backup) => acc + backup.size, 0))}
+          {formatBytes(
+            backups.reduce((acc, backup) => acc + backup.size_bytes, 0)
+          )}
         </p>
       </div>
       <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">
