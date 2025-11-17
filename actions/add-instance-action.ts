@@ -33,7 +33,7 @@ export const addInstanceAction = authActionClient
         workspace,
         status,
         api_key: encryptedApiKey,
-        last_status_check_at: new Date().toISOString(),
+        last_sync_at: new Date().toISOString(),
       })
       .throwOnError();
 
