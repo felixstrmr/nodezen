@@ -16,26 +16,26 @@ export default async function ExecutionsPage({
 
   return (
     <div className="overflow-y-auto rounded-lg border">
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_20rem_10rem_10rem_10rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
-        <p className="text-sm">Workflow</p>
-        <p className="text-sm">Instance</p>
-        <p className="text-sm">Duration</p>
-        <p className="text-sm">Mode</p>
-        <p className="text-sm">Started</p>
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_20rem_10rem_10rem_10rem] gap-4 border-b bg-accent p-3 text-muted-foreground text-sm backdrop-blur-sm">
+        <p>Workflow</p>
+        <p>Instance</p>
+        <p>Duration</p>
+        <p>Mode</p>
+        <p>Started</p>
       </div>
       {executions.map((execution) => (
         <div
-          className="grid grid-cols-[1fr_20rem_10rem_10rem_10rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent/30"
+          className="grid grid-cols-[1fr_20rem_10rem_10rem_10rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent"
           key={execution.id}
         >
           <div className="flex items-center gap-2">
             <div
               className={cn(
                 "flex size-8 items-center justify-center rounded-md bg-muted",
-                execution.status === "error" && "bg-red-950",
-                execution.status === "success" && "bg-green-950",
-                execution.status === "waiting" && "bg-yellow-950",
-                execution.status === "running" && "bg-yellow-950"
+                execution.status === "error" && "0 bg-red-100",
+                execution.status === "success" && "bg-green-100",
+                execution.status === "waiting" && "bg-yellow-100",
+                execution.status === "running" && "bg-yellow-100"
               )}
             >
               <ExecutionStatusIcon status={execution.status} />

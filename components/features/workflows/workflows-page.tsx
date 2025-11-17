@@ -15,14 +15,14 @@ export default async function WorkflowsPage({
 
   return (
     <div className="max-h-[calc(100vh-12rem)] overflow-y-auto rounded-lg border">
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
-        <p className="text-sm">Workflow</p>
-        <p className="text-sm">Instance</p>
-        <p className="text-sm">Last Execution</p>
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem] gap-4 border-b bg-accent p-3 text-muted-foreground text-sm backdrop-blur-sm">
+        <p>Workflow</p>
+        <p>Instance</p>
+        <p>Last Execution</p>
       </div>
       {workflows.map((workflow) => (
         <Link
-          className="grid grid-cols-[1fr_12.5rem_12.5rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent/30"
+          className="grid grid-cols-[1fr_12.5rem_12.5rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent"
           href={`/${workspaceSlug}/workflows/${workflow.id}`}
           key={workflow.id}
         >
@@ -30,11 +30,11 @@ export default async function WorkflowsPage({
             <div
               className={cn(
                 "flex size-8 items-center justify-center rounded-md",
-                workflow.is_active ? "bg-green-950" : "bg-muted"
+                workflow.is_active ? "bg-green-100" : "bg-muted"
               )}
             >
               {workflow.is_active ? (
-                <PlayIcon className="size-4 text-green-500" />
+                <PlayIcon className="size-4 text-green-600" />
               ) : (
                 <PauseIcon className="size-4 text-muted-foreground" />
               )}

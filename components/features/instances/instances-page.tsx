@@ -15,21 +15,21 @@ export default async function InstancesPage({
   const instances = await getInstances(workspaceSlug);
 
   const statusBadgeVariants = {
-    connected: "bg-green-950 border border-green-900 text-green-500",
-    disconnected: "bg-red-950 border border-red-900 text-red-500",
-    unknown: "bg-yellow-950 border border-yellow-900 text-yellow-500",
+    connected: "bg-green-100 border border-green-200 text-green-600",
+    disconnected: "bg-red-100 border border-red-200 text-red-600",
+    unknown: "bg-yellow-100 border border-yellow-200 text-yellow-600",
   };
 
   return (
     <div className="grid grid-cols-3 gap-3">
       {instances.map((instance) => (
         <div
-          className="relative flex flex-col gap-6 rounded-lg border border-border/50 bg-accent/30 p-4"
+          className="relative flex flex-col gap-6 rounded-lg border p-3"
           key={instance.id}
         >
           <div className="flex items-center gap-3">
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-950">
-              <ServerIcon className="size-4 text-blue-500" />
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-100">
+              <ServerIcon className="size-4 text-blue-600" />
             </div>
             <div className="-space-y-0.5">
               <h2 className="text-sm">{instance.name}</h2>

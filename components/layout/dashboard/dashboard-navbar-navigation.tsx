@@ -73,8 +73,8 @@ function NavigationItem(item: {
       className={cn(
         "flex h-8 items-center justify-center rounded-md px-2",
         item.isActive
-          ? "bg-accent/50 text-foreground"
-          : "text-muted-foreground hover:bg-accent/50"
+          ? "bg-accent text-foreground"
+          : "text-muted-foreground hover:bg-accent"
       )}
       href={item.href}
     >

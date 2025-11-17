@@ -7,17 +7,17 @@ export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
 
   return (
     <div className="grid grid-cols-4 gap-3">
-      <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">
+      <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Total Backups</p>
         <p className="font-semibold text-lg tracking-tight">{backups.length}</p>
       </div>
-      <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">
+      <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Workflows</p>
         <p className="font-semibold text-lg tracking-tight">
           {workflows.length}
         </p>
       </div>
-      <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">
+      <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Total Size</p>
         <p className="font-semibold text-lg tracking-tight">
           {formatBytes(
@@ -25,7 +25,7 @@ export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
           )}
         </p>
       </div>
-      <div className="w-full rounded-lg border border-border/50 bg-accent/30 p-3">
+      <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Next Backup</p>
         <p className="font-semibold text-lg tracking-tight">
           {(() => {

@@ -117,11 +117,11 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
 
   return (
     <div className="overflow-y-auto rounded-lg border">
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem_12.5rem] border-b bg-accent/30 p-3 backdrop-blur-sm">
-        <p className="text-sm">Backup</p>
-        <p className="text-sm">Instance</p>
-        <p className="text-sm">Size</p>
-        <p className="text-sm">Created</p>
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem_12.5rem] border-b bg-accent p-3 text-muted-foreground text-sm backdrop-blur-sm">
+        <p>Backup</p>
+        <p>Instance</p>
+        <p>Size</p>
+        <p>Created</p>
       </div>
       {Object.entries(workflowsWithBackups).map(
         ([
@@ -191,7 +191,7 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
                         {backup.id}.json
                       </button>
                       {isLatestBackup(backup.id) && (
-                        <Badge className="rounded-sm border-blue-900 bg-blue-950 px-1 text-blue-500">
+                        <Badge className="rounded-sm border-blue-200 bg-blue-100 px-1 text-blue-600">
                           Latest
                         </Badge>
                       )}

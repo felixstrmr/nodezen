@@ -39,15 +39,14 @@ export default function SigninForm() {
         id: "signin-form",
       });
     },
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       toast.success("Signed in successfully", {
         id: "signin-form",
       });
-      if (data?.active_workspace) {
-        router.push(`/${data.active_workspace}`);
-      } else {
+
+      setTimeout(() => {
         router.push("/workspaces");
-      }
+      }, 100);
     },
   });
 

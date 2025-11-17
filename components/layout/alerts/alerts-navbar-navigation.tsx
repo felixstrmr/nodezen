@@ -42,7 +42,7 @@ function NavigationItem(item: {
     <div className="flex flex-col gap-1">
       <Link
         className={cn(
-          "flex h-7 items-center justify-center rounded-md px-2 hover:bg-accent/50",
+          "flex h-7 items-center justify-center rounded-md px-2 hover:bg-accent",
           item.isActive ? "text-foreground" : "text-muted-foreground"
         )}
         href={item.href}

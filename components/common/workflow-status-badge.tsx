@@ -8,11 +8,11 @@ export default function WorkflowStatusBadge({
   workflow: Workflow;
 }) {
   const statusBadgeVariants = {
-    error: "bg-red-950 border border-red-900 text-red-500",
-    success: "bg-green-950 border border-green-900 text-green-500",
-    waiting: "bg-yellow-950 border border-yellow-900 text-yellow-500",
-    running: "bg-yellow-950 border border-yellow-900 text-yellow-500",
-    canceled: "bg-gray-950 border border-gray-900 text-gray-500",
+    error: "bg-red-100 border border-red-200 text-red-600",
+    success: "bg-green-100 border border-green-200 text-green-600",
+    waiting: "bg-yellow-100 border border-yellow-200 text-yellow-600",
+    running: "bg-yellow-100 border border-yellow-200 text-yellow-600",
+    canceled: "bg-gray-100 border border-gray-200 text-gray-600",
   };
 
   return (
