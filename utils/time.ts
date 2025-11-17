@@ -1,5 +1,5 @@
-export function formatTimeDifference(date1: Date, date2: Date): string {
-  const differenceInMs = Math.abs(date2.getTime() - date1.getTime());
+export function formatDuration(durationMs: number) {
+  const differenceInMs = Math.abs(durationMs);
 
   if (differenceInMs < 1000) {
     return `${differenceInMs}ms`;
@@ -14,25 +14,32 @@ export function formatTimeDifference(date1: Date, date2: Date): string {
   const differenceInMinutes = Math.floor(differenceInSeconds / 60);
 
   if (differenceInMinutes < 60) {
-    const remainingSeconds = differenceInSeconds % 60;
-    return remainingSeconds > 0
-      ? `${differenceInMinutes}m ${remainingSeconds}s`
-      : `${differenceInMinutes}m`;
+    return `${differenceInMinutes}m`;
   }
 
   const differenceInHours = Math.floor(differenceInMinutes / 60);
 
   if (differenceInHours < 24) {
-    const remainingMinutes = differenceInMinutes % 60;
-    return remainingMinutes > 0
-      ? `${differenceInHours}h ${remainingMinutes}m`
-      : `${differenceInHours}h`;
+    return `${differenceInHours}h`;
   }
 
   const differenceInDays = Math.floor(differenceInHours / 24);
-  const remainingHours = differenceInHours % 24;
 
-  return remainingHours > 0
-    ? `${differenceInDays}d ${remainingHours}h`
-    : `${differenceInDays}d`;
+  if (differenceInDays < 30) {
+    return `${differenceInDays}d`;
+  }
+
+  const differenceInMonths = Math.floor(differenceInDays / 30);
+
+  if (differenceInMonths < 12) {
+    return `${differenceInMonths}mo`;
+  }
+
+  const differenceInYears = Math.floor(differenceInMonths / 12);
+
+  if (differenceInYears < 100) {
+    return `${differenceInYears}y`;
+  }
+
+  return `${differenceInYears}y+`;
 }

@@ -3,7 +3,7 @@ import ExecutionStatusIcon from "@/components/icons/dynamic/execution-status-ico
 import { Badge } from "@/components/ui/badge";
 import { getExecutions } from "@/queries/execution";
 import { formatRelativeTime } from "@/utils/date";
-import { formatTimeDifference } from "@/utils/time";
+import { formatDuration } from "@/utils/time";
 import { cn } from "@/utils/ui";
 
 export default async function ExecutionsPage({
@@ -46,12 +46,7 @@ export default async function ExecutionsPage({
             {execution.workflow.name}
           </Badge>
           <p className="font-mono text-sm">
-            {execution.stopped_at
-              ? formatTimeDifference(
-                  new Date(execution.started_at),
-                  new Date(execution.stopped_at)
-                )
-              : "-"}
+            {formatDuration(execution.duration_ms)}
           </p>
           <p className="text-sm capitalize">{execution.mode}</p>
           <p className="text-muted-foreground text-sm">
