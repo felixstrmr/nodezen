@@ -3,7 +3,7 @@ import type { Backup } from "@/types";
 import { formatBytes } from "@/utils/file";
 
 export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
-  const workflows = backups.map((backup) => backup.workflow);
+  const workflows = new Set(backups.map((backup) => backup.workflow.id)).size;
 
   return (
     <div className="grid grid-cols-4 gap-3">
@@ -13,9 +13,7 @@ export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
       </div>
       <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Workflows</p>
-        <p className="font-semibold text-lg tracking-tight">
-          {workflows.length}
-        </p>
+        <p className="font-semibold text-lg tracking-tight">{workflows}</p>
       </div>
       <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Total Size</p>
