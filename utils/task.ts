@@ -40,6 +40,60 @@ function extractErrorInfo(execution: Execution): {
   return { errorMessage: null, errorNode: null };
 }
 
+async function updateWorkflowsWithLatestExecution(
+  supabase: SupabaseClient<Database>,
+  workflowIds: string[]
+): Promise<void> {
+  if (workflowIds.length === 0) {
+    return;
+  }
+
+  const { data: latestExecutions } = await supabase
+    .from("executions")
+    .select("workflow, started_at, stopped_at, status")
+    .in("workflow", workflowIds)
+    .order("started_at", { ascending: false })
+    .throwOnError();
+
+  if (!latestExecutions || latestExecutions.length === 0) {
+    return;
+  }
+
+  // Group executions by workflow and get the latest one for each
+  const latestByWorkflow = new Map<
+    string,
+    {
+      started_at: string;
+      stopped_at: string | null;
+      status: Database["public"]["Enums"]["execution_statuses"];
+    }
+  >();
+
+  for (const execution of latestExecutions) {
+    if (!latestByWorkflow.has(execution.workflow)) {
+      latestByWorkflow.set(execution.workflow, {
+        started_at: execution.started_at,
+        stopped_at: execution.stopped_at,
+        status: execution.status,
+      });
+    }
+  }
+
+  // Update each workflow with its latest execution info
+  await Promise.all(
+    Array.from(latestByWorkflow.entries()).map(([workflowId, exec]) =>
+      supabase
+        .from("workflows")
+        .update({
+          last_execution_at: exec.stopped_at || exec.started_at,
+          last_execution_status: exec.status,
+        })
+        .eq("id", workflowId)
+        .throwOnError()
+    )
+  );
+}
+
 async function syncWorkflows(
   supabase: SupabaseClient<Database>,
   client: n8nClient,
@@ -248,6 +302,10 @@ async function syncExecutions(
           .throwOnError();
       }),
     ]);
+
+    // Update workflows with latest execution information
+    const workflowIds = Array.from(workflowIdMap.values());
+    await updateWorkflowsWithLatestExecution(supabase, workflowIds);
 
     return {
       executionsSynced: executionsToCreate.length,
