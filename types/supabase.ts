@@ -140,7 +140,6 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          n8n_version: string | null
           path: string
           size_bytes: number
           workflow: string
@@ -149,7 +148,6 @@ export type Database = {
         Insert: {
           created_at?: string
           id?: string
-          n8n_version?: string | null
           path: string
           size_bytes: number
           workflow: string
@@ -158,7 +156,6 @@ export type Database = {
         Update: {
           created_at?: string
           id?: string
-          n8n_version?: string | null
           path?: string
           size_bytes?: number
           workflow?: string

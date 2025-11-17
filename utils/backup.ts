@@ -150,9 +150,6 @@ export async function triggerBackup(
         size_bytes: blob.size,
         workflow: supabaseWorkflow.id,
         workspace: instance.workspace.id,
-        n8n_version:
-          (workflowData as Workflow & { n8nVersion?: string }).n8nVersion ??
-          null,
       })
       .throwOnError();
 
