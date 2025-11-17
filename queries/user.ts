@@ -12,7 +12,7 @@ export async function getUser() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("User not found");
+    return null;
   }
 
   cacheTag(`user:${user.id}`);
