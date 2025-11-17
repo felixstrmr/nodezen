@@ -22,6 +22,10 @@ export type Backup = Tables<"backups"> & {
   workflow: {
     id: string;
     name: string;
+    instance: {
+      id: string;
+      name: string;
+    };
   };
   workspace: {
     slug: string;

@@ -10,7 +10,7 @@ export const getBackups = async (workspaceSlug: string) => {
 
   const { data } = await supabase
     .from("backups")
-    .select("*, workspace!inner(slug), workflow(id, name)")
+    .select("*, workspace!inner(slug), workflow(id, name, instance(id, name))")
     .eq("workspace.slug", workspaceSlug)
     .order("created_at", { ascending: false })
     .throwOnError();

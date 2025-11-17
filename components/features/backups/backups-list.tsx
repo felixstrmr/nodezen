@@ -24,16 +24,29 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
     (acc, backup) => {
       const workflowId = backup.workflow.id;
       const workflowName = backup.workflow.name;
+      const instanceId = backup.workflow.instance.id;
+      const instanceName = backup.workflow.instance.name;
+
       if (!acc[workflowId]) {
         acc[workflowId] = {
           name: workflowName,
+          instanceId,
+          instanceName,
           backups: [],
         };
       }
       acc[workflowId].backups.push(backup);
       return acc;
     },
-    {} as Record<string, { name: string; backups: Backup[] }>
+    {} as Record<
+      string,
+      {
+        name: string;
+        instanceId: string;
+        instanceName: string;
+        backups: Backup[];
+      }
+    >
   );
 
   function isLatestBackup(backupId: string) {
@@ -104,20 +117,24 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
 
   return (
     <div className="overflow-y-auto rounded-lg border">
-      <div className="sticky top-0 z-10 grid grid-cols-[1fr_15rem_15rem] border-b bg-accent/30 p-3 backdrop-blur-sm">
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem_12.5rem] border-b bg-accent/30 p-3 backdrop-blur-sm">
         <p className="text-sm">Backup</p>
+        <p className="text-sm">Instance</p>
         <p className="text-sm">Size</p>
         <p className="text-sm">Created</p>
       </div>
       {Object.entries(workflowsWithBackups).map(
-        ([workflowId, { name: workflowName, backups: workflowBackups }]) => (
+        ([
+          workflowId,
+          { name: workflowName, instanceName, backups: workflowBackups },
+        ]) => (
           <div
             className="flex flex-col border-b last:border-b-0"
             key={workflowId}
           >
             <div
               className={cn(
-                "grid grid-cols-[1fr_15rem_15rem] items-center p-3",
+                "grid grid-cols-[1fr_12.5rem_12.5rem_12.5rem] items-center p-3",
                 openedWorkflows.includes(workflowId) && "pb-1.5"
               )}
             >
@@ -142,6 +159,7 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
                 </Button>
                 <h2 className="text-sm">{workflowName}</h2>
               </div>
+              <p className="text-sm">{instanceName}</p>
               <p className="font-mono text-sm">
                 {formatBytes(
                   workflowBackups.reduce((acc, backup) => acc + backup.size, 0)
@@ -152,7 +170,7 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
             {openedWorkflows.includes(workflowId) &&
               workflowBackups.map((backup) => (
                 <div
-                  className="grid grid-cols-[1fr_15rem_15rem] items-center px-3 py-1.5 last:pb-3"
+                  className="grid grid-cols-[1fr_12.5rem_12.5rem_12.5rem] items-center px-3 py-1.5 last:pb-3"
                   key={backup.id}
                 >
                   <div className="flex items-center gap-2">
@@ -176,6 +194,7 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
                       )}
                     </div>
                   </div>
+                  <p className="text-sm">{instanceName}</p>
                   <p className="font-mono text-sm">
                     {formatBytes(backup.size)}
                   </p>
