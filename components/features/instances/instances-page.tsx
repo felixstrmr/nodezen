@@ -1,5 +1,7 @@
-import { ServerIcon } from "lucide-react";
+import { ArrowUpRightIcon, MoreVerticalIcon, ServerIcon } from "lucide-react";
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { getInstances } from "@/queries/instance";
 import { formatRelativeTime } from "@/utils/date";
 import { cn } from "@/utils/ui";
@@ -19,37 +21,50 @@ export default async function InstancesPage({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-3 gap-3">
       {instances.map((instance) => (
         <div
-          className="rounded-lg border border-border/50 bg-accent/30 p-4"
+          className="relative flex flex-col gap-6 rounded-lg border border-border/50 bg-accent/30 p-4"
           key={instance.id}
         >
-          <div className="flex gap-3">
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted">
-              <ServerIcon className="size-4 text-muted-foreground" />
+          <div className="flex items-center gap-3">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-950">
+              <ServerIcon className="size-4 text-blue-500" />
             </div>
-            <div className="w-full">
-              <div className="flex items-center gap-2">
-                <h2 className="font-semibold text-lg tracking-tight">
-                  {instance.name}
-                </h2>
-                <div className="ml-auto flex items-center gap-2">
-                  <p className="text-muted-foreground text-xs">
-                    {formatRelativeTime(instance.last_status_check_at)}
-                  </p>
-                  <Badge
-                    className={cn(
-                      "rounded-sm px-1 capitalize",
-                      statusBadgeVariants[instance.status]
-                    )}
-                  >
-                    {instance.status}
-                  </Badge>
-                </div>
-              </div>
-              <p className="text-muted-foreground text-sm">{instance.url}</p>
+            <div className="-space-y-0.5">
+              <h2 className="text-sm">{instance.name}</h2>
+              <Link
+                className="group text-muted-foreground text-xs hover:underline"
+                href={instance.url}
+                passHref
+                target="_blank"
+              >
+                {instance.url.replace("https://", "")}
+                <ArrowUpRightIcon className="ml-1 hidden size-3.5 group-hover:inline-block" />
+              </Link>
             </div>
+            <div className="absolute top-3 right-3 flex items-center gap-2">
+              <Badge
+                className={cn(
+                  "rounded-sm px-1 capitalize",
+                  statusBadgeVariants[instance.status]
+                )}
+              >
+                {instance.status}
+              </Badge>
+              <Button size="icon" variant="ghost">
+                <MoreVerticalIcon />
+              </Button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1.5">
+            <p className="text-muted-foreground text-sm">Uptime</p>
+            <p className="text-sm">-</p>
+            <p className="text-muted-foreground text-sm">Last Sync</p>
+            <p className="text-muted-foreground text-sm">
+              {formatRelativeTime(instance.last_status_check_at)}
+            </p>
           </div>
         </div>
       ))}
