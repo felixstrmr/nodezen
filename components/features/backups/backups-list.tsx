@@ -162,7 +162,10 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
               <p className="text-sm">{instanceName}</p>
               <p className="font-mono text-sm">
                 {formatBytes(
-                  workflowBackups.reduce((acc, backup) => acc + backup.size, 0)
+                  workflowBackups.reduce(
+                    (acc, backup) => acc + backup.size_bytes,
+                    0
+                  )
                 )}
               </p>
               <p className="text-muted-foreground text-sm">-</p>
@@ -196,7 +199,7 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
                   </div>
                   <p className="text-sm">{instanceName}</p>
                   <p className="font-mono text-sm">
-                    {formatBytes(backup.size)}
+                    {formatBytes(backup.size_bytes)}
                   </p>
                   <p className="text-muted-foreground text-sm">
                     {format(backup.created_at, "PPp")}

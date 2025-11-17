@@ -14,28 +14,153 @@ export type Database = {
   }
   public: {
     Tables: {
+      alert_notifications: {
+        Row: {
+          alert: string
+          channel: string
+          created_at: string
+          id: string
+          message: string
+          sent_at: string
+          status: string
+          workspace: string
+        }
+        Insert: {
+          alert: string
+          channel: string
+          created_at?: string
+          id?: string
+          message: string
+          sent_at: string
+          status: string
+          workspace: string
+        }
+        Update: {
+          alert?: string
+          channel?: string
+          created_at?: string
+          id?: string
+          message?: string
+          sent_at?: string
+          status?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_notifications_alert_fkey"
+            columns: ["alert"]
+            isOneToOne: false
+            referencedRelation: "alerts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_notifications_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alert_rules: {
+        Row: {
+          conditions: Json
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          workspace: string
+        }
+        Insert: {
+          conditions: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          workspace: string
+        }
+        Update: {
+          conditions?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_rules_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alerts: {
+        Row: {
+          created_at: string
+          id: string
+          rule: string
+          workspace: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rule: string
+          workspace: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rule?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_rule_fkey"
+            columns: ["rule"]
+            isOneToOne: false
+            referencedRelation: "alert_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       backups: {
         Row: {
           created_at: string
           id: string
+          n8n_version: string | null
           path: string
-          size: number
+          size_bytes: number
           workflow: string
           workspace: string
         }
         Insert: {
           created_at?: string
           id?: string
+          n8n_version?: string | null
           path: string
-          size: number
+          size_bytes: number
           workflow: string
           workspace: string
         }
         Update: {
           created_at?: string
           id?: string
+          n8n_version?: string | null
           path?: string
-          size?: number
+          size_bytes?: number
           workflow?: string
           workspace?: string
         }
@@ -59,6 +184,9 @@ export type Database = {
       executions: {
         Row: {
           created_at: string
+          duration_ms: number
+          error_message: string | null
+          error_node: string | null
           id: string
           mode: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id: string
@@ -70,6 +198,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          duration_ms?: number
+          error_message?: string | null
+          error_node?: string | null
           id?: string
           mode: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id: string
@@ -81,6 +212,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          duration_ms?: number
+          error_message?: string | null
+          error_node?: string | null
           id?: string
           mode?: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id?: string
@@ -113,7 +247,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
-          last_status_check_at: string
+          last_sync_at: string
           name: string
           status: Database["public"]["Enums"]["instance_statuses"]
           url: string
@@ -124,7 +258,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
-          last_status_check_at: string
+          last_sync_at: string
           name: string
           status: Database["public"]["Enums"]["instance_statuses"]
           url: string
@@ -135,7 +269,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
-          last_status_check_at?: string
+          last_sync_at?: string
           name?: string
           status?: Database["public"]["Enums"]["instance_statuses"]
           url?: string
@@ -186,6 +320,7 @@ export type Database = {
       workflows: {
         Row: {
           created_at: string
+          failed_executions: number
           id: string
           instance: string
           is_active: boolean
@@ -195,10 +330,13 @@ export type Database = {
             | null
           n8n_workflow_id: string
           name: string
+          successful_executions: number
+          total_executions: number
           workspace: string
         }
         Insert: {
           created_at?: string
+          failed_executions?: number
           id?: string
           instance: string
           is_active: boolean
@@ -208,10 +346,13 @@ export type Database = {
             | null
           n8n_workflow_id: string
           name: string
+          successful_executions?: number
+          total_executions?: number
           workspace: string
         }
         Update: {
           created_at?: string
+          failed_executions?: number
           id?: string
           instance?: string
           is_active?: boolean
@@ -221,6 +362,8 @@ export type Database = {
             | null
           n8n_workflow_id?: string
           name?: string
+          successful_executions?: number
+          total_executions?: number
           workspace?: string
         }
         Relationships: [
@@ -317,6 +460,8 @@ export type Database = {
       }
     }
     Enums: {
+      alert_severities: "critical" | "warning"
+      alert_statuses: "new" | "acknowledged" | "resolved"
       execution_modes:
         | "manual"
         | "trigger"
@@ -461,6 +606,8 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      alert_severities: ["critical", "warning"],
+      alert_statuses: ["new", "acknowledged", "resolved"],
       execution_modes: [
         "manual",
         "trigger",
