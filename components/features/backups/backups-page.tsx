@@ -12,7 +12,7 @@ export default async function BackupsPage({
   const backups = await getBackups(workspaceSlug);
 
   return (
-    <div className="flex size-full flex-col gap-3 overflow-y-auto">
+    <div className="flex size-full flex-col gap-3 overflow-hidden">
       <BackupsPageHeader backups={backups} />
       <BackupsList backups={backups} />
     </div>

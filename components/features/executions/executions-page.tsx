@@ -15,7 +15,7 @@ export default async function ExecutionsPage({
   const executions = await getExecutions(workspaceSlug);
 
   return (
-    <div className="] overflow-y-auto rounded-lg border">
+    <div className="overflow-y-auto rounded-lg border">
       <div className="sticky top-0 z-10 grid grid-cols-[1fr_20rem_10rem_10rem_10rem] gap-4 border-b bg-accent/30 p-3 backdrop-blur-sm">
         <p className="text-sm">Workflow</p>
         <p className="text-sm">Instance</p>

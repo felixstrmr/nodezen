@@ -13,7 +13,7 @@ export default function Page({
   params: Promise<{ workspaceSlug: string }>;
 }) {
   return (
-    <div className="mx-auto flex size-full max-w-7xl flex-col gap-6 overflow-hidden py-6">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-hidden py-6">
       <div className="flex h-8 shrink-0 items-center justify-between">
         <h1 className="font-semibold text-xl tracking-tight">Backups</h1>
       </div>

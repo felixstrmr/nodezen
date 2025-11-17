@@ -103,8 +103,8 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
   }
 
   return (
-    <div className="rounded-lg border">
-      <div className="grid grid-cols-[1fr_15rem_15rem] border-b bg-accent/30 p-3">
+    <div className="overflow-y-auto rounded-lg border">
+      <div className="sticky top-0 z-10 grid grid-cols-[1fr_15rem_15rem] border-b bg-accent/30 p-3 backdrop-blur-sm">
         <p className="text-sm">Backup</p>
         <p className="text-sm">Size</p>
         <p className="text-sm">Created</p>
