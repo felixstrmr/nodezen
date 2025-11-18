@@ -1,7 +1,6 @@
-import { ArrowUpRightIcon, MoreVerticalIcon, ServerIcon } from "lucide-react";
+import { ArrowUpRightIcon, ServerIcon } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { getInstances } from "@/queries/instance";
 import { formatRelativeTime } from "@/utils/date";
 import { cn } from "@/utils/ui";
@@ -24,7 +23,7 @@ export default async function InstancesPage({
     <div className="grid grid-cols-3 gap-3">
       {instances.map((instance) => (
         <div
-          className="relative flex flex-col gap-6 rounded-lg border p-3"
+          className="relative flex flex-col gap-6 rounded-lg border bg-accent p-3"
           key={instance.id}
         >
           <div className="flex items-center gap-3">
@@ -44,6 +43,9 @@ export default async function InstancesPage({
               </Link>
             </div>
             <div className="absolute top-3 right-3 flex items-center gap-2">
+              <p className="text-muted-foreground text-xs">
+                {formatRelativeTime(instance.last_synced_at)}
+              </p>
               <Badge
                 className={cn(
                   "rounded-sm px-1 capitalize",
@@ -52,19 +54,7 @@ export default async function InstancesPage({
               >
                 {instance.status}
               </Badge>
-              <Button size="icon" variant="ghost">
-                <MoreVerticalIcon />
-              </Button>
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-1.5">
-            <p className="text-muted-foreground text-sm">Uptime</p>
-            <p className="text-sm">-</p>
-            <p className="text-muted-foreground text-sm">Last Sync</p>
-            <p className="text-muted-foreground text-sm">
-              {formatRelativeTime(instance.last_synced_at)}
-            </p>
           </div>
         </div>
       ))}
