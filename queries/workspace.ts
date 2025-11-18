@@ -42,3 +42,20 @@ export async function getWorkspace(workspaceId: string) {
 
   return data;
 }
+
+export async function getWorkspaceBySlug(workspaceSlug: string) {
+  "use cache: private";
+  cacheLife("max");
+  cacheTag(`workspace:${workspaceSlug}`);
+
+  const supabase = await supabaseClient();
+
+  const { data } = await supabase
+    .from("workspaces")
+    .select("*")
+    .eq("slug", workspaceSlug)
+    .maybeSingle()
+    .throwOnError();
+
+  return data;
+}

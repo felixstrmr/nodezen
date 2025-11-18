@@ -3,6 +3,8 @@ import type { Database, Tables } from "@/types/supabase";
 
 export type Supabase = SupabaseClient<Database>;
 
+export type Workspace = Tables<"workspaces">;
+
 export type Instance = Tables<"instances"> & {
   workspace: {
     slug: string;
@@ -11,6 +13,15 @@ export type Instance = Tables<"instances"> & {
 
 export type Workflow = Tables<"workflows"> & {
   instance: {
+    name: string;
+  };
+  workspace: {
+    slug: string;
+  };
+};
+
+export type Execution = Tables<"executions"> & {
+  workflow: {
     name: string;
   };
   workspace: {

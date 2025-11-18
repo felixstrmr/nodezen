@@ -1,9 +1,27 @@
 import { formatDistance } from "date-fns";
-import type { Backup } from "@/types";
+import React from "react";
+import type { Backup, Workspace } from "@/types";
 import { formatBytes } from "@/utils/file";
 
-export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
+export default function BackupsPageHeader({
+  backups,
+  workspace,
+}: {
+  backups: Backup[];
+  workspace: Workspace;
+}) {
   const workflows = new Set(backups.map((backup) => backup.workflow.id)).size;
+
+  const nextBackup = React.useMemo(() => {
+    switch (workspace.subscription) {
+      case "pro":
+        return new Date(Date.now() + 1000 * 60 * 60 * 24);
+      case "premium":
+        return new Date(Date.now() + 1000 * 60 * 60);
+      default:
+        return new Date(Date.now() + 1000 * 60 * 60 * 24);
+    }
+  }, [workspace.subscription]);
 
   return (
     <div className="grid grid-cols-4 gap-3">
@@ -26,14 +44,9 @@ export default function BackupsPageHeader({ backups }: { backups: Backup[] }) {
       <div className="w-full rounded-lg border bg-accent p-3">
         <p className="text-muted-foreground text-sm">Next Backup</p>
         <p className="font-semibold text-lg tracking-tight">
-          {(() => {
-            const now = new Date();
-            const nextMidnight = new Date(now);
-            nextMidnight.setHours(24, 0, 0, 0);
-            return formatDistance(nextMidnight, now, {
-              addSuffix: true,
-            });
-          })()}
+          {formatDistance(nextBackup, new Date(), {
+            addSuffix: true,
+          })}
         </p>
       </div>
     </div>
