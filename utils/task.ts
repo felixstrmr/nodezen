@@ -331,7 +331,7 @@ export async function syncInstance(
 
   await supabase
     .from("instances")
-    .update({ status, last_sync_at: new Date().toISOString() })
+    .update({ status, last_synced_at_at: new Date().toISOString() })
     .eq("id", instance.id)
     .throwOnError();
 

@@ -210,6 +210,152 @@ export type Database = {
           },
         ]
       }
+      execution_metrics_daily: {
+        Row: {
+          avg_duration_ms: number
+          created_at: string
+          date: string
+          failed_executions: number
+          id: string
+          instance: string
+          p50_duration_ms: number
+          p95_duration_ms: number
+          p99_duration_ms: number
+          sucessful_executions: number
+          total_duration_ms: number
+          total_executions: number
+          workflow: string
+          workspace: string
+        }
+        Insert: {
+          avg_duration_ms?: number
+          created_at?: string
+          date: string
+          failed_executions: number
+          id?: string
+          instance: string
+          p50_duration_ms?: number
+          p95_duration_ms?: number
+          p99_duration_ms?: number
+          sucessful_executions?: number
+          total_duration_ms?: number
+          total_executions?: number
+          workflow: string
+          workspace: string
+        }
+        Update: {
+          avg_duration_ms?: number
+          created_at?: string
+          date?: string
+          failed_executions?: number
+          id?: string
+          instance?: string
+          p50_duration_ms?: number
+          p95_duration_ms?: number
+          p99_duration_ms?: number
+          sucessful_executions?: number
+          total_duration_ms?: number
+          total_executions?: number
+          workflow?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "execution_metrics_daily_instance_fkey"
+            columns: ["instance"]
+            isOneToOne: false
+            referencedRelation: "instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execution_metrics_daily_workflow_fkey"
+            columns: ["workflow"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execution_metrics_daily_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      execution_metrics_hourly: {
+        Row: {
+          avg_duration_ms: number
+          created_at: string
+          failed_executions: number
+          hour_start: string
+          id: string
+          instance: string
+          p50_duration_ms: number
+          p95_duration_ms: number
+          p99_duration_ms: number
+          sucessful_executions: number
+          total_duration_ms: number
+          total_executions: number
+          workflow: string
+          workspace: string
+        }
+        Insert: {
+          avg_duration_ms?: number
+          created_at?: string
+          failed_executions: number
+          hour_start: string
+          id?: string
+          instance: string
+          p50_duration_ms?: number
+          p95_duration_ms?: number
+          p99_duration_ms?: number
+          sucessful_executions?: number
+          total_duration_ms?: number
+          total_executions?: number
+          workflow: string
+          workspace: string
+        }
+        Update: {
+          avg_duration_ms?: number
+          created_at?: string
+          failed_executions?: number
+          hour_start?: string
+          id?: string
+          instance?: string
+          p50_duration_ms?: number
+          p95_duration_ms?: number
+          p99_duration_ms?: number
+          sucessful_executions?: number
+          total_duration_ms?: number
+          total_executions?: number
+          workflow?: string
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "execution_metrics_hourly_instance_fkey"
+            columns: ["instance"]
+            isOneToOne: false
+            referencedRelation: "instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execution_metrics_hourly_workflow_fkey"
+            columns: ["workflow"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "execution_metrics_hourly_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       executions: {
         Row: {
           created_at: string
