@@ -12,7 +12,7 @@ export async function getWorkflows(workspaceSlug: string) {
     .from("workflows")
     .select("*, workspace!inner(slug), instance(id, name)")
     .eq("workspace.slug", workspaceSlug)
-    .order("last_execution_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false, nullsFirst: false })
     .throwOnError();
 
   return data;

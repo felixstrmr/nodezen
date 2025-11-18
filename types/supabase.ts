@@ -14,10 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      alert_channels: {
+        Row: {
+          config: Json
+          created_at: string
+          id: string
+          name: string
+          type: Database["public"]["Enums"]["notification_channel_types"]
+          workspace: string
+        }
+        Insert: {
+          config: Json
+          created_at?: string
+          id?: string
+          name: string
+          type: Database["public"]["Enums"]["notification_channel_types"]
+          workspace: string
+        }
+        Update: {
+          config?: Json
+          created_at?: string
+          id?: string
+          name?: string
+          type?: Database["public"]["Enums"]["notification_channel_types"]
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_channels_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       alert_notifications: {
         Row: {
           alert: string
-          channel: string
           created_at: string
           id: string
           message: string
@@ -27,7 +61,6 @@ export type Database = {
         }
         Insert: {
           alert: string
-          channel: string
           created_at?: string
           id?: string
           message: string
@@ -37,7 +70,6 @@ export type Database = {
         }
         Update: {
           alert?: string
-          channel?: string
           created_at?: string
           id?: string
           message?: string
@@ -187,6 +219,7 @@ export type Database = {
           id: string
           mode: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id: string
+          retry_count: number
           started_at: string
           status: Database["public"]["Enums"]["execution_statuses"]
           stopped_at: string | null
@@ -201,6 +234,7 @@ export type Database = {
           id?: string
           mode: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id: string
+          retry_count?: number
           started_at: string
           status: Database["public"]["Enums"]["execution_statuses"]
           stopped_at?: string | null
@@ -215,6 +249,7 @@ export type Database = {
           id?: string
           mode?: Database["public"]["Enums"]["execution_modes"]
           n8n_execution_id?: string
+          retry_count?: number
           started_at?: string
           status?: Database["public"]["Enums"]["execution_statuses"]
           stopped_at?: string | null
@@ -244,7 +279,7 @@ export type Database = {
           created_at: string
           description: string | null
           id: string
-          last_sync_at: string
+          last_synced_at: string
           name: string
           status: Database["public"]["Enums"]["instance_statuses"]
           url: string
@@ -255,7 +290,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
-          last_sync_at: string
+          last_synced_at: string
           name: string
           status: Database["public"]["Enums"]["instance_statuses"]
           url: string
@@ -266,7 +301,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           id?: string
-          last_sync_at?: string
+          last_synced_at?: string
           name?: string
           status?: Database["public"]["Enums"]["instance_statuses"]
           url?: string
@@ -317,50 +352,32 @@ export type Database = {
       workflows: {
         Row: {
           created_at: string
-          failed_executions: number
           id: string
           instance: string
           is_active: boolean
-          last_execution_at: string | null
-          last_execution_status:
-            | Database["public"]["Enums"]["execution_statuses"]
-            | null
+          is_monitored: boolean
           n8n_workflow_id: string
           name: string
-          successful_executions: number
-          total_executions: number
           workspace: string
         }
         Insert: {
           created_at?: string
-          failed_executions?: number
           id?: string
           instance: string
           is_active: boolean
-          last_execution_at?: string | null
-          last_execution_status?:
-            | Database["public"]["Enums"]["execution_statuses"]
-            | null
+          is_monitored: boolean
           n8n_workflow_id: string
           name: string
-          successful_executions?: number
-          total_executions?: number
           workspace: string
         }
         Update: {
           created_at?: string
-          failed_executions?: number
           id?: string
           instance?: string
           is_active?: boolean
-          last_execution_at?: string | null
-          last_execution_status?:
-            | Database["public"]["Enums"]["execution_statuses"]
-            | null
+          is_monitored?: boolean
           n8n_workflow_id?: string
           name?: string
-          successful_executions?: number
-          total_executions?: number
           workspace?: string
         }
         Relationships: [
@@ -474,6 +491,7 @@ export type Database = {
         | "running"
         | "canceled"
       instance_statuses: "connected" | "disconnected"
+      notification_channel_types: "email"
       workspace_subscriptions: "free" | "pro" | "premium"
       workspace_user_roles: "owner" | "admin" | "member" | "viewer"
     }
@@ -622,6 +640,7 @@ export const Constants = {
         "canceled",
       ],
       instance_statuses: ["connected", "disconnected"],
+      notification_channel_types: ["email"],
       workspace_subscriptions: ["free", "pro", "premium"],
       workspace_user_roles: ["owner", "admin", "member", "viewer"],
     },

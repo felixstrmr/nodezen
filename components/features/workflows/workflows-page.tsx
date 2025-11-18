@@ -1,8 +1,6 @@
 import { PauseIcon, PlayIcon } from "lucide-react";
 import Link from "next/link";
-import WorkflowStatusBadge from "@/components/common/workflow-status-badge";
 import { getWorkflows } from "@/queries/workflow";
-import { formatRelativeTime } from "@/utils/date";
 import { cn } from "@/utils/ui";
 
 export default async function WorkflowsPage({
@@ -18,7 +16,6 @@ export default async function WorkflowsPage({
       <div className="sticky top-0 z-10 grid grid-cols-[1fr_12.5rem_12.5rem] gap-4 border-b bg-accent p-3 text-muted-foreground text-sm backdrop-blur-sm">
         <p>Workflow</p>
         <p>Instance</p>
-        <p>Last Execution</p>
       </div>
       {workflows.map((workflow) => (
         <Link
@@ -42,16 +39,6 @@ export default async function WorkflowsPage({
             <p className="text-sm">{workflow.name}</p>
           </div>
           <p className="text-sm">{workflow.instance.name}</p>
-          <div className="flex items-center gap-2">
-            <p className="text-muted-foreground text-sm">
-              {workflow.last_execution_at
-                ? formatRelativeTime(workflow.last_execution_at)
-                : "Never"}
-            </p>
-            {workflow.last_execution_status && (
-              <WorkflowStatusBadge workflow={workflow} />
-            )}
-          </div>
         </Link>
       ))}
     </div>
