@@ -78,20 +78,6 @@ async function updateWorkflowsWithLatestExecution(
       });
     }
   }
-
-  // Update each workflow with its latest execution info
-  await Promise.all(
-    Array.from(latestByWorkflow.entries()).map(([workflowId, exec]) =>
-      supabase
-        .from("workflows")
-        .update({
-          last_execution_at: exec.stopped_at || exec.started_at,
-          last_execution_status: exec.status,
-        })
-        .eq("id", workflowId)
-        .throwOnError()
-    )
-  );
 }
 
 async function syncWorkflows(
@@ -152,6 +138,7 @@ async function syncWorkflows(
             name: workflow.name,
             n8n_workflow_id: workflow.id as string,
             is_active: workflow.active,
+            is_monitored: true,
           })
           .throwOnError()
       ),
