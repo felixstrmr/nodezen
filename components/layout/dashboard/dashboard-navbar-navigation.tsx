@@ -38,11 +38,6 @@ export default function DashboardNavbarNavigation({
       isActive: pathname.startsWith(`/${workspaceSlug}/alerts`),
     },
     {
-      name: "Events",
-      href: `/${workspaceSlug}/events`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/events`),
-    },
-    {
       name: "Backups",
       href: `/${workspaceSlug}/backups`,
       isActive: pathname.startsWith(`/${workspaceSlug}/backups`),
