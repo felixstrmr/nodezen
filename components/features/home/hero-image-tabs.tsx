@@ -42,13 +42,13 @@ export default function HeroImageTabs() {
           Backups
         </TabsTrigger>
       </TabsList>
-      <div className="rounded-2xl border border-border/50 bg-muted p-3 shadow-lg/5">
+      <div className="overflow-hidden rounded-2xl border border-border/50 bg-muted p-3 shadow-lg/5">
         <TabsContent value="analytics">
           <Image
             alt="Hero Image"
             className="aspect-video size-full rounded-lg"
             height={1920}
-            src="/hero.jpg"
+            src="https://thfmstpphfvwuikxmssr.supabase.co/storage/v1/object/public/media/hero-image-1.webp"
             width={1080}
           />
         </TabsContent>
@@ -57,7 +57,7 @@ export default function HeroImageTabs() {
             alt="Hero Image"
             className="aspect-video size-full rounded-lg"
             height={1920}
-            src="/hero.jpg"
+            src="https://thfmstpphfvwuikxmssr.supabase.co/storage/v1/object/public/media/hero-image-2.webp"
             width={1080}
           />
         </TabsContent>
@@ -66,7 +66,7 @@ export default function HeroImageTabs() {
             alt="Hero Image"
             className="aspect-video size-full rounded-lg"
             height={1920}
-            src="/hero.jpg"
+            src="https://thfmstpphfvwuikxmssr.supabase.co/storage/v1/object/public/media/hero-image-3.webp"
             width={1080}
           />
         </TabsContent>
@@ -75,7 +75,7 @@ export default function HeroImageTabs() {
             alt="Hero Image"
             className="aspect-video size-full rounded-lg"
             height={1920}
-            src="/hero.jpg"
+            src="https://thfmstpphfvwuikxmssr.supabase.co/storage/v1/object/public/media/hero-image-3.webp"
             width={1080}
           />
         </TabsContent>

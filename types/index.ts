@@ -4,6 +4,7 @@ import type { Database, Tables } from "@/types/supabase";
 export type Supabase = SupabaseClient<Database>;
 
 export type Workspace = Tables<"workspaces">;
+export type ExecutionMetricsHourly = Tables<"execution_metrics_hourly">;
 
 export type Instance = Tables<"instances"> & {
   workspace: {
