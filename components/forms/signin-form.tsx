@@ -44,9 +44,7 @@ export default function SigninForm() {
         id: "signin-form",
       });
 
-      setTimeout(() => {
-        router.push("/workspaces");
-      }, 100);
+      router.push("/workspaces");
     },
   });
 
