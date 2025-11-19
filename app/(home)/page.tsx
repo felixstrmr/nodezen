@@ -8,11 +8,11 @@ export default function Page() {
   return (
     <div className="flex size-full flex-col items-center">
       <div className="mx-auto size-full max-w-4xl px-3">
-        <div className="flex flex-col pt-16">
+        <div className="flex flex-col items-center pt-16">
           <Badge variant="secondary">
             <p>Currently in Waitlist Mode</p>
           </Badge>
-          <div className="flex flex-col">
+          <div className="flex flex-col items-center">
             <h1 className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs mt-6 font-semibold text-6xl leading-tight tracking-tight">
               <span className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
@@ -51,9 +51,6 @@ export default function Page() {
           </p>
           <div className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-300 mt-12 w-full max-w-96">
             <JoinWaitlistForm />
-            <p className="mt-2 text-muted-foreground text-xs">
-              We'll notify you when we launch.
-            </p>
           </div>
         </div>
         <div className="mt-36">
