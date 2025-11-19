@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import WorkflowStatusBadge from "@/components/common/workflow-status-badge";
 import ExecutionActivityChart from "@/components/features/workflow/execution-activity-chart";
+import ExecutionDurationChart from "@/components/features/workflow/execution-duration-chart";
 import WorkflowPageHeader from "@/components/features/workflow/workflow-page-header";
 import { buttonVariants } from "@/components/ui/button";
 import { getExecutionsByWorkflowId } from "@/queries/execution";
@@ -59,6 +60,7 @@ export default async function WorkflowPage({
         <WorkflowPageHeader executions={executions} />
         <div className="grid grid-cols-2 gap-3">
           <ExecutionActivityChart executionMetrics={executionMetrics} />
+          <ExecutionDurationChart executionMetrics={executionMetrics} />
         </div>
       </div>
     </div>
