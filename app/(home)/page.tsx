@@ -6,11 +6,11 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Page() {
   return (
-    <div className="flex size-full flex-col items-center">
-      <div className="mx-auto size-full max-w-4xl px-3">
-        <div className="flex flex-col items-center pt-16">
+    <div className="flex flex-col">
+      <div className="mx-auto w-full max-w-4xl px-3 pt-16">
+        <div className="flex flex-col items-center">
           <Badge variant="secondary">
-            <p>Currently in Waitlist Mode</p>
+            <p>Currently in closed Beta</p>
           </Badge>
           <div className="flex flex-col items-center">
             <h1 className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs mt-6 font-semibold text-6xl leading-tight tracking-tight">
@@ -53,9 +53,9 @@ export default function Page() {
             <JoinWaitlistForm />
           </div>
         </div>
-        <div className="mt-36">
-          <HeroImageTabs />
-        </div>
+      </div>
+      <div className="mx-auto size-full max-w-5xl px-3 pt-32">
+        <HeroImageTabs />
       </div>
     </div>
   );
