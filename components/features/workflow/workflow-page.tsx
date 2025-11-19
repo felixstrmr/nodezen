@@ -24,8 +24,14 @@ export default async function WorkflowPage({
           {workflow.name}
         </h1>
       </div>
-      <pre>{JSON.stringify(workflow, null, 2)}</pre>
-      <pre>{JSON.stringify(executions, null, 2)}</pre>
+      <div className="grid grid-cols-3 gap-3">
+        <div className="w-full rounded-lg border bg-accent p-3">
+          <p className="text-muted-foreground text-sm">Total Executions</p>
+          <p className="font-semibold text-lg tracking-tight">
+            {executions.length}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
