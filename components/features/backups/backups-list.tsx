@@ -191,7 +191,7 @@ export default function BackupsList({ backups }: { backups: Backup[] }) {
                         {backup.id}.json
                       </button>
                       {isLatestBackup(backup.id) && (
-                        <Badge className="rounded-sm border-blue-200 bg-blue-100 px-1 text-blue-600">
+                        <Badge className="rounded-sm bg-blue-100 px-1 text-blue-600">
                           Latest
                         </Badge>
                       )}

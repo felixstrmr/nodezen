@@ -80,7 +80,6 @@ export default function SigninForm() {
               <FieldLabel htmlFor="password">Password</FieldLabel>
               <Input
                 {...field}
-                autoFocus
                 disabled={isExecuting}
                 id="password"
                 placeholder="••••••••••••"

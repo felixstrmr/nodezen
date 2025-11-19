@@ -14,9 +14,9 @@ export default async function InstancesPage({
   const instances = await getInstances(workspaceSlug);
 
   const statusBadgeVariants = {
-    connected: "bg-green-100 border border-green-200 text-green-600",
-    disconnected: "bg-red-100 border border-red-200 text-red-600",
-    unknown: "bg-yellow-100 border border-yellow-200 text-yellow-600",
+    connected: "bg-green-100 border text-green-600",
+    disconnected: "bg-red-100 border text-red-600",
+    unknown: "bg-yellow-100 border text-yellow-600",
   };
 
   return (

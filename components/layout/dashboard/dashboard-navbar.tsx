@@ -31,7 +31,7 @@ export default async function DashboardNavbar({
               <NodezenIcon className="size-5" />
             </Link>
             <Badge
-              className="rounded-sm border-blue-200 bg-blue-100 px-1 text-blue-600 capitalize"
+              className="rounded-sm bg-blue-100 px-1 text-blue-600 capitalize"
               variant="secondary"
             >
               {workspaceUser.workspace.subscription}
