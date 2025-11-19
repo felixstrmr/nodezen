@@ -44,7 +44,7 @@ export default function Page() {
               automation infrastructure.
             </h1>
           </div>
-          <p className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-200 mt-3 max-w-lg text-lg text-muted-foreground">
+          <p className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-200 mt-3 max-w-lg text-center text-lg text-muted-foreground">
             Monitor n8n workflows, track performance, and get instant alerts
             when workflows fail. Stay in control of your automation
             infrastructure.
