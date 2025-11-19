@@ -1,11 +1,12 @@
 import { EyeIcon, ShieldIcon, ZapIcon } from "lucide-react";
+import HeroImageTabs from "@/components/features/home/hero-image-tabs";
 import JoinWaitlistForm from "@/components/forms/join-waitlist-form";
 import N8nIcon from "@/components/icons/n8n-icon";
 import { Badge } from "@/components/ui/badge";
 
 export default function Page() {
   return (
-    <div className="flex size-full flex-col">
+    <div className="flex size-full flex-col items-center">
       <div className="mx-auto size-full max-w-4xl px-3">
         <div className="flex flex-col pt-16">
           <Badge variant="secondary">
@@ -54,6 +55,9 @@ export default function Page() {
               We'll notify you when we launch.
             </p>
           </div>
+        </div>
+        <div className="mt-36">
+          <HeroImageTabs />
         </div>
       </div>
     </div>
