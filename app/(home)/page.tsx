@@ -12,7 +12,7 @@ export default function Page() {
             <p>Currently in Waitlist Mode</p>
           </Badge>
           <div className="flex flex-col">
-            <h1 className="mt-6 font-semibold text-6xl leading-tight tracking-tight">
+            <h1 className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs mt-6 font-semibold text-6xl leading-tight tracking-tight">
               <span className="flex items-center gap-3">
                 <div className="flex items-center gap-2">
                   <div className="flex size-8 items-center justify-center rounded-md bg-blue-100">
@@ -35,7 +35,7 @@ export default function Page() {
                 </div>
               </span>
             </h1>
-            <h1 className="font-semibold text-6xl leading-tight tracking-tight">
+            <h1 className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-100 font-semibold text-6xl leading-tight tracking-tight">
               your{" "}
               <div className="inline-flex size-8 items-center justify-center rounded-md bg-rose-100">
                 <N8nIcon className="size-4" />
@@ -43,13 +43,12 @@ export default function Page() {
               automation infrastructure.
             </h1>
           </div>
-
-          <p className="mt-3 max-w-lg text-lg text-muted-foreground">
+          <p className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-200 mt-3 max-w-lg text-lg text-muted-foreground">
             Monitor n8n workflows, track performance, and get instant alerts
             when workflows fail. Stay in control of your automation
             infrastructure.
           </p>
-          <div className="mt-12 w-full max-w-96">
+          <div className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-300 mt-12 w-full max-w-96">
             <JoinWaitlistForm />
             <p className="mt-2 text-muted-foreground text-xs">
               We'll notify you when we launch.
