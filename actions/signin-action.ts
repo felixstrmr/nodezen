@@ -2,7 +2,6 @@
 
 import { actionClient } from "@/lib/clients/action-client";
 import { supabaseClient } from "@/lib/clients/supabase-client";
-import { getWorkspace } from "@/queries/workspace";
 import { signinSchema } from "@/schemas/signin-schema";
 
 export const signinAction = actionClient
@@ -33,9 +32,7 @@ export const signinAction = actionClient
         .throwOnError();
 
       if (user?.data?.active_workspace) {
-        const workspace = await getWorkspace(user.data.active_workspace);
-
-        return { active_workspace: workspace?.id ?? null };
+        return { active_workspace: user.data.active_workspace };
       }
     }
 
