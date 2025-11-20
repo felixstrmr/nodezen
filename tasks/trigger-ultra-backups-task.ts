@@ -8,11 +8,11 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const triggerPremiumBackupsTask = schedules.task({
-  id: "trigger-premium-backups-task",
+export const triggerUltraBackupsTask = schedules.task({
+  id: "trigger-ultra-backups-task",
   machine: "micro",
   run: async () => {
-    logger.info("Starting trigger premium backups task", {
+    logger.info("Starting trigger ultra backups task", {
       timestamp: new Date().toISOString(),
     });
 

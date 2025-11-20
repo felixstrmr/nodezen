@@ -8,11 +8,11 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncPremiumWorkspacesTask = schedules.task({
-  id: "sync-premium-workspaces-task",
+export const syncUltraWorkspacesTask = schedules.task({
+  id: "sync-ultra-workspaces-task",
   machine: "micro",
   run: async () => {
-    logger.info("Starting sync premium workspaces task", {
+    logger.info("Starting sync ultra workspaces task", {
       timestamp: new Date().toISOString(),
     });
 
