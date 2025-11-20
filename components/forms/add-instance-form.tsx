@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { SheetFooter } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { addInstanceSchema } from "@/schemas/add-instance-schema";
+import { isValidURL } from "@/utils/url";
+import Link from "next/link";
 
 export default function AddInstanceForm(props: {
   setOpen: (open: boolean) => void;
@@ -123,14 +125,17 @@ export default function AddInstanceForm(props: {
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="api_key">API Key</FieldLabel>
-                  <Input
-                    {...field}
-                    disabled={isExecuting}
-                    id="api_key"
-                    placeholder="••••••••••••"
-                    required
-                    type="password"
-                  />
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      disabled={isExecuting}
+                      id="api_key"
+                      placeholder="••••••••••••"
+                      required
+                      type="password"
+                    />
+                    {form.watch("url") && isValidURL(form.watch("url")) && <Link href={`${form.watch("url")}/settings/api`} target="_blank" className="absolute right-0 top-0">Get API Key</Link>}
+                  </div>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
                   )}
