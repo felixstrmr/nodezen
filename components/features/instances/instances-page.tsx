@@ -23,7 +23,7 @@ export default async function InstancesPage({
     <div className="grid grid-cols-3 gap-3">
       {instances.map((instance) => (
         <div
-          className="relative flex flex-col gap-6 rounded-lg border bg-accent p-3"
+          className="relative flex flex-col gap-6 rounded-lg border p-3"
           key={instance.id}
         >
           <div className="flex items-center gap-3">

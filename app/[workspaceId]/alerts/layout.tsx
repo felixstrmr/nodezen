@@ -18,10 +18,12 @@ export default function AlertsLayout({
       <div className="flex h-8 items-center justify-between">
         <h1 className="font-semibold text-xl tracking-tight">Alerts</h1>
       </div>
-      <Suspense>
-        <AlertsNavbar params={params} />
-      </Suspense>
-      {children}
+      <div className="flex size-full flex-col gap-3">
+        <Suspense>
+          <AlertsNavbar params={params} />
+        </Suspense>
+        {children}
+      </div>
     </div>
   );
 }

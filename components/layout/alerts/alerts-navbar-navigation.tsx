@@ -13,7 +13,7 @@ export default function AlertsNavbarNavigation({
 
   const items = [
     {
-      name: "All Alerts",
+      name: "Alerts",
       href: `/${workspaceId}/alerts`,
       isActive: pathname === `/${workspaceId}/alerts`,
     },
@@ -21,6 +21,11 @@ export default function AlertsNavbarNavigation({
       name: "Rules",
       href: `/${workspaceId}/alerts/rules`,
       isActive: pathname.startsWith(`/${workspaceId}/alerts/rules`),
+    },
+    {
+      name: "Channels",
+      href: `/${workspaceId}/alerts/channels`,
+      isActive: pathname.startsWith(`/${workspaceId}/alerts/channels`),
     },
   ];
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useAction } from "next-safe-action/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -18,12 +19,11 @@ import { SheetFooter } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { addInstanceSchema } from "@/schemas/add-instance-schema";
 import { isValidURL } from "@/utils/url";
-import Link from "next/link";
 
 export default function AddInstanceForm(props: {
-  setOpen: (open: boolean) => void;
+  onOpenChangeAction: (open: boolean) => void;
 }) {
-  const { setOpen } = props;
+  const { onOpenChangeAction } = props;
 
   const form = useForm<z.infer<typeof addInstanceSchema>>({
     resolver: zodResolver(addInstanceSchema),
@@ -42,7 +42,7 @@ export default function AddInstanceForm(props: {
       });
     },
     onSuccess: () => {
-      setOpen(false);
+      onOpenChangeAction(false);
     },
   });
 
@@ -51,7 +51,6 @@ export default function AddInstanceForm(props: {
       <FieldGroup className="h-full">
         <div className="space-y-8 px-4">
           <div className="space-y-4">
-            <h2 className="text-muted-foreground text-sm">Details</h2>
             <Controller
               control={form.control}
               name="name"
@@ -96,7 +95,6 @@ export default function AddInstanceForm(props: {
             />
           </div>
           <div className="space-y-4">
-            <h2 className="text-muted-foreground text-sm">Configuration</h2>
             <div className="space-y-2">
               <Controller
                 control={form.control}
@@ -118,7 +116,6 @@ export default function AddInstanceForm(props: {
                 )}
               />
             </div>
-
             <Controller
               control={form.control}
               name="api_key"
@@ -134,7 +131,15 @@ export default function AddInstanceForm(props: {
                       required
                       type="password"
                     />
-                    {form.watch("url") && isValidURL(form.watch("url")) && <Link href={`${form.watch("url")}/settings/api`} target="_blank" className="absolute right-0 top-0">Get API Key</Link>}
+                    {form.watch("url") && isValidURL(form.watch("url")) && (
+                      <Link
+                        className="absolute top-0 right-0"
+                        href={`${form.watch("url")}/settings/api`}
+                        target="_blank"
+                      >
+                        Get API Key
+                      </Link>
+                    )}
                   </div>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -146,7 +151,7 @@ export default function AddInstanceForm(props: {
         </div>
         <SheetFooter>
           <Button
-            onClick={() => setOpen(false)}
+            onClick={() => onOpenChangeAction(false)}
             type="button"
             variant="outline"
           >
