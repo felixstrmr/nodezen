@@ -12,7 +12,7 @@ export const signinAction = actionClient
 
     const supabase = await supabaseClient();
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -20,21 +20,4 @@ export const signinAction = actionClient
     if (error) {
       throw error;
     }
-
-    const userId = data.user?.id;
-
-    if (userId) {
-      const user = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", userId)
-        .maybeSingle()
-        .throwOnError();
-
-      if (user?.data?.active_workspace) {
-        return { active_workspace: user.data.active_workspace };
-      }
-    }
-
-    return { active_workspace: null };
   });

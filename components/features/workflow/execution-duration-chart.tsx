@@ -2,7 +2,7 @@
 
 import { format } from "date-fns";
 import { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import {
   type ChartConfig,
   ChartContainer,
@@ -100,12 +100,6 @@ export default function ExecutionDurationChart({
               <XAxis
                 axisLine={false}
                 dataKey="hourShortLabel"
-                tickLine={false}
-                tickMargin={8}
-              />
-              <YAxis
-                axisLine={false}
-                tickFormatter={(value) => formatDuration(value)}
                 tickLine={false}
                 tickMargin={8}
               />

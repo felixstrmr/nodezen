@@ -58,7 +58,7 @@ export default async function WorkflowPage({
       </div>
       <div className="flex flex-col gap-3">
         <WorkflowPageHeader executions={executions} />
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <ExecutionActivityChart executionMetrics={executionMetrics} />
           <ExecutionDurationChart executionMetrics={executionMetrics} />
         </div>
