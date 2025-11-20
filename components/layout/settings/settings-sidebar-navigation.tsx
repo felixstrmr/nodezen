@@ -11,19 +11,49 @@ export default function SettingsSidebarNavigation({
 }) {
   const pathname = usePathname();
 
-  const items = [
+  const itemsPersonal = [
     {
       name: "General",
       href: `/${workspaceId}/settings`,
       isActive: pathname === `/${workspaceId}/settings`,
     },
+    {
+      name: "Notifications",
+      href: `/${workspaceId}/settings/notifications`,
+      isActive: pathname === `/${workspaceId}/settings/notifications`,
+    },
+  ];
+
+  const itemsWorkspace = [
+    {
+      name: "Workspace",
+      href: `/${workspaceId}/settings/workspace`,
+      isActive: pathname.startsWith(`/${workspaceId}/settings/workspace`),
+    },
+    {
+      name: "Users",
+      href: `/${workspaceId}/settings/users`,
+      isActive: pathname.startsWith(`/${workspaceId}/settings/users`),
+    },
+    {
+      name: "Billing",
+      href: `/${workspaceId}/settings/billing`,
+      isActive: pathname.startsWith(`/${workspaceId}/settings/billing`),
+    },
   ];
 
   return (
-    <div className="flex flex-col gap-1">
-      {items.map((item) => (
-        <NavigationItem key={item.href} {...item} />
-      ))}
+    <div className="flex flex-col gap-6">
+      <div className="space-y-1">
+        {itemsPersonal.map((item) => (
+          <NavigationItem key={item.href} {...item} />
+        ))}
+      </div>
+      <div className="space-y-1">
+        {itemsWorkspace.map((item) => (
+          <NavigationItem key={item.href} {...item} />
+        ))}
+      </div>
     </div>
   );
 }

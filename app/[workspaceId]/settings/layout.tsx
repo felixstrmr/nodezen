@@ -19,7 +19,7 @@ export default function SettingsLayout({
       <div className="flex h-8 items-center justify-between">
         <h1 className="font-semibold text-xl tracking-tight">Settings</h1>
       </div>
-      <div className="flex size-full gap-3">
+      <div className="flex size-full gap-6">
         <Suspense fallback={<SettingsSidebarSkeleton />}>
           <SettingsSidebar params={params} />
         </Suspense>
