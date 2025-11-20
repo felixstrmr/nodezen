@@ -3,13 +3,13 @@ import SettingsSidebarNavigation from "@/components/layout/settings/settings-sid
 export default async function SettingsSidebar({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
+  const { workspaceId } = await params;
 
   return (
     <aside className="min-w-64 max-w-64">
-      <SettingsSidebarNavigation workspaceSlug={workspaceSlug} />
+      <SettingsSidebarNavigation workspaceId={workspaceId} />
     </aside>
   );
 }

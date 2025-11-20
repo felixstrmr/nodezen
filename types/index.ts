@@ -5,28 +5,17 @@ export type Supabase = SupabaseClient<Database>;
 
 export type Workspace = Tables<"workspaces">;
 export type ExecutionMetricsHourly = Tables<"execution_metrics_hourly">;
-
-export type Instance = Tables<"instances"> & {
-  workspace: {
-    slug: string;
-  };
-};
+export type Instance = Tables<"instances">
 
 export type Workflow = Tables<"workflows"> & {
   instance: {
     name: string;
-  };
-  workspace: {
-    slug: string;
   };
 };
 
 export type Execution = Tables<"executions"> & {
   workflow: {
     name: string;
-  };
-  workspace: {
-    slug: string;
   };
 };
 
@@ -38,8 +27,5 @@ export type Backup = Tables<"backups"> & {
       id: string;
       name: string;
     };
-  };
-  workspace: {
-    slug: string;
   };
 };

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Page({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-hidden py-6">

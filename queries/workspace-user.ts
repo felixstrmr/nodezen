@@ -1,7 +1,7 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { supabaseClient } from "@/lib/clients/supabase-client";
 
-export async function getWorkspaceUser(workspaceSlug: string) {
+export async function getWorkspaceUser(workspaceId: string) {
   "use cache: private";
   cacheLife("max");
 
@@ -15,12 +15,12 @@ export async function getWorkspaceUser(workspaceSlug: string) {
     throw new Error("User not found");
   }
 
-  cacheTag(`workspace-user:${workspaceSlug}:${user.id}`);
+  cacheTag(`workspace-user:${workspaceId}:${user.id}`);
 
   const { data } = await supabase
     .from("workspace_users")
-    .select("*, workspace!inner(slug, subscription), user!inner(*)")
-    .eq("workspace.slug", workspaceSlug)
+    .select("*, workspace!inner(id, subscription), user!inner(*)")
+    .eq("workspace.id", workspaceId)
     .eq("user.id", user.id)
     .maybeSingle()
     .throwOnError();

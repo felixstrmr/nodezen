@@ -5,7 +5,7 @@ import WorkflowPageSkeleton from "@/components/features/workflow/workflow-page-s
 export default function Page({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string; workflowId: string }>;
+  params: Promise<{ workspaceId: string; workflowId: string }>;
 }) {
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col py-6">

@@ -35,7 +35,7 @@ export const signinAction = actionClient
       if (user?.data?.active_workspace) {
         const workspace = await getWorkspace(user.data.active_workspace);
 
-        return { active_workspace: workspace?.slug ?? null };
+        return { active_workspace: workspace?.id ?? null };
       }
     }
 

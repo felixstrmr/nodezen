@@ -10,10 +10,10 @@ import { getWorkspaceUser } from "@/queries/workspace-user";
 export default async function DashboardNavbar({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
-  const workspaceUser = await getWorkspaceUser(workspaceSlug);
+  const { workspaceId } = await params;
+  const workspaceUser = await getWorkspaceUser(workspaceId);
 
   if (!workspaceUser) {
     redirect("/signin");
@@ -26,7 +26,7 @@ export default async function DashboardNavbar({
           <div className="flex items-center gap-2">
             <Link
               className="flex size-8 items-center justify-center"
-              href={`/${workspaceSlug}`}
+              href={`/${workspaceId}`}
             >
               <NodezenIcon className="size-5" />
             </Link>
@@ -38,7 +38,7 @@ export default async function DashboardNavbar({
             </Badge>
           </div>
           <Separator className="min-h-4" orientation="vertical" />
-          <DashboardNavbarNavigation workspaceSlug={workspaceSlug} />
+          <DashboardNavbarNavigation workspaceId={workspaceId} />
         </div>
         <Avatar
           avatar={workspaceUser.user.avatar}

@@ -5,22 +5,22 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/utils/ui";
 
 export default function AlertsNavbarNavigation({
-  workspaceSlug,
+  workspaceId,
 }: {
-  workspaceSlug: string;
+  workspaceId: string;
 }) {
   const pathname = usePathname();
 
   const items = [
     {
       name: "All Alerts",
-      href: `/${workspaceSlug}/alerts`,
-      isActive: pathname === `/${workspaceSlug}/alerts`,
+      href: `/${workspaceId}/alerts`,
+      isActive: pathname === `/${workspaceId}/alerts`,
     },
     {
       name: "Rules",
-      href: `/${workspaceSlug}/alerts/rules`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/alerts/rules`),
+      href: `/${workspaceId}/alerts/rules`,
+      isActive: pathname.startsWith(`/${workspaceId}/alerts/rules`),
     },
   ];
 

@@ -5,47 +5,47 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/utils/ui";
 
 export default function DashboardNavbarNavigation({
-  workspaceSlug,
+  workspaceId,
 }: {
-  workspaceSlug: string;
+  workspaceId: string;
 }) {
   const pathname = usePathname();
 
   const items = [
     {
       name: "Dashboard",
-      href: `/${workspaceSlug}`,
-      isActive: pathname === `/${workspaceSlug}`,
+      href: `/${workspaceId}`,
+      isActive: pathname === `/${workspaceId}`,
     },
     {
       name: "Instances",
-      href: `/${workspaceSlug}/instances`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/instances`),
+      href: `/${workspaceId}/instances`,
+      isActive: pathname.startsWith(`/${workspaceId}/instances`),
     },
     {
       name: "Workflows",
-      href: `/${workspaceSlug}/workflows`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/workflows`),
+      href: `/${workspaceId}/workflows`,
+      isActive: pathname.startsWith(`/${workspaceId}/workflows`),
     },
     {
       name: "Executions",
-      href: `/${workspaceSlug}/executions`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/executions`),
+      href: `/${workspaceId}/executions`,
+      isActive: pathname.startsWith(`/${workspaceId}/executions`),
     },
     {
       name: "Alerts",
-      href: `/${workspaceSlug}/alerts`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/alerts`),
+      href: `/${workspaceId}/alerts`,
+      isActive: pathname.startsWith(`/${workspaceId}/alerts`),
     },
     {
       name: "Backups",
-      href: `/${workspaceSlug}/backups`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/backups`),
+      href: `/${workspaceId}/backups`,
+      isActive: pathname.startsWith(`/${workspaceId}/backups`),
     },
     {
       name: "Settings",
-      href: `/${workspaceSlug}/settings`,
-      isActive: pathname.startsWith(`/${workspaceSlug}/settings`),
+      href: `/${workspaceId}/settings`,
+      isActive: pathname.startsWith(`/${workspaceId}/settings`),
     },
   ];
 

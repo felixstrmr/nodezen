@@ -1,10 +1,10 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { supabaseClient } from "@/lib/clients/supabase-client";
 
-export async function getWorkflows(workspaceSlug: string) {
+export async function getWorkflows(workspaceId: string) {
   "use cache: private";
   cacheLife("max");
-  cacheTag(`workflows:${workspaceSlug}`);
+  cacheTag(`workflows:${workspaceId}`);
 
   const supabase = await supabaseClient();
 
@@ -12,7 +12,6 @@ const { data } = await supabase
   .from("workflows")
   .select(`
     *,
-    workspace!inner(slug),
     instance(id, name),
     last_execution:executions(
       id,
@@ -21,7 +20,7 @@ const { data } = await supabase
       stopped_at
     )
   `)
-  .eq("workspace.slug", workspaceSlug)
+  .eq("workspace", workspaceId)
   .limit(1, { foreignTable: "last_execution" })
   .order("started_at", {
     referencedTable: "last_execution",
@@ -33,17 +32,17 @@ const { data } = await supabase
   return data;
 }
 
-export async function getWorkflow(workspaceSlug: string, workflowId: string) {
+export async function getWorkflow(workspaceId: string, workflowId: string) {
   "use cache: private";
   cacheLife("max");
-  cacheTag(`workflow:${workspaceSlug}:${workflowId}`);
+  cacheTag(`workflow:${workspaceId}:${workflowId}`);
 
   const supabase = await supabaseClient();
 
   const { data } = await supabase
     .from("workflows")
-    .select("*, workspace!inner(slug), instance(id, name, url)")
-    .eq("workspace.slug", workspaceSlug)
+    .select("*, instance(id, name, url)")
+    .eq("workspace", workspaceId)
     .eq("id", workflowId)
     .maybeSingle()
     .throwOnError();

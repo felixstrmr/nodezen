@@ -11,7 +11,7 @@ export default function AlertsLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
   return (
     <div className="mx-auto flex size-full max-w-7xl flex-col gap-6 overflow-hidden py-6">

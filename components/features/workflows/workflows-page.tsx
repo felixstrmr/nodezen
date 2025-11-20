@@ -8,10 +8,10 @@ import { cn } from "@/utils/ui";
 export default async function WorkflowsPage({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
-  const workflows = await getWorkflows(workspaceSlug);
+  const { workspaceId } = await params;
+  const workflows = await getWorkflows(workspaceId);
 
   const sortedWorkflows = [...workflows].sort((a, b) => {
     const latestA = a.last_execution?.[0]?.started_at;
@@ -39,7 +39,7 @@ export default async function WorkflowsPage({
       {sortedWorkflows.map((workflow) => (
         <Link
           className="grid grid-cols-[1fr_12.5rem_12.5rem_10rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent"
-          href={`/${workspaceSlug}/workflows/${workflow.id}`}
+          href={`/${workspaceId}/workflows/${workflow.id}`}
           key={workflow.id}
         >
           <div className="flex items-center gap-2">

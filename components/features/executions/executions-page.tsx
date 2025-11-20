@@ -10,10 +10,10 @@ import { cn } from "@/utils/ui";
 export default async function ExecutionsPage({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
-  const executions = await getExecutions(workspaceSlug);
+  const { workspaceId } = await params;
+  const executions = await getExecutions(workspaceId);
 
   return (
     <div className="flex size-full flex-col gap-3 overflow-hidden">

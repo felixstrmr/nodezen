@@ -8,10 +8,10 @@ import { cn } from "@/utils/ui";
 export default async function InstancesPage({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
-  const instances = await getInstances(workspaceSlug);
+  const { workspaceId } = await params;
+  const instances = await getInstances(workspaceId);
 
   const statusBadgeVariants = {
     connected: "bg-green-100 border text-green-600",

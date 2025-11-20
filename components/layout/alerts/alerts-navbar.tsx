@@ -3,13 +3,13 @@ import AlertsNavbarNavigation from "@/components/layout/alerts/alerts-navbar-nav
 export default async function AlertsNavbar({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
+  const { workspaceId } = await params;
 
   return (
     <div className="flex items-center gap-1 border-b">
-      <AlertsNavbarNavigation workspaceSlug={workspaceSlug} />
+      <AlertsNavbarNavigation workspaceId={workspaceId} />
     </div>
   );
 }

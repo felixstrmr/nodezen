@@ -1,17 +1,17 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { supabaseClient } from "@/lib/clients/supabase-client";
 
-export async function getInstances(workspaceSlug: string) {
+export async function getInstances(workspaceId: string) {
   "use cache: private";
   cacheLife("max");
-  cacheTag(`instances:${workspaceSlug}`);
+  cacheTag(`instances:${workspaceId}`);
 
   const supabase = await supabaseClient();
 
   const { data } = await supabase
     .from("instances")
-    .select("*, workspace!inner(slug)")
-    .eq("workspace.slug", workspaceSlug)
+    .select("*")
+    .eq("workspace", workspaceId)
     .order("created_at", { ascending: true })
     .throwOnError();
 

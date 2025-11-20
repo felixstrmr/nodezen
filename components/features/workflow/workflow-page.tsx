@@ -13,13 +13,13 @@ import { getWorkflow } from "@/queries/workflow";
 export default async function WorkflowPage({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string; workflowId: string }>;
+  params: Promise<{ workspaceId: string; workflowId: string }>;
 }) {
-  const { workspaceSlug, workflowId } = await params;
+  const { workspaceId, workflowId } = await params;
   const [workflow, executions, executionMetrics] = await Promise.all([
-    getWorkflow(workspaceSlug, workflowId),
-    getExecutionsByWorkflowId(workspaceSlug, workflowId),
-    getExecutionMetricsHourly(workspaceSlug, workflowId),
+    getWorkflow(workspaceId, workflowId),
+    getExecutionsByWorkflowId(workspaceId, workflowId),
+    getExecutionMetricsHourly(workspaceId, workflowId),
   ]);
 
   if (!workflow) {

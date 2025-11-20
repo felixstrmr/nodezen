@@ -2,18 +2,18 @@ import { notFound } from "next/navigation";
 import BackupsList from "@/components/features/backups/backups-list";
 import BackupsPageHeader from "@/components/features/backups/backups-page-header";
 import { getBackups } from "@/queries/backup";
-import { getWorkspaceBySlug } from "@/queries/workspace";
+import { getWorkspace } from "@/queries/workspace";
 
 export default async function BackupsPage({
   params,
 }: {
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
-  const { workspaceSlug } = await params;
+  const { workspaceId } = await params;
 
   const [backups, workspace] = await Promise.all([
-    getBackups(workspaceSlug),
-    getWorkspaceBySlug(workspaceSlug),
+    getBackups(workspaceId),
+    getWorkspace(workspaceId),
   ]);
 
   if (!workspace) {

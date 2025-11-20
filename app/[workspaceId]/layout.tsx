@@ -7,7 +7,7 @@ export default function WorkspaceLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ workspaceSlug: string }>;
+  params: Promise<{ workspaceId: string }>;
 }) {
   return (
     <div className="flex size-full flex-col overflow-hidden">

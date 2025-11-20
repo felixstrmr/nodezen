@@ -5,17 +5,17 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/utils/ui";
 
 export default function SettingsSidebarNavigation({
-  workspaceSlug,
+  workspaceId,
 }: {
-  workspaceSlug: string;
+  workspaceId: string;
 }) {
   const pathname = usePathname();
 
   const items = [
     {
       name: "General",
-      href: `/${workspaceSlug}/settings`,
-      isActive: pathname === `/${workspaceSlug}/settings`,
+      href: `/${workspaceId}/settings`,
+      isActive: pathname === `/${workspaceId}/settings`,
     },
   ];
 
