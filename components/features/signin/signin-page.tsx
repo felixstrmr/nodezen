@@ -20,7 +20,9 @@ export default async function SigninPage() {
 
   return (
     <div className="flex size-full items-center justify-center">
-      <SigninForm />
+      <div className="flex flex-col gap-4">
+        <SigninForm />
+      </div>
     </div>
   );
 }
