@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import HomeNavbar from "@/components/layout/home/home-navbar";
+import HomeNavbarSkeleton from "@/components/layout/home/home-navbar-skeleton";
 
 export default function HomeLayout({
   children,
@@ -7,7 +9,9 @@ export default function HomeLayout({
 }) {
   return (
     <div className="flex size-full flex-col">
-      <HomeNavbar />
+      <Suspense fallback={<HomeNavbarSkeleton />}>
+        <HomeNavbar />
+      </Suspense>
       <div className="flex size-full flex-col pt-14">{children}</div>
     </div>
   );

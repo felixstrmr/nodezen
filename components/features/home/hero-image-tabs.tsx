@@ -2,6 +2,7 @@
 
 import {
   ArchiveIcon,
+  CalendarIcon,
   ChartLineIcon,
   MegaphoneIcon,
   WorkflowIcon,
@@ -62,13 +63,19 @@ export default function HeroImageTabs() {
           />
         </TabsContent>
         <TabsContent value="events">
-          <Image
-            alt="Hero Image"
-            className="aspect-video size-full rounded-lg"
-            height={1920}
-            src="https://thfmstpphfvwuikxmssr.supabase.co/storage/v1/object/public/media/hero-image-3.webp"
-            width={1080}
-          />
+          <div className="flex aspect-video w-[974px] items-center justify-center">
+            <div className="flex flex-col items-center text-center">
+              <div className="mb-3 flex size-8 items-center justify-center rounded-md border bg-background">
+                <CalendarIcon className="size-4 text-muted-foreground" />
+              </div>
+              <h1 className="mb-0.5 font-semibold text-xl tracking-tight">
+                Coming soon...
+              </h1>
+              <p className="text-muted-foreground text-sm">
+                We're working on this feature.
+              </p>
+            </div>
+          </div>
         </TabsContent>
         <TabsContent value="backups">
           <Image
