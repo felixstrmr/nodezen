@@ -19,7 +19,7 @@ export const syncPremiumWorkspacesTask = schedules.task({
     const { data: instances } = await supabase
       .from("instances")
       .select("id, url, api_key, workspace!inner(id, subscription)")
-      .eq("workspace.subscription", "premium")
+      .eq("workspace.subscription", "ultra")
       .throwOnError();
 
     logger.info(`Found ${instances.length} instances to sync`);
