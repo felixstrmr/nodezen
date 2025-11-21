@@ -32,8 +32,20 @@ export const addAlertRuleSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   isActive: z.boolean(),
-  conditions: z.array(conditionSchema).min(1, "At least one condition is required"),
-  channelIds: z.array(z.string().uuid()).min(1, "At least one channel is required"),
+  cooldownPeriod: z
+    .number({
+      error: "Cooldown period is required",
+      message: "Cooldown period must be a number",
+    })
+    .int("Cooldown period must be a whole number")
+    .min(1, "Cooldown must be at least 1 minute")
+    .max(10_080, "Cooldown cannot exceed 7 days"),
+  conditions: z
+    .array(conditionSchema)
+    .min(1, "At least one condition is required"),
+  channelIds: z
+    .array(z.string().uuid())
+    .min(1, "At least one channel is required"),
 });
 
 export type Condition = z.infer<typeof conditionSchema>;

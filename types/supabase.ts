@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       alert_channels: {
         Row: {
+          channel: string | null
           config: Json
           created_at: string
           id: string
@@ -24,6 +25,7 @@ export type Database = {
           workspace: string
         }
         Insert: {
+          channel?: string | null
           config: Json
           created_at?: string
           id?: string
@@ -32,6 +34,7 @@ export type Database = {
           workspace: string
         }
         Update: {
+          channel?: string | null
           config?: Json
           created_at?: string
           id?: string
@@ -40,6 +43,13 @@ export type Database = {
           workspace?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "alert_channels_channel_fkey"
+            columns: ["channel"]
+            isOneToOne: false
+            referencedRelation: "alert_channels"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "notification_channels_workspace_fkey"
             columns: ["workspace"]
@@ -52,6 +62,7 @@ export type Database = {
       alert_notifications: {
         Row: {
           alert: string
+          channel: string
           created_at: string
           id: string
           message: string
@@ -61,6 +72,7 @@ export type Database = {
         }
         Insert: {
           alert: string
+          channel: string
           created_at?: string
           id?: string
           message: string
@@ -70,6 +82,7 @@ export type Database = {
         }
         Update: {
           alert?: string
+          channel?: string
           created_at?: string
           id?: string
           message?: string
@@ -86,6 +99,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "alert_notifications_channel_fkey"
+            columns: ["channel"]
+            isOneToOne: false
+            referencedRelation: "alert_channels"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "alert_notifications_workspace_fkey"
             columns: ["workspace"]
             isOneToOne: false
@@ -97,29 +117,38 @@ export type Database = {
       alert_rules: {
         Row: {
           conditions: Json
+          cooldown_period: number
           created_at: string
           description: string | null
           id: string
           is_active: boolean
+          last_triggered_at: string | null
           name: string
+          trigger_count: number | null
           workspace: string
         }
         Insert: {
           conditions: Json
+          cooldown_period: number
           created_at?: string
           description?: string | null
           id?: string
           is_active?: boolean
+          last_triggered_at?: string | null
           name: string
+          trigger_count?: number | null
           workspace: string
         }
         Update: {
           conditions?: Json
+          cooldown_period?: number
           created_at?: string
           description?: string | null
           id?: string
           is_active?: boolean
+          last_triggered_at?: string | null
           name?: string
+          trigger_count?: number | null
           workspace?: string
         }
         Relationships: [

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, XIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import {
   Field,
   FieldContent,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -33,6 +34,8 @@ import {
 import type { Database } from "@/types/supabase";
 
 type AlertChannel = Database["public"]["Tables"]["alert_channels"]["Row"];
+type WorkflowOption = { id: string; name: string; instanceId: string };
+type InstanceOption = { id: string; name: string };
 
 const METRIC_LABELS: Record<Condition["metric"], string> = {
   failed_executions: "Failed Executions",
@@ -53,11 +56,16 @@ const OPERATOR_LABELS: Record<Condition["operator"], string> = {
   not_equals: "≠",
 };
 
+const ALL_INSTANCES_VALUE = "all-instances";
+const ALL_WORKFLOWS_VALUE = "all-workflows";
+
 export default function AddAlertRuleForm(props: {
   onOpenChangeAction: (open: boolean) => void;
   channels: AlertChannel[];
+  workflows: WorkflowOption[];
+  instances: InstanceOption[];
 }) {
-  const { onOpenChangeAction, channels } = props;
+  const { onOpenChangeAction, channels, workflows, instances } = props;
 
   const form = useForm<z.output<typeof addAlertRuleSchema>>({
     resolver: zodResolver(addAlertRuleSchema),
@@ -65,12 +73,15 @@ export default function AddAlertRuleForm(props: {
       name: "",
       description: "",
       isActive: true,
+      cooldownPeriod: 15,
       conditions: [
         {
           metric: "failed_executions",
           operator: "greater_than",
           threshold: 0,
           timeWindow: "24h",
+          workflowId: undefined,
+          instanceId: undefined,
         },
       ],
       channelIds: [],
@@ -96,12 +107,15 @@ export default function AddAlertRuleForm(props: {
         name: "",
         description: "",
         isActive: true,
+        cooldownPeriod: 15,
         conditions: [
           {
             metric: "failed_executions",
             operator: "greater_than",
             threshold: 0,
             timeWindow: "24h",
+            workflowId: undefined,
+            instanceId: undefined,
           },
         ],
         channelIds: [],
@@ -109,6 +123,24 @@ export default function AddAlertRuleForm(props: {
       setConditionIds([crypto.randomUUID()]);
     },
   });
+
+  const workflowLookup = useMemo(
+    () =>
+      workflows.reduce<Record<string, WorkflowOption>>((acc, workflow) => {
+        acc[workflow.id] = workflow;
+        return acc;
+      }, {}),
+    [workflows]
+  );
+
+  const instanceLookup = useMemo(
+    () =>
+      instances.reduce<Record<string, InstanceOption>>((acc, instance) => {
+        acc[instance.id] = instance;
+        return acc;
+      }, {}),
+    [instances]
+  );
 
   const conditions = form.watch("conditions");
   const channelIds = form.watch("channelIds");
@@ -121,6 +153,8 @@ export default function AddAlertRuleForm(props: {
         operator: "greater_than",
         threshold: 0,
         timeWindow: "24h",
+        workflowId: undefined,
+        instanceId: undefined,
       },
     ]);
     setConditionIds([...conditionIds, crypto.randomUUID()]);
@@ -197,168 +231,364 @@ export default function AddAlertRuleForm(props: {
                 </Field>
               )}
             />
+            <Controller
+              control={form.control}
+              name="cooldownPeriod"
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="cooldown-period">
+                    Cooldown Period (minutes)
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    disabled={isExecuting}
+                    id="cooldown-period"
+                    max={10_080}
+                    min={1}
+                    onChange={(event) =>
+                      field.onChange(
+                        Number.parseInt(event.target.value, 10) || 0
+                      )
+                    }
+                    placeholder="15"
+                    type="number"
+                  />
+                  <FieldDescription>
+                    Minimum wait time before the rule can trigger again.
+                  </FieldDescription>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
             <div className="space-y-4">
               <Field>
                 <FieldLabel>Conditions</FieldLabel>
                 <div className="space-y-3">
-                  {conditions.map((_, index) => (
-                    <div
-                      className="flex flex-col gap-3 rounded-lg border p-3"
-                      key={conditionIds[index]}
-                    >
-                      <div className="flex items-start justify-between">
-                        <span className="font-medium text-sm">
-                          Condition {index + 1}
-                        </span>
-                        {conditions.length > 1 && (
-                          <Button
-                            className="size-6"
-                            disabled={isExecuting}
-                            onClick={() => removeCondition(index)}
-                            size="icon-sm"
-                            type="button"
-                            variant="outline"
-                          >
-                            <XIcon className="size-3.5 text-red-600" />
-                          </Button>
-                        )}
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <Controller
-                          control={form.control}
-                          name={`conditions.${index}.metric`}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <FieldContent>
-                                <FieldLabel>Metric</FieldLabel>
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </FieldContent>
-                              <Select
-                                name={field.name}
-                                onValueChange={field.onChange}
-                                value={field.value}
-                              >
-                                <SelectTrigger
-                                  aria-invalid={fieldState.invalid}
-                                  disabled={isExecuting}
-                                >
-                                  <SelectValue placeholder="Select metric" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {Object.entries(METRIC_LABELS).map(
-                                    ([value, label]) => (
-                                      <SelectItem key={value} value={value}>
-                                        {label}
-                                      </SelectItem>
-                                    )
-                                  )}
-                                </SelectContent>
-                              </Select>
-                            </Field>
-                          )}
-                        />
-                        <Controller
-                          control={form.control}
-                          name={`conditions.${index}.operator`}
-                          render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                              <FieldContent>
-                                <FieldLabel>Operator</FieldLabel>
-                                {fieldState.invalid && (
-                                  <FieldError errors={[fieldState.error]} />
-                                )}
-                              </FieldContent>
-                              <Select
-                                name={field.name}
-                                onValueChange={field.onChange}
-                                value={field.value}
-                              >
-                                <SelectTrigger
-                                  aria-invalid={fieldState.invalid}
-                                  disabled={isExecuting}
-                                >
-                                  <SelectValue placeholder="Select operator" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {Object.entries(OPERATOR_LABELS).map(
-                                    ([value, label]) => (
-                                      <SelectItem key={value} value={value}>
-                                        {label}
-                                      </SelectItem>
-                                    )
-                                  )}
-                                </SelectContent>
-                              </Select>
-                            </Field>
-                          )}
-                        />
-                      </div>
-                      <Controller
-                        control={form.control}
-                        name={`conditions.${index}.threshold`}
-                        render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid}>
-                            <FieldLabel htmlFor={`threshold-${index}`}>
-                              Threshold
-                            </FieldLabel>
-                            <Input
-                              {...field}
+                  {conditions.map((condition, index) => {
+                    const scopedInstanceId = condition?.instanceId;
+                    const availableWorkflows = scopedInstanceId
+                      ? workflows.filter(
+                          (workflow) => workflow.instanceId === scopedInstanceId
+                        )
+                      : workflows;
+
+                    return (
+                      <div
+                        className="flex flex-col gap-3 rounded-lg border p-3"
+                        key={conditionIds[index]}
+                      >
+                        <div className="flex items-start justify-between">
+                          <span className="font-medium text-sm">
+                            Condition {index + 1}
+                          </span>
+                          {conditions.length > 1 && (
+                            <Button
+                              className="size-6"
                               disabled={isExecuting}
-                              id={`threshold-${index}`}
-                              min={0}
-                              onChange={(e) =>
-                                field.onChange(
-                                  Number.parseFloat(e.target.value) || 0
-                                )
-                              }
-                              placeholder="0"
-                              type="number"
-                              value={field.value}
-                            />
-                            {fieldState.invalid && (
-                              <FieldError errors={[fieldState.error]} />
-                            )}
-                          </Field>
-                        )}
-                      />
-                      <Controller
-                        control={form.control}
-                        name={`conditions.${index}.timeWindow`}
-                        render={({ field, fieldState }) => (
-                          <Field data-invalid={fieldState.invalid}>
-                            <FieldContent>
-                              <FieldLabel>Time Window</FieldLabel>
-                              {fieldState.invalid && (
-                                <FieldError errors={[fieldState.error]} />
-                              )}
-                            </FieldContent>
-                            <Select
-                              name={field.name}
-                              onValueChange={field.onChange}
-                              value={field.value}
+                              onClick={() => removeCondition(index)}
+                              size="icon-sm"
+                              type="button"
+                              variant="outline"
                             >
-                              <SelectTrigger
-                                aria-invalid={fieldState.invalid}
-                                disabled={isExecuting}
-                              >
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="1h">Last Hour</SelectItem>
-                                <SelectItem value="6h">Last 6 Hours</SelectItem>
-                                <SelectItem value="24h">
-                                  Last 24 Hours
-                                </SelectItem>
-                                <SelectItem value="7d">Last 7 Days</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </Field>
-                        )}
-                      />
-                    </div>
-                  ))}
+                              <XIcon className="size-3.5 text-red-600" />
+                            </Button>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                          <Controller
+                            control={form.control}
+                            name={`conditions.${index}.metric`}
+                            render={({ field, fieldState }) => (
+                              <Field data-invalid={fieldState.invalid}>
+                                <FieldContent>
+                                  <FieldLabel>Metric</FieldLabel>
+                                  {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                  )}
+                                </FieldContent>
+                                <Select
+                                  name={field.name}
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                >
+                                  <SelectTrigger
+                                    aria-invalid={fieldState.invalid}
+                                    disabled={isExecuting}
+                                  >
+                                    <SelectValue placeholder="Select metric" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {Object.entries(METRIC_LABELS).map(
+                                      ([value, label]) => (
+                                        <SelectItem key={value} value={value}>
+                                          {label}
+                                        </SelectItem>
+                                      )
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                              </Field>
+                            )}
+                          />
+                          <Controller
+                            control={form.control}
+                            name={`conditions.${index}.operator`}
+                            render={({ field, fieldState }) => (
+                              <Field data-invalid={fieldState.invalid}>
+                                <FieldContent>
+                                  <FieldLabel>Operator</FieldLabel>
+                                  {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                  )}
+                                </FieldContent>
+                                <Select
+                                  name={field.name}
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                >
+                                  <SelectTrigger
+                                    aria-invalid={fieldState.invalid}
+                                    disabled={isExecuting}
+                                  >
+                                    <SelectValue placeholder="Select operator" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {Object.entries(OPERATOR_LABELS).map(
+                                      ([value, label]) => (
+                                        <SelectItem key={value} value={value}>
+                                          {label}
+                                        </SelectItem>
+                                      )
+                                    )}
+                                  </SelectContent>
+                                </Select>
+                              </Field>
+                            )}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                          <Controller
+                            control={form.control}
+                            name={`conditions.${index}.threshold`}
+                            render={({ field, fieldState }) => (
+                              <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor={`threshold-${index}`}>
+                                  Threshold
+                                </FieldLabel>
+                                <Input
+                                  {...field}
+                                  disabled={isExecuting}
+                                  id={`threshold-${index}`}
+                                  min={0}
+                                  onChange={(event) =>
+                                    field.onChange(
+                                      Number.parseFloat(event.target.value) || 0
+                                    )
+                                  }
+                                  placeholder="0"
+                                  type="number"
+                                  value={field.value}
+                                />
+                                {fieldState.invalid && (
+                                  <FieldError errors={[fieldState.error]} />
+                                )}
+                              </Field>
+                            )}
+                          />
+                          <Controller
+                            control={form.control}
+                            name={`conditions.${index}.timeWindow`}
+                            render={({ field, fieldState }) => (
+                              <Field data-invalid={fieldState.invalid}>
+                                <FieldContent>
+                                  <FieldLabel>Time Window</FieldLabel>
+                                  {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                  )}
+                                </FieldContent>
+                                <Select
+                                  name={field.name}
+                                  onValueChange={field.onChange}
+                                  value={field.value}
+                                >
+                                  <SelectTrigger
+                                    aria-invalid={fieldState.invalid}
+                                    disabled={isExecuting}
+                                  >
+                                    <SelectValue placeholder="Select window" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="1h">
+                                      Last Hour
+                                    </SelectItem>
+                                    <SelectItem value="6h">
+                                      Last 6 Hours
+                                    </SelectItem>
+                                    <SelectItem value="24h">
+                                      Last 24 Hours
+                                    </SelectItem>
+                                    <SelectItem value="7d">
+                                      Last 7 Days
+                                    </SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </Field>
+                            )}
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                          <Controller
+                            control={form.control}
+                            name={`conditions.${index}.instanceId`}
+                            render={({ field, fieldState }) => {
+                              const value = field.value ?? ALL_INSTANCES_VALUE;
+
+                              return (
+                                <Field data-invalid={fieldState.invalid}>
+                                  <FieldContent>
+                                    <FieldLabel>Instance</FieldLabel>
+                                    {fieldState.invalid && (
+                                      <FieldError
+                                        className="mt-0"
+                                        errors={[fieldState.error]}
+                                      />
+                                    )}
+                                  </FieldContent>
+                                  <Select
+                                    name={field.name}
+                                    onValueChange={(nextValue) => {
+                                      if (nextValue === ALL_INSTANCES_VALUE) {
+                                        field.onChange(undefined);
+                                        form.setValue(
+                                          `conditions.${index}.workflowId`,
+                                          undefined
+                                        );
+                                        return;
+                                      }
+
+                                      field.onChange(nextValue);
+                                      const currentWorkflowId = form.getValues(
+                                        `conditions.${index}.workflowId`
+                                      );
+                                      if (currentWorkflowId) {
+                                        const workflow =
+                                          workflowLookup[currentWorkflowId];
+                                        if (
+                                          workflow &&
+                                          workflow.instanceId !== nextValue
+                                        ) {
+                                          form.setValue(
+                                            `conditions.${index}.workflowId`,
+                                            undefined
+                                          );
+                                        }
+                                      }
+                                    }}
+                                    value={value}
+                                  >
+                                    <SelectTrigger
+                                      aria-invalid={fieldState.invalid}
+                                      disabled={isExecuting}
+                                    >
+                                      <SelectValue placeholder="All instances" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value={ALL_INSTANCES_VALUE}>
+                                        All instances
+                                      </SelectItem>
+                                      {instances.map((instance) => (
+                                        <SelectItem
+                                          key={instance.id}
+                                          value={instance.id}
+                                        >
+                                          {instance.name}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                </Field>
+                              );
+                            }}
+                          />
+                          <Controller
+                            control={form.control}
+                            name={`conditions.${index}.workflowId`}
+                            render={({ field, fieldState }) => {
+                              const value = field.value ?? ALL_WORKFLOWS_VALUE;
+                              const hasWorkflows =
+                                availableWorkflows.length > 0;
+
+                              return (
+                                <Field data-invalid={fieldState.invalid}>
+                                  <FieldContent>
+                                    <FieldLabel>Workflow</FieldLabel>
+                                    {fieldState.invalid && (
+                                      <FieldError
+                                        className="mt-0"
+                                        errors={[fieldState.error]}
+                                      />
+                                    )}
+                                  </FieldContent>
+                                  <Select
+                                    disabled={isExecuting || !hasWorkflows}
+                                    name={field.name}
+                                    onValueChange={(nextValue) => {
+                                      if (nextValue === ALL_WORKFLOWS_VALUE) {
+                                        field.onChange(undefined);
+                                        return;
+                                      }
+
+                                      field.onChange(nextValue);
+
+                                      const workflow =
+                                        workflowLookup[nextValue];
+                                      if (workflow) {
+                                        form.setValue(
+                                          `conditions.${index}.instanceId`,
+                                          workflow.instanceId
+                                        );
+                                      }
+                                    }}
+                                    value={value}
+                                  >
+                                    <SelectTrigger
+                                      aria-invalid={fieldState.invalid}
+                                      disabled={isExecuting || !hasWorkflows}
+                                    >
+                                      <SelectValue placeholder="All workflows" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                      <SelectItem value={ALL_WORKFLOWS_VALUE}>
+                                        All workflows
+                                      </SelectItem>
+                                      {availableWorkflows.map((workflow) => {
+                                        const instanceName =
+                                          instanceLookup[workflow.instanceId]
+                                            ?.name;
+
+                                        return (
+                                          <SelectItem
+                                            key={workflow.id}
+                                            value={workflow.id}
+                                          >
+                                            {instanceName
+                                              ? `${workflow.name} · ${instanceName}`
+                                              : workflow.name}
+                                          </SelectItem>
+                                        );
+                                      })}
+                                    </SelectContent>
+                                  </Select>
+                                </Field>
+                              );
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <Button
                   disabled={isExecuting}

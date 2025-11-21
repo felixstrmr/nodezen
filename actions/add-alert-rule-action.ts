@@ -8,7 +8,14 @@ export const addAlertRuleAction = authActionClient
   .metadata({ name: "addAlertRuleAction" })
   .inputSchema(addAlertRuleSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const { name, description, isActive, conditions, channelIds } = parsedInput;
+    const {
+      name,
+      description,
+      isActive,
+      cooldownPeriod,
+      conditions,
+      channelIds,
+    } = parsedInput;
     const { supabase, workspace } = ctx;
 
     if (!workspace) {
@@ -21,10 +28,12 @@ export const addAlertRuleAction = authActionClient
         name,
         description: description || null,
         is_active: isActive,
+        cooldown_period: cooldownPeriod,
         workspace,
         conditions: {
           conditions,
           channelIds,
+          cooldownPeriod,
         },
       })
       .throwOnError();

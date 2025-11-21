@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/empty";
 import { getAlertChannels } from "@/queries/alert-channel";
 import { getAlertRules } from "@/queries/alert-rule";
+import { getInstances } from "@/queries/instance";
+import { getWorkflows } from "@/queries/workflow";
 
 export default async function AlertRulesPage({
   params,
@@ -21,10 +23,23 @@ export default async function AlertRulesPage({
 }) {
   const { workspaceId } = await params;
 
-  const [rules, channels] = await Promise.all([
+  const [rules, channels, workflows, instances] = await Promise.all([
     getAlertRules(workspaceId),
     getAlertChannels(workspaceId),
+    getWorkflows(workspaceId),
+    getInstances(workspaceId),
   ]);
+
+  const sheetWorkflows = workflows.map((workflow) => ({
+    id: workflow.id,
+    name: workflow.name,
+    instanceId: workflow.instance,
+  }));
+
+  const sheetInstances = instances.map((instance) => ({
+    id: instance.id,
+    name: instance.name,
+  }));
 
   if (rules.length === 0) {
     if (channels.length === 0) {
@@ -64,7 +79,13 @@ export default async function AlertRulesPage({
           <div className="flex h-8 items-center">
             <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
           </div>
-          {channels.length > 0 && <AddAlertRuleSheet channels={channels} />}
+          {channels.length > 0 && (
+            <AddAlertRuleSheet
+              channels={channels}
+              instances={sheetInstances}
+              workflows={sheetWorkflows}
+            />
+          )}
         </div>
         <Empty>
           <EmptyHeader>
@@ -78,7 +99,11 @@ export default async function AlertRulesPage({
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <AddAlertRuleSheet channels={channels} />
+            <AddAlertRuleSheet
+              channels={channels}
+              instances={sheetInstances}
+              workflows={sheetWorkflows}
+            />
           </EmptyContent>
         </Empty>
       </div>
@@ -91,7 +116,13 @@ export default async function AlertRulesPage({
         <div className="flex h-8 items-center">
           <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
         </div>
-        {channels.length > 0 && <AddAlertRuleSheet channels={channels} />}
+        {channels.length > 0 && (
+          <AddAlertRuleSheet
+            channels={channels}
+            instances={sheetInstances}
+            workflows={sheetWorkflows}
+          />
+        )}
       </div>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         {rules.map((rule) => {
