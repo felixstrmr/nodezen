@@ -14,7 +14,7 @@ export default function Page({
   params: Promise<{ workspaceId: string }>;
 }) {
   return (
-    <div className="flex w-full flex-col gap-6 overflow-hidden">
+    <div className="flex w-full flex-col overflow-hidden">
       <div className="flex h-8 items-center justify-between">
         <h2 className="font-semibold text-lg tracking-tight">Channels</h2>
         <AddAlertChannelSheet />

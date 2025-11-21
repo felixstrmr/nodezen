@@ -1,6 +1,16 @@
-import { AlertTriangleIcon } from "lucide-react";
+import { MegaphoneIcon, SplitIcon } from "lucide-react";
+import Link from "next/link";
 import AddAlertRuleSheet from "@/components/sheets/add-alert-rule-sheet";
 import { Badge } from "@/components/ui/badge";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { getAlertChannels } from "@/queries/alert-channel";
 import { getAlertRules } from "@/queries/alert-rule";
 
@@ -17,27 +27,60 @@ export default async function AlertRulesPage({
   ]);
 
   if (rules.length === 0) {
-    return (
-      <div className="flex size-full items-center justify-center">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-            <AlertTriangleIcon className="size-6 text-muted-foreground" />
+    if (channels.length === 0) {
+      return (
+        <div className="flex flex-col">
+          <div className="flex items-center justify-between">
+            <div className="flex h-8 items-center">
+              <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
+            </div>
           </div>
-          <div className="space-y-2">
-            <h3 className="font-semibold text-lg">No rules yet</h3>
-            <p className="max-w-sm text-muted-foreground text-sm">
+          <Empty>
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <MegaphoneIcon />
+              </EmptyMedia>
+              <EmptyTitle>No alert rules yet</EmptyTitle>
+              <EmptyDescription>
+                Create a channel to receive alerts when rules are triggered.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Link
+                className={buttonVariants({ variant: "default" })}
+                href={`/${workspaceId}/alerts/channels`}
+              >
+                Add Channel
+              </Link>
+            </EmptyContent>
+          </Empty>
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-col">
+        <div className="flex items-center justify-between">
+          <div className="flex h-8 items-center">
+            <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
+          </div>
+          {channels.length > 0 && <AddAlertRuleSheet channels={channels} />}
+        </div>
+        <Empty>
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <SplitIcon />
+            </EmptyMedia>
+            <EmptyTitle>No alert rules yet</EmptyTitle>
+            <EmptyDescription>
               Create an alert rule to monitor your workflows and get notified
               when conditions are met.
-            </p>
-          </div>
-          {channels.length > 0 ? (
+            </EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent>
             <AddAlertRuleSheet channels={channels} />
-          ) : (
-            <p className="text-muted-foreground text-xs">
-              Create a notification channel first to receive alerts.
-            </p>
-          )}
-        </div>
+          </EmptyContent>
+        </Empty>
       </div>
     );
   }
@@ -46,7 +89,7 @@ export default async function AlertRulesPage({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div className="flex h-8 items-center">
-          <h2 className="font-semibold text-lg">Alert Rules</h2>
+          <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
         </div>
         {channels.length > 0 && <AddAlertRuleSheet channels={channels} />}
       </div>
@@ -87,10 +130,10 @@ export default async function AlertRulesPage({
                 <div className="space-y-1">
                   <p className="font-medium text-xs">Conditions</p>
                   <div className="space-y-1">
-                    {ruleConditions.map((condition, index) => (
+                    {ruleConditions.map((condition) => (
                       <div
                         className="text-muted-foreground text-xs"
-                        key={index}
+                        key={`${condition.metric}-${condition.operator}-${condition.threshold}`}
                       >
                         {condition.metric} {condition.operator}{" "}
                         {condition.threshold}

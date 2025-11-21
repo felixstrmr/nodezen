@@ -1,4 +1,13 @@
-import { MailIcon } from "lucide-react";
+import { MailIcon, MegaphoneIcon } from "lucide-react";
+import AddAlertChannelSheet from "@/components/sheets/add-alert-channel-sheet";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { getAlertChannels } from "@/queries/alert-channel";
 
 export default async function AlertChannelsPage({
@@ -11,20 +20,20 @@ export default async function AlertChannelsPage({
 
   if (channels.length === 0) {
     return (
-      <div className="flex size-full items-center justify-center">
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="flex size-12 items-center justify-center rounded-full bg-muted">
-            <MailIcon className="size-6 text-muted-foreground" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="font-semibold text-lg">No channels yet</h3>
-            <p className="max-w-sm text-muted-foreground text-sm">
-              Create a notification channel to receive alerts when rules are
-              triggered.
-            </p>
-          </div>
-        </div>
-      </div>
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <MegaphoneIcon />
+          </EmptyMedia>
+          <EmptyTitle>No alert channels yet</EmptyTitle>
+          <EmptyDescription>
+            Create an alert channel to receive alerts when rules are triggered.
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <AddAlertChannelSheet />
+        </EmptyContent>
+      </Empty>
     );
   }
 
