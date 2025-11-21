@@ -1,6 +1,14 @@
+import { DatabaseIcon } from "lucide-react";
 import { notFound } from "next/navigation";
 import BackupsList from "@/components/features/backups/backups-list";
 import BackupsPageHeader from "@/components/features/backups/backups-page-header";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { getBackups } from "@/queries/backup";
 import { getWorkspace } from "@/queries/workspace";
 
@@ -22,6 +30,22 @@ export default async function BackupsPage({
 
   if (workspace.subscription === "free") {
     return <div>Upgrade to pro to enable backups.</div>;
+  }
+
+  if (backups.length === 0) {
+    return (
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <DatabaseIcon />
+          </EmptyMedia>
+          <EmptyTitle>No backups yet</EmptyTitle>
+          <EmptyDescription>
+            Backups will be created automatically when workflows are updated.
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
   }
 
   return (

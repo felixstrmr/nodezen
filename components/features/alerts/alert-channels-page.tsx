@@ -46,7 +46,7 @@ export default async function AlertChannelsPage({
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         {channels.map((channel) => {
           const config = channel.config as { recipients?: string[] };
-          const recipients = config?.recipients?.length;
+          const recipients = config?.recipients;
 
           return (
             <div
@@ -60,8 +60,8 @@ export default async function AlertChannelsPage({
                   </div>
                   <div className="space-y-0.5">
                     <h3 className="font-medium text-sm">{channel.name}</h3>
-                    <p className="text-muted-foreground text-xs">
-                      {recipients} recipient{recipients === 1 ? "" : "s"}
+                    <p className="truncate text-muted-foreground text-xs">
+                      {recipients?.join(", ")}
                     </p>
                   </div>
                 </div>

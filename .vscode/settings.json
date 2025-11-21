@@ -23,10 +23,8 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "deno.path": "/Users/felixstrohmeier/.deno/bin/deno",
-  "deno.enablePaths": ["./supabase/functions"],
+  "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
-  "deno.importMap": "./supabase/functions/import_map.json",
   "deno.unstable": [
     "bare-node-builtins",
     "byonm",
@@ -46,7 +44,7 @@
     "source.fixAll.biome": "explicit",
     "source.organizeImports.biome": "explicit"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "emmet.showExpandedAbbreviation": "never",

@@ -1,7 +1,6 @@
 import { MegaphoneIcon, SplitIcon } from "lucide-react";
 import Link from "next/link";
 import AddAlertRuleSheet from "@/components/sheets/add-alert-rule-sheet";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import {
   Empty,
@@ -29,17 +28,6 @@ export default async function AlertRulesPage({
     getWorkflows(workspaceId),
     getInstances(workspaceId),
   ]);
-
-  const sheetWorkflows = workflows.map((workflow) => ({
-    id: workflow.id,
-    name: workflow.name,
-    instanceId: workflow.instance,
-  }));
-
-  const sheetInstances = instances.map((instance) => ({
-    id: instance.id,
-    name: instance.name,
-  }));
 
   if (rules.length === 0) {
     if (channels.length === 0) {
@@ -82,8 +70,8 @@ export default async function AlertRulesPage({
           {channels.length > 0 && (
             <AddAlertRuleSheet
               channels={channels}
-              instances={sheetInstances}
-              workflows={sheetWorkflows}
+              instances={instances}
+              workflows={workflows}
               workspaceId={workspaceId}
             />
           )}
@@ -102,8 +90,8 @@ export default async function AlertRulesPage({
           <EmptyContent>
             <AddAlertRuleSheet
               channels={channels}
-              instances={sheetInstances}
-              workflows={sheetWorkflows}
+              instances={instances}
+              workflows={workflows}
               workspaceId={workspaceId}
             />
           </EmptyContent>
@@ -118,74 +106,19 @@ export default async function AlertRulesPage({
         <div className="flex h-8 items-center">
           <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
         </div>
-        {channels.length > 0 && (
-          <AddAlertRuleSheet
-            channels={channels}
-            instances={sheetInstances}
-            workflows={sheetWorkflows}
-            workspaceId={workspaceId}
-          />
-        )}
+        <AddAlertRuleSheet
+          channels={channels}
+          instances={instances}
+          workflows={workflows}
+          workspaceId={workspaceId}
+        />
       </div>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
-        {rules.map((rule) => {
-          const conditions = rule.conditions as {
-            conditions?: Array<{
-              metric: string;
-              operator: string;
-              threshold: number;
-            }>;
-            channelIds?: string[];
-          };
-          const ruleConditions = conditions?.conditions || [];
-          const channelIds = conditions?.channelIds || [];
-
-          return (
-            <div
-              className="flex flex-col gap-4 rounded-lg border p-4"
-              key={rule.id}
-            >
-              <div className="flex items-start justify-between">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium text-sm">{rule.name}</h3>
-                    <Badge variant={rule.is_active ? "default" : "secondary"}>
-                      {rule.is_active ? "Active" : "Inactive"}
-                    </Badge>
-                  </div>
-                  {rule.description && (
-                    <p className="text-muted-foreground text-xs">
-                      {rule.description}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="space-y-1">
-                  <p className="font-medium text-xs">Conditions</p>
-                  <div className="space-y-1">
-                    {ruleConditions.map((condition) => (
-                      <div
-                        className="text-muted-foreground text-xs"
-                        key={`${condition.metric}-${condition.operator}-${condition.threshold}`}
-                      >
-                        {condition.metric} {condition.operator}{" "}
-                        {condition.threshold}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <p className="font-medium text-xs">Channels</p>
-                  <p className="text-muted-foreground text-xs">
-                    {channelIds.length} channel
-                    {channelIds.length !== 1 ? "s" : ""} configured
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
+        {rules.map((rule) => (
+          <div key={rule.id}>
+            <h3>{rule.name}</h3>
+          </div>
+        ))}
       </div>
     </div>
   );

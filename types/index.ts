@@ -5,10 +5,12 @@ export type Supabase = SupabaseClient<Database>;
 
 export type Workspace = Tables<"workspaces">;
 export type ExecutionMetricsHourly = Tables<"execution_metrics_hourly">;
-export type Instance = Tables<"instances">
+export type Instance = Tables<"instances">;
+export type AlertChannel = Tables<"alert_channels">;
 
 export type Workflow = Tables<"workflows"> & {
   instance: {
+    id: string;
     name: string;
   };
 };

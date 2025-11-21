@@ -59,12 +59,6 @@ export default function AddAlertChannelForm(props: {
       toast.success("Alert channel created successfully", {
         id: "add-alert-channel-form",
       });
-      form.reset({
-        name: "",
-        type: "email",
-        recipients: [""],
-      });
-      setRecipientsIds([crypto.randomUUID()]);
     },
   });
 

@@ -10,11 +10,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import type { Database } from "@/types/supabase";
-
-type AlertChannel = Database["public"]["Tables"]["alert_channels"]["Row"];
-type WorkflowOption = { id: string; name: string; instanceId: string };
-type InstanceOption = { id: string; name: string };
+import type { AlertChannel, Instance, Workflow } from "@/types";
 
 export default function AddAlertRuleSheet({
   workspaceId,
@@ -24,8 +20,8 @@ export default function AddAlertRuleSheet({
 }: {
   workspaceId: string;
   channels: AlertChannel[];
-  workflows: WorkflowOption[];
-  instances: InstanceOption[];
+  workflows: Workflow[];
+  instances: Instance[];
 }) {
   const [isOpen, setOpen] = React.useState(false);
 
@@ -34,7 +30,7 @@ export default function AddAlertRuleSheet({
       <SheetTrigger asChild>
         <Button>Add Rule</Button>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="flex flex-col">
         <SheetHeader>
           <SheetTitle>Add Alert Rule</SheetTitle>
         </SheetHeader>

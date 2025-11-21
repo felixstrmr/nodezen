@@ -17,4 +17,3 @@ export async function getAlertChannels(workspaceId: string) {
 
   return data;
 }
-

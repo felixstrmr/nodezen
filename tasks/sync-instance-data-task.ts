@@ -11,9 +11,8 @@ const supabase = createClient<Database>(
   process.env.SUPABASE_SECRET_KEY as string
 );
 
-export const syncAllWorkspacesTask = schedules.task({
-  id: "sync-all-workspaces-task",
-  machine: "micro",
+export const syncInstancesDataTask = schedules.task({
+  id: "sync-instances-data-task",
   run: async (payload) => {
     const { externalId } = payload;
 
