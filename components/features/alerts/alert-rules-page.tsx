@@ -113,10 +113,33 @@ export default async function AlertRulesPage({
           workspaceId={workspaceId}
         />
       </div>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-col rounded-lg border">
+        <div className="sticky top-0 z-10 grid grid-cols-[1fr_10rem_20rem_15rem] gap-4 rounded-t-lg border-b bg-accent p-3 text-muted-foreground text-sm backdrop-blur-sm">
+          <p>Name</p>
+          <p>Instance</p>
+          <p>Workflow</p>
+          <p>Channels</p>
+        </div>
         {rules.map((rule) => (
-          <div key={rule.id}>
-            <h3>{rule.name}</h3>
+          <div
+            className="grid grid-cols-[1fr_10rem_20rem_15rem] items-center gap-4 border-b p-3 last:border-b-0 hover:bg-accent"
+            key={rule.id}
+          >
+            <h3 className="text-sm">{rule.name}</h3>
+            <p className="text-sm">{rule.instance?.name ?? "All"}</p>
+            {rule.workflow ? (
+              <Link
+                className="truncate text-sm hover:underline"
+                href={`/${workspaceId}/workflows/${rule.workflow?.id}`}
+              >
+                {rule.workflow?.name}
+              </Link>
+            ) : (
+              <p className="text-muted-foreground text-sm">-</p>
+            )}
+            <p className="text-sm">
+              {rule.channels.map((channel) => channel.channel.name).join(", ")}
+            </p>
           </div>
         ))}
       </div>

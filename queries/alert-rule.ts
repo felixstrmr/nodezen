@@ -10,7 +10,9 @@ export async function getAlertRules(workspaceId: string) {
 
   const { data } = await supabase
     .from("alert_rules")
-    .select("*")
+    .select(
+      "*, instance:instances(name), workflow:workflows(name, id), channels:alert_rule_channels(channel:alert_channels(name))"
+    )
     .eq("workspace", workspaceId)
     .order("created_at", { ascending: false })
     .throwOnError();
@@ -36,4 +38,3 @@ export async function getAlertRule(workspaceId: string, ruleId: string) {
 
   return data;
 }
-
