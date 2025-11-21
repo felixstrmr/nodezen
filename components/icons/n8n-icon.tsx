@@ -1,4 +1,4 @@
-export default function N8nIcon(props: React.SVGProps<SVGSVGElement>) {
+export function N8nIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 228 120" {...props}>
       <title>n8n-icon</title>

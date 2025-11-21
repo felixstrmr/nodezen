@@ -1,4 +1,4 @@
-export default function NodezenIcon(props: React.SVGProps<SVGSVGElement>) {
+export function NodezenIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       fill="none"

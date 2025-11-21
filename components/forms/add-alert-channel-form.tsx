@@ -1,13 +1,14 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { XIcon } from "lucide-react";
+import { MailIcon, WebhookIcon, XIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { addAlertChannelAction } from "@/actions/add-alert-channel-action";
+import { DiscordIcon, SlackIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Field,
@@ -130,15 +131,21 @@ export default function AddAlertChannelForm(props: {
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="email">Email</SelectItem>{" "}
+                      <SelectItem value="email">
+                        <MailIcon />
+                        Email
+                      </SelectItem>{" "}
                       <SelectItem disabled value="slack">
-                        Slack (Soon)
+                        <SlackIcon />
+                        Slack
                       </SelectItem>
                       <SelectItem disabled value="discord">
-                        Discord (Soon)
+                        <DiscordIcon />
+                        Discord
                       </SelectItem>
                       <SelectItem disabled value="webhook">
-                        Webhook (Soon)
+                        <WebhookIcon />
+                        Webhook
                       </SelectItem>
                     </SelectContent>
                   </Select>

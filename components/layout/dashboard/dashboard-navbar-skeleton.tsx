@@ -1,4 +1,4 @@
-import NodezenIcon from "@/components/icons/nodezen-icon";
+import { NodezenIcon } from "@/components/icons";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 

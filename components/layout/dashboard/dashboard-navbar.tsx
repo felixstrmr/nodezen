@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import Avatar from "@/components/common/avatar";
-import NodezenIcon from "@/components/icons/nodezen-icon";
+import { NodezenIcon } from "@/components/icons";
 import DashboardNavbarNavigation from "@/components/layout/dashboard/dashboard-navbar-navigation";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";

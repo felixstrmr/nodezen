@@ -1,5 +1,5 @@
 import Link from "next/link";
-import NodezenIcon from "@/components/icons/nodezen-icon";
+import { NodezenIcon } from "@/components/icons";
 import HomeNavbarNavigation from "@/components/layout/home/home-navbar-navigation";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
