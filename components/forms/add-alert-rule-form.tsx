@@ -99,7 +99,6 @@ export default function AddAlertRuleForm({
     [workflows]
   );
 
-  // Filter workflows based on selected instance
   const filteredWorkflows = useMemo(() => {
     if (selectedInstanceId === "all" || !selectedInstanceId) {
       return groupedWorkflows;
@@ -115,7 +114,6 @@ export default function AddAlertRuleForm({
     };
   }, [selectedInstanceId, instances, workflows, groupedWorkflows]);
 
-  // Handle instance change - reset workflow to "all"
   const handleInstanceChange = useCallback(
     (value: string) => {
       form.setValue("instanceId", value);
@@ -158,7 +156,6 @@ export default function AddAlertRuleForm({
                 onValueChange={(value) => {
                   const newType = value as "event" | "metric";
                   form.setValue("type", newType);
-                  // Reset event-specific fields when switching types
                   if (newType === "metric") {
                     form.setValue("eventType", undefined);
                     form.setValue("instanceId", "all");
@@ -190,7 +187,7 @@ export default function AddAlertRuleForm({
                     <Field data-invalid={fieldState.invalid}>
                       <FieldContent>
                         <FieldLabel htmlFor="event_type">
-                          Event Type
+                          Event
                           <span className="-ml-1.5 text-destructive">*</span>
                         </FieldLabel>
                         {fieldState.invalid && (
@@ -209,7 +206,7 @@ export default function AddAlertRuleForm({
                           disabled={isExecuting}
                           id="event_type"
                         >
-                          <SelectValue placeholder="Select Event Type" />
+                          <SelectValue placeholder="Select Event" />
                         </SelectTrigger>
                         <SelectContent>
                           {Object.entries(EVENT_TYPES).map(([key, value]) => (
@@ -234,7 +231,9 @@ export default function AddAlertRuleForm({
                         )}
                       </FieldContent>
                       <Select
-                        disabled={isExecuting}
+                        disabled={
+                          isExecuting || form.watch("workflowId") !== "all"
+                        }
                         onValueChange={handleInstanceChange}
                         value={field.value || ""}
                       >
