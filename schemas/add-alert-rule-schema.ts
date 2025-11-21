@@ -23,8 +23,8 @@ export const conditionSchema = z.object({
   metric: conditionMetricSchema,
   operator: conditionOperatorSchema,
   threshold: z.number().min(0, "Threshold must be a positive number"),
-  workflowId: z.string().uuid().optional(),
-  instanceId: z.string().uuid().optional(),
+  workflowId: z.uuid().optional(),
+  instanceId: z.uuid().optional(),
   timeWindow: z.enum(["1h", "6h", "24h", "7d"]),
 });
 
@@ -34,7 +34,6 @@ export const addAlertRuleSchema = z.object({
   isActive: z.boolean(),
   cooldownPeriod: z
     .number({
-      error: "Cooldown period is required",
       message: "Cooldown period must be a number",
     })
     .int("Cooldown period must be a whole number")
@@ -44,7 +43,7 @@ export const addAlertRuleSchema = z.object({
     .array(conditionSchema)
     .min(1, "At least one condition is required"),
   channelIds: z
-    .array(z.string().uuid())
+    .array(z.uuid())
     .min(1, "At least one channel is required"),
 });
 
