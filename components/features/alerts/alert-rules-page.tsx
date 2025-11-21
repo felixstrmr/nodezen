@@ -29,7 +29,7 @@ export default async function AlertRulesPage({
   if (rules.length === 0) {
     if (channels.length === 0) {
       return (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <div className="flex h-8 items-center">
               <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
@@ -59,7 +59,7 @@ export default async function AlertRulesPage({
     }
 
     return (
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex h-8 items-center">
             <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
@@ -86,7 +86,7 @@ export default async function AlertRulesPage({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex h-8 items-center">
           <h2 className="font-semibold text-lg tracking-tight">Rules</h2>
