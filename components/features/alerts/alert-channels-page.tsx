@@ -56,7 +56,7 @@ export default async function AlertChannelsPage({
                 <div className="space-y-0.5">
                   <h3 className="font-medium text-sm">{channel.name}</h3>
                   <p className="text-muted-foreground text-xs">
-                    {recipients} recipients
+                    {recipients} recipient{recipients === 1 ? "" : "s"}
                   </p>
                 </div>
               </div>
