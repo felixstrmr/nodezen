@@ -12,7 +12,6 @@ export default function HomeLayout({
       <Suspense fallback={<HomeNavbarSkeleton />}>
         <HomeNavbar />
       </Suspense>
-      <HomeNavbarSkeleton />
       <div className="flex size-full flex-col pt-14">{children}</div>
     </div>
   );
