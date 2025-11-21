@@ -1,0 +1,41 @@
+import z from "zod";
+
+export const conditionMetricSchema = z.enum([
+  "failed_executions",
+  "successful_executions",
+  "total_executions",
+  "avg_duration_ms",
+  "p50_duration_ms",
+  "p95_duration_ms",
+  "p99_duration_ms",
+]);
+
+export const conditionOperatorSchema = z.enum([
+  "greater_than",
+  "less_than",
+  "greater_than_or_equal",
+  "less_than_or_equal",
+  "equals",
+  "not_equals",
+]);
+
+export const conditionSchema = z.object({
+  metric: conditionMetricSchema,
+  operator: conditionOperatorSchema,
+  threshold: z.number().min(0, "Threshold must be a positive number"),
+  workflowId: z.string().uuid().optional(),
+  instanceId: z.string().uuid().optional(),
+  timeWindow: z.enum(["1h", "6h", "24h", "7d"]),
+});
+
+export const addAlertRuleSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string().optional(),
+  isActive: z.boolean(),
+  conditions: z.array(conditionSchema).min(1, "At least one condition is required"),
+  channelIds: z.array(z.string().uuid()).min(1, "At least one channel is required"),
+});
+
+export type Condition = z.infer<typeof conditionSchema>;
+export type AddAlertRuleInput = z.infer<typeof addAlertRuleSchema>;
+

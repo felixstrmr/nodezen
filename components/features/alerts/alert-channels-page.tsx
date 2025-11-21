@@ -1,5 +1,5 @@
 import { MailIcon } from "lucide-react";
-import { getChannels } from "@/queries/channel";
+import { getAlertChannels } from "@/queries/alert-channel";
 
 export default async function AlertChannelsPage({
   params,
@@ -7,7 +7,7 @@ export default async function AlertChannelsPage({
   params: Promise<{ workspaceId: string }>;
 }) {
   const { workspaceId } = await params;
-  const channels = await getChannels(workspaceId);
+  const channels = await getAlertChannels(workspaceId);
 
   if (channels.length === 0) {
     return (
