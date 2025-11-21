@@ -1,7 +1,6 @@
 import { createSafeActionClient } from "next-safe-action";
 import z from "zod";
 import { supabaseClient } from "@/lib/clients/supabase-client";
-import { getUser } from "@/queries/user";
 
 export const actionClient = createSafeActionClient({
   defineMetadataSchema() {
@@ -24,10 +23,15 @@ export const authActionClient = actionClient.use(async ({ next }) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("Unauthorized");
   }
 
-  const userData = await getUser();
+  const { data: userData } = await supabase
+    .from("users")
+    .select("*")
+    .eq("id", user.id)
+    .maybeSingle()
+    .throwOnError();
 
   if (!userData) {
     throw new Error("User not found");
@@ -37,7 +41,6 @@ export const authActionClient = actionClient.use(async ({ next }) => {
     ctx: {
       supabase,
       user: user.id,
-      workspace: userData.active_workspace,
     },
   });
 });

@@ -60,16 +60,19 @@ const ALL_INSTANCES_VALUE = "all-instances";
 const ALL_WORKFLOWS_VALUE = "all-workflows";
 
 export default function AddAlertRuleForm(props: {
+  workspaceId: string;
   onOpenChangeAction: (open: boolean) => void;
   channels: AlertChannel[];
   workflows: WorkflowOption[];
   instances: InstanceOption[];
 }) {
-  const { onOpenChangeAction, channels, workflows, instances } = props;
+  const { workspaceId, onOpenChangeAction, channels, workflows, instances } =
+    props;
 
   const form = useForm<z.output<typeof addAlertRuleSchema>>({
     resolver: zodResolver(addAlertRuleSchema),
     defaultValues: {
+      workspaceId,
       name: "",
       description: "",
       isActive: true,

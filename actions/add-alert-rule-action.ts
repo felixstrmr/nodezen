@@ -15,12 +15,9 @@ export const addAlertRuleAction = authActionClient
       cooldownPeriod,
       conditions,
       channelIds,
+      workspaceId,
     } = parsedInput;
-    const { supabase, workspace } = ctx;
-
-    if (!workspace) {
-      throw new Error("Active workspace not found");
-    }
+    const { supabase } = ctx;
 
     await supabase
       .from("alert_rules")
@@ -29,7 +26,7 @@ export const addAlertRuleAction = authActionClient
         description: description || null,
         is_active: isActive,
         cooldown_period: cooldownPeriod,
-        workspace,
+        workspace: workspaceId,
         conditions: {
           conditions,
           channelIds,
@@ -38,6 +35,5 @@ export const addAlertRuleAction = authActionClient
       })
       .throwOnError();
 
-    updateTag(`rules:${workspace}`);
+    updateTag(`alert-rules:${workspaceId}`);
   });
-

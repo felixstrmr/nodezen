@@ -84,6 +84,7 @@ export default async function AlertRulesPage({
               channels={channels}
               instances={sheetInstances}
               workflows={sheetWorkflows}
+              workspaceId={workspaceId}
             />
           )}
         </div>
@@ -103,6 +104,7 @@ export default async function AlertRulesPage({
               channels={channels}
               instances={sheetInstances}
               workflows={sheetWorkflows}
+              workspaceId={workspaceId}
             />
           </EmptyContent>
         </Empty>
@@ -121,6 +123,7 @@ export default async function AlertRulesPage({
             channels={channels}
             instances={sheetInstances}
             workflows={sheetWorkflows}
+            workspaceId={workspaceId}
           />
         )}
       </div>

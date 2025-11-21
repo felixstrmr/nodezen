@@ -563,10 +563,6 @@ ALTER TABLE ONLY "public"."workspaces"
 
 
 
-ALTER TABLE ONLY "public"."workspaces"
-    ADD CONSTRAINT "workspaces_slug_key" UNIQUE ("slug");
-
-
 
 CREATE INDEX "backups_workflow_idx" ON "public"."backups" USING "btree" ("workflow");
 

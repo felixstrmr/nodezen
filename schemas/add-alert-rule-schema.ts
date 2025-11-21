@@ -29,6 +29,7 @@ export const conditionSchema = z.object({
 });
 
 export const addAlertRuleSchema = z.object({
+  workspaceId: z.uuid().min(1, "Workspace is required"),
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   isActive: z.boolean(),
@@ -42,11 +43,8 @@ export const addAlertRuleSchema = z.object({
   conditions: z
     .array(conditionSchema)
     .min(1, "At least one condition is required"),
-  channelIds: z
-    .array(z.uuid())
-    .min(1, "At least one channel is required"),
+  channelIds: z.array(z.uuid()).min(1, "At least one channel is required"),
 });
 
 export type Condition = z.infer<typeof conditionSchema>;
 export type AddAlertRuleInput = z.infer<typeof addAlertRuleSchema>;
-

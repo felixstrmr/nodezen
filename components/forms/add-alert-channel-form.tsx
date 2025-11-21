@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MailIcon, WebhookIcon, XIcon } from "lucide-react";
+import { MailIcon, PlusIcon, TrashIcon, WebhookIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -29,13 +29,15 @@ import { SheetFooter } from "@/components/ui/sheet";
 import { addAlertChannelSchema } from "@/schemas/add-alert-channel-schema";
 
 export default function AddAlertChannelForm(props: {
+  workspaceId: string;
   onOpenChangeAction: (open: boolean) => void;
 }) {
-  const { onOpenChangeAction } = props;
+  const { workspaceId, onOpenChangeAction } = props;
 
   const form = useForm<z.infer<typeof addAlertChannelSchema>>({
     resolver: zodResolver(addAlertChannelSchema),
     defaultValues: {
+      workspaceId,
       name: "",
       type: "email",
       recipients: [""],
@@ -184,7 +186,7 @@ export default function AddAlertChannelForm(props: {
                               type="button"
                               variant="outline"
                             >
-                              <XIcon className="size-3.5 text-red-600" />
+                              <TrashIcon className="size-3.5 text-red-600" />
                             </Button>
                           )}
                         </div>
@@ -197,12 +199,14 @@ export default function AddAlertChannelForm(props: {
                 )}
               />
               <Button
+                className="w-full"
                 disabled={isExecuting}
                 onClick={addRecipient}
                 size="sm"
                 type="button"
                 variant="ghost"
               >
+                <PlusIcon className="size-3.5 text-muted-foreground" />
                 Add Email
               </Button>
             </div>

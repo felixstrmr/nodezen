@@ -21,7 +21,7 @@ export type Database = {
           created_at: string
           id: string
           name: string
-          type: Database["public"]["Enums"]["notification_channel_types"]
+          type: Database["public"]["Enums"]["alert_channel_types"]
           workspace: string
         }
         Insert: {
@@ -30,7 +30,7 @@ export type Database = {
           created_at?: string
           id?: string
           name: string
-          type: Database["public"]["Enums"]["notification_channel_types"]
+          type: Database["public"]["Enums"]["alert_channel_types"]
           workspace: string
         }
         Update: {
@@ -39,7 +39,7 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string
-          type?: Database["public"]["Enums"]["notification_channel_types"]
+          type?: Database["public"]["Enums"]["alert_channel_types"]
           workspace?: string
         }
         Relationships: [
@@ -67,7 +67,7 @@ export type Database = {
           id: string
           message: string
           sent_at: string
-          status: string
+          status: Database["public"]["Enums"]["alert_notification_statuses"]
           workspace: string
         }
         Insert: {
@@ -77,7 +77,7 @@ export type Database = {
           id?: string
           message: string
           sent_at: string
-          status: string
+          status: Database["public"]["Enums"]["alert_notification_statuses"]
           workspace: string
         }
         Update: {
@@ -87,7 +87,7 @@ export type Database = {
           id?: string
           message?: string
           sent_at?: string
-          status?: string
+          status?: Database["public"]["Enums"]["alert_notification_statuses"]
           workspace?: string
         }
         Relationships: [
@@ -107,6 +107,107 @@ export type Database = {
           },
           {
             foreignKeyName: "alert_notifications_workspace_fkey"
+            columns: ["workspace"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alert_rule_channels: {
+        Row: {
+          channel: string
+          rule: string
+        }
+        Insert: {
+          channel: string
+          rule: string
+        }
+        Update: {
+          channel?: string
+          rule?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_rule_channels_channel_fkey"
+            columns: ["channel"]
+            isOneToOne: false
+            referencedRelation: "alert_channels"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_rule_channels_rule_fkey"
+            columns: ["rule"]
+            isOneToOne: false
+            referencedRelation: "alert_rules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alert_rule_conditions: {
+        Row: {
+          condition_group: number
+          created_at: string
+          id: string
+          instance: string | null
+          metric: string
+          operator: string
+          rule: string
+          threshold: number
+          time_window: string
+          workflow: string | null
+          workspace: string
+        }
+        Insert: {
+          condition_group?: number
+          created_at?: string
+          id?: string
+          instance?: string | null
+          metric: string
+          operator: string
+          rule: string
+          threshold: number
+          time_window: string
+          workflow?: string | null
+          workspace: string
+        }
+        Update: {
+          condition_group?: number
+          created_at?: string
+          id?: string
+          instance?: string | null
+          metric?: string
+          operator?: string
+          rule?: string
+          threshold?: number
+          time_window?: string
+          workflow?: string | null
+          workspace?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_rule_conditions_instance_fkey"
+            columns: ["instance"]
+            isOneToOne: false
+            referencedRelation: "instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_rule_conditions_rule_fkey"
+            columns: ["rule"]
+            isOneToOne: false
+            referencedRelation: "alert_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_rule_conditions_workflow_fkey"
+            columns: ["workflow"]
+            isOneToOne: false
+            referencedRelation: "workflows"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alert_rule_conditions_workspace_fkey"
             columns: ["workspace"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -163,29 +264,94 @@ export type Database = {
       }
       alerts: {
         Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
           created_at: string
+          execution: string | null
           id: string
+          instance: string | null
+          metric_values: Json
+          resolved_at: string | null
+          resolved_by: string | null
           rule: string
+          severity: Database["public"]["Enums"]["alert_severities"]
+          status: Database["public"]["Enums"]["alert_statuses"]
+          workflow: string | null
           workspace: string
         }
         Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
           created_at?: string
+          execution?: string | null
           id?: string
+          instance?: string | null
+          metric_values?: Json
+          resolved_at?: string | null
+          resolved_by?: string | null
           rule: string
+          severity: Database["public"]["Enums"]["alert_severities"]
+          status: Database["public"]["Enums"]["alert_statuses"]
+          workflow?: string | null
           workspace: string
         }
         Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
           created_at?: string
+          execution?: string | null
           id?: string
+          instance?: string | null
+          metric_values?: Json
+          resolved_at?: string | null
+          resolved_by?: string | null
           rule?: string
+          severity?: Database["public"]["Enums"]["alert_severities"]
+          status?: Database["public"]["Enums"]["alert_statuses"]
+          workflow?: string | null
           workspace?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "alerts_acknowledged_by_fkey"
+            columns: ["acknowledged_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_execution_fkey"
+            columns: ["execution"]
+            isOneToOne: false
+            referencedRelation: "executions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_instance_fkey"
+            columns: ["instance"]
+            isOneToOne: false
+            referencedRelation: "instances"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "alerts_rule_fkey"
             columns: ["rule"]
             isOneToOne: false
             referencedRelation: "alert_rules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alerts_workflow_fkey"
+            columns: ["workflow"]
+            isOneToOne: false
+            referencedRelation: "workflows"
             referencedColumns: ["id"]
           },
           {
@@ -617,7 +783,6 @@ export type Database = {
           id: string
           name: string
           settings: Json
-          slug: string
           subscription: Database["public"]["Enums"]["workspace_subscriptions"]
         }
         Insert: {
@@ -625,7 +790,6 @@ export type Database = {
           id?: string
           name: string
           settings?: Json
-          slug?: string
           subscription?: Database["public"]["Enums"]["workspace_subscriptions"]
         }
         Update: {
@@ -633,7 +797,6 @@ export type Database = {
           id?: string
           name?: string
           settings?: Json
-          slug?: string
           subscription?: Database["public"]["Enums"]["workspace_subscriptions"]
         }
         Relationships: []
@@ -643,13 +806,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      aggregate_execution_metrics_daily: { Args: never; Returns: undefined }
+      aggregate_execution_metrics_hourly: { Args: never; Returns: undefined }
       is_workspace_user: {
         Args: { user_id: string; workspace_id: string }
         Returns: boolean
       }
     }
     Enums: {
-      alert_severities: "critical" | "warning"
+      alert_channel_types: "email"
+      alert_notification_statuses: "sent" | "pending" | "failed" | "retrying"
+      alert_severities: "critical" | "warning" | "info"
       alert_statuses: "new" | "acknowledged" | "resolved"
       execution_modes:
         | "manual"
@@ -666,8 +833,7 @@ export type Database = {
         | "running"
         | "canceled"
       instance_statuses: "connected" | "disconnected"
-      notification_channel_types: "email"
-      workspace_subscriptions: "free" | "pro" | "premium"
+      workspace_subscriptions: "free" | "pro" | "ultra"
       workspace_user_roles: "owner" | "admin" | "member" | "viewer"
     }
     CompositeTypes: {
@@ -796,7 +962,9 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      alert_severities: ["critical", "warning"],
+      alert_channel_types: ["email"],
+      alert_notification_statuses: ["sent", "pending", "failed", "retrying"],
+      alert_severities: ["critical", "warning", "info"],
       alert_statuses: ["new", "acknowledged", "resolved"],
       execution_modes: [
         "manual",
@@ -815,8 +983,7 @@ export const Constants = {
         "canceled",
       ],
       instance_statuses: ["connected", "disconnected"],
-      notification_channel_types: ["email"],
-      workspace_subscriptions: ["free", "pro", "premium"],
+      workspace_subscriptions: ["free", "pro", "ultra"],
       workspace_user_roles: ["owner", "admin", "member", "viewer"],
     },
   },

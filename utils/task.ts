@@ -315,7 +315,7 @@ export async function syncInstance(
     api_key: string;
     workspace: {
       id: string;
-      subscription: "free" | "pro" | "premium";
+      subscription: "free" | "pro" | "ultra";
     };
   }
 ) {

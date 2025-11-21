@@ -17,10 +17,12 @@ type WorkflowOption = { id: string; name: string; instanceId: string };
 type InstanceOption = { id: string; name: string };
 
 export default function AddAlertRuleSheet({
+  workspaceId,
   channels,
   workflows,
   instances,
 }: {
+  workspaceId: string;
   channels: AlertChannel[];
   workflows: WorkflowOption[];
   instances: InstanceOption[];
@@ -41,9 +43,9 @@ export default function AddAlertRuleSheet({
           instances={instances}
           onOpenChangeAction={setOpen}
           workflows={workflows}
+          workspaceId={workspaceId}
         />
       </SheetContent>
     </Sheet>
   );
 }
-

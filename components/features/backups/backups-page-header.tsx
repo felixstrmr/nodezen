@@ -16,7 +16,7 @@ export default function BackupsPageHeader({
     switch (workspace.subscription) {
       case "pro":
         return new Date(Date.now() + 1000 * 60 * 60 * 24);
-      case "premium":
+      case "ultra":
         return new Date(Date.now() + 1000 * 60 * 60);
       default:
         return new Date(Date.now() + 1000 * 60 * 60 * 24);

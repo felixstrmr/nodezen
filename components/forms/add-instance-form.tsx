@@ -7,7 +7,7 @@ import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import type z from "zod";
 import { addInstanceAction } from "@/actions/add-instance-action";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Field,
   FieldError,
@@ -18,16 +18,19 @@ import { Input } from "@/components/ui/input";
 import { SheetFooter } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { addInstanceSchema } from "@/schemas/add-instance-schema";
+import { cn } from "@/utils/ui";
 import { isValidURL } from "@/utils/url";
 
 export default function AddInstanceForm(props: {
+  workspaceId: string;
   onOpenChangeAction: (open: boolean) => void;
 }) {
-  const { onOpenChangeAction } = props;
+  const { workspaceId, onOpenChangeAction } = props;
 
   const form = useForm<z.infer<typeof addInstanceSchema>>({
     resolver: zodResolver(addInstanceSchema),
     defaultValues: {
+      workspaceId,
       name: "",
       description: "",
       url: "",
@@ -133,7 +136,10 @@ export default function AddInstanceForm(props: {
                     />
                     {form.watch("url") && isValidURL(form.watch("url")) && (
                       <Link
-                        className="absolute top-0 right-0"
+                        className={cn(
+                          buttonVariants({ variant: "outline", size: "sm" }),
+                          "absolute top-1 right-1 bottom-1 h-6"
+                        )}
                         href={`${form.watch("url")}/settings/api`}
                         target="_blank"
                       >

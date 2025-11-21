@@ -18,15 +18,15 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
+    "editor.defaultFormatter": "biomejs.biome"
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "deno.enablePaths": [
-    "supabase/functions"
-  ],
+  "deno.path": "/Users/felixstrohmeier/.deno/bin/deno",
+  "deno.enablePaths": ["./supabase/functions"],
   "deno.lint": true,
+  "deno.importMap": "./supabase/functions/import_map.json",
   "deno.unstable": [
     "bare-node-builtins",
     "byonm",
@@ -50,5 +50,6 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "emmet.showExpandedAbbreviation": "never",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "deno.enable": true
 }

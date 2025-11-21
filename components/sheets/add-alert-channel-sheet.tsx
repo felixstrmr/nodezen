@@ -11,7 +11,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export default function AddAlertChannelSheet() {
+export default function AddAlertChannelSheet({
+  workspaceId,
+}: {
+  workspaceId: string;
+}) {
   const [isOpen, setOpen] = React.useState(false);
 
   return (
@@ -23,7 +27,10 @@ export default function AddAlertChannelSheet() {
         <SheetHeader>
           <SheetTitle>Add Channel</SheetTitle>
         </SheetHeader>
-        <AddChannelForm onOpenChangeAction={setOpen} />
+        <AddChannelForm
+          onOpenChangeAction={setOpen}
+          workspaceId={workspaceId}
+        />
       </SheetContent>
     </Sheet>
   );

@@ -31,7 +31,7 @@ export default async function AlertChannelsPage({
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <AddAlertChannelSheet />
+          <AddAlertChannelSheet workspaceId={workspaceId} />
         </EmptyContent>
       </Empty>
     );

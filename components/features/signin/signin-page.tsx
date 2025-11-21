@@ -1,24 +1,7 @@
-import { redirect } from "next/navigation";
 import SigninForm from "@/components/forms/signin-form";
 import { NodezenIcon } from "@/components/icons";
-import { getUser } from "@/queries/user";
-import { getWorkspace } from "@/queries/workspace";
 
-export default async function SigninPage() {
-  const user = await getUser();
-
-  if (user) {
-    if (user.active_workspace) {
-      const workspace = await getWorkspace(user.active_workspace);
-
-      if (workspace) {
-        redirect(`/${workspace.slug}`);
-      }
-    } else {
-      redirect("/workspaces");
-    }
-  }
-
+export default function SigninPage() {
   return (
     <div className="flex size-full items-center justify-center">
       <div className="flex flex-col">

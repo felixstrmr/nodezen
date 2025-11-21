@@ -1,9 +1,14 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
+import WorkspacesCard from "@/components/features/workspaces/workspaces-card";
+import { getUser } from "@/queries/user";
 import { getWorkspaces } from "@/queries/workspace";
 
 export default async function WorkspacesPage() {
-  const workspaces = await getWorkspaces();
+  const [user, workspaces] = await Promise.all([getUser(), getWorkspaces()]);
+
+  if (!user) {
+    redirect("/signin");
+  }
 
   if (workspaces.length === 0) {
     redirect("/setup");
@@ -12,13 +17,11 @@ export default async function WorkspacesPage() {
   return (
     <div className="grid grid-cols-2 gap-3">
       {workspaces.map((workspace) => (
-        <Link
-          className="rounded-lg border p-3"
-          href={`/${workspace.slug}`}
+        <WorkspacesCard
           key={workspace.id}
-        >
-          {workspace.name}
-        </Link>
+          userId={user.id}
+          workspace={workspace}
+        />
       ))}
     </div>
   );

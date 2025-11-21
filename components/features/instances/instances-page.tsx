@@ -1,5 +1,6 @@
 import { ArrowUpRightIcon, ServerIcon } from "lucide-react";
 import Link from "next/link";
+import AddInstanceSheet from "@/components/sheets/add-instance-sheet";
 import { Badge } from "@/components/ui/badge";
 import { getInstances } from "@/queries/instance";
 import { formatRelativeTime } from "@/utils/date";
@@ -20,44 +21,50 @@ export default async function InstancesPage({
   };
 
   return (
-    <div className="grid grid-cols-3 gap-3">
-      {instances.map((instance) => (
-        <div
-          className="relative flex flex-col gap-6 rounded-lg border p-3"
-          key={instance.id}
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-100">
-              <ServerIcon className="size-4 text-blue-600" />
-            </div>
-            <div className="-space-y-0.5">
-              <h2 className="text-sm">{instance.name}</h2>
-              <Link
-                className="group text-muted-foreground text-xs hover:underline"
-                href={instance.url}
-                passHref
-                target="_blank"
-              >
-                {instance.url.replace("https://", "")}
-                <ArrowUpRightIcon className="ml-1 hidden size-3.5 group-hover:inline-block" />
-              </Link>
-            </div>
-            <div className="absolute top-3 right-3 flex items-center gap-2">
-              <p className="text-muted-foreground text-xs">
-                {formatRelativeTime(instance.last_synced_at)}
-              </p>
-              <Badge
-                className={cn(
-                  "rounded-sm px-1 capitalize",
-                  statusBadgeVariants[instance.status]
-                )}
-              >
-                {instance.status}
-              </Badge>
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 overflow-hidden py-6">
+      <div className="flex h-8 items-center justify-between">
+        <h1 className="font-semibold text-xl tracking-tight">Instances</h1>
+        <AddInstanceSheet workspaceId={workspaceId} />
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        {instances.map((instance) => (
+          <div
+            className="relative flex flex-col gap-6 rounded-lg border p-3"
+            key={instance.id}
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-md bg-blue-100">
+                <ServerIcon className="size-4 text-blue-600" />
+              </div>
+              <div className="-space-y-0.5">
+                <h2 className="text-sm">{instance.name}</h2>
+                <Link
+                  className="group text-muted-foreground text-xs hover:underline"
+                  href={instance.url}
+                  passHref
+                  target="_blank"
+                >
+                  {instance.url.replace("https://", "")}
+                  <ArrowUpRightIcon className="ml-1 hidden size-3.5 group-hover:inline-block" />
+                </Link>
+              </div>
+              <div className="absolute top-3 right-3 flex items-center gap-2">
+                <p className="text-muted-foreground text-xs">
+                  {formatRelativeTime(instance.last_synced_at)}
+                </p>
+                <Badge
+                  className={cn(
+                    "rounded-sm px-1 capitalize",
+                    statusBadgeVariants[instance.status]
+                  )}
+                >
+                  {instance.status}
+                </Badge>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

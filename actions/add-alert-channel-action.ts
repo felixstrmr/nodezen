@@ -8,25 +8,20 @@ export const addAlertChannelAction = authActionClient
   .metadata({ name: "addChannelAction" })
   .inputSchema(addAlertChannelSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const { name, type, recipients } = parsedInput;
-    const { supabase, workspace } = ctx;
-
-    if (!workspace) {
-      throw new Error("Active workspace not found");
-    }
+    const { name, type, recipients, workspaceId } = parsedInput;
+    const { supabase } = ctx;
 
     await supabase
       .from("alert_channels")
       .insert({
         name,
         type,
-        workspace,
         config: {
           recipients,
         },
+        workspace: workspaceId,
       })
       .throwOnError();
 
-    updateTag(`channels:${workspace}`);
+    updateTag(`alert-channels:${workspaceId}`);
   });
-

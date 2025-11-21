@@ -11,12 +11,8 @@ export const addInstanceAction = authActionClient
   .metadata({ name: "addInstanceAction" })
   .inputSchema(addInstanceSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const { name, description, url, api_key } = parsedInput;
-    const { supabase, workspace } = ctx;
-
-    if (!workspace) {
-      throw new Error("Active workspace not found");
-    }
+    const { name, description, url, api_key, workspaceId } = parsedInput;
+    const { supabase } = ctx;
 
     const encryptedApiKey = await encrypt(api_key, env.ENCRYPTION_SECRET);
     const client = new n8nClient(url, api_key);
@@ -30,12 +26,12 @@ export const addInstanceAction = authActionClient
         name,
         description,
         url,
-        workspace,
         status,
+        workspace: workspaceId,
         api_key: encryptedApiKey,
         last_synced_at: new Date().toISOString(),
       })
       .throwOnError();
 
-    updateTag(`instances:${workspace}`);
+    updateTag(`instances:${workspaceId}`);
   });

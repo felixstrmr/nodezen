@@ -11,7 +11,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-export default function AddInstanceSheet() {
+export default function AddInstanceSheet({
+  workspaceId,
+}: {
+  workspaceId: string;
+}) {
   const [isOpen, setOpen] = React.useState(false);
 
   return (
@@ -23,7 +27,10 @@ export default function AddInstanceSheet() {
         <SheetHeader>
           <SheetTitle>Add Instance</SheetTitle>
         </SheetHeader>
-        <AddInstanceForm onOpenChangeAction={setOpen} />
+        <AddInstanceForm
+          onOpenChangeAction={setOpen}
+          workspaceId={workspaceId}
+        />
       </SheetContent>
     </Sheet>
   );
