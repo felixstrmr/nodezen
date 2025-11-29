@@ -17,7 +17,7 @@ export type Database = {
       executions: {
         Row: {
           created_at: string;
-          duration_ms: number;
+          duration_ms: number | null;
           error_message: string | null;
           error_node: string | null;
           id: string;
@@ -32,7 +32,7 @@ export type Database = {
         };
         Insert: {
           created_at?: string;
-          duration_ms: number;
+          duration_ms?: number | null;
           error_message?: string | null;
           error_node?: string | null;
           id?: string;
@@ -47,7 +47,7 @@ export type Database = {
         };
         Update: {
           created_at?: string;
-          duration_ms?: number;
+          duration_ms?: number | null;
           error_message?: string | null;
           error_node?: string | null;
           id?: string;
@@ -199,6 +199,7 @@ export type Database = {
           n8n_workflow_id: string;
           name: string;
           nodes: Json;
+          updated_at: string | null;
           workspace: string;
         };
         Insert: {
@@ -210,6 +211,7 @@ export type Database = {
           n8n_workflow_id: string;
           name: string;
           nodes: Json;
+          updated_at?: string | null;
           workspace: string;
         };
         Update: {
@@ -221,6 +223,7 @@ export type Database = {
           n8n_workflow_id?: string;
           name?: string;
           nodes?: Json;
+          updated_at?: string | null;
           workspace?: string;
         };
         Relationships: [

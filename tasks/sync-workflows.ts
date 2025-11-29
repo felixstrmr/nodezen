@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { schedules } from "@trigger.dev/sdk";
+import { logger, schedules } from "@trigger.dev/sdk";
 import { createN8nClient } from "@/tasks/shared/create-n8n-client";
 import { getInstances } from "@/tasks/shared/get-instances";
 import type { WorkspaceSubscription } from "@/types";
@@ -46,7 +46,7 @@ export const syncWorkflowsTask = schedules.task({
       return;
     }
 
-    await Promise.all(instances.map(syncWorkflows));
+    await Promise.allSettled(instances.map(syncWorkflows));
   },
 });
 
@@ -54,7 +54,7 @@ async function syncWorkflows(instance: Instance) {
   const client = await createN8nClient(instance.n8n_url, instance.n8n_api_key);
   const status = await client.getStatus();
 
-  console.log(`Checking instance ${instance.id} status...`, {
+  logger.info(`Checking instance ${instance.id} status...`, {
     instanceId: instance.id,
   });
 
@@ -68,16 +68,13 @@ async function syncWorkflows(instance: Instance) {
     .throwOnError();
 
   if (status === "disconnected") {
-    console.log("Instance is disconnected. Skipping workflow sync...", {
+    logger.warn("Instance is disconnected. Skipping workflow sync...", {
       instanceId: instance.id,
     });
-
-    // TODO: Instance status alert
-
     return;
   }
 
-  console.log("Instance is connected. Continuing with workflow sync...", {
+  logger.info("Instance is connected. Continuing with workflow sync...", {
     instanceId: instance.id,
   });
 
@@ -94,21 +91,36 @@ async function syncWorkflows(instance: Instance) {
     n8nWorkflows
   );
 
-  console.log(
-    `Found ${toCreate.length} to create, ${toUpdate.length} to update, ${toDelete.length} to delete...`,
-    {
-      instanceId: instance.id,
-      toCreateCount: toCreate.length,
-      toUpdateCount: toUpdate.length,
-      toDeleteCount: toDelete.length,
-    }
-  );
+  if (toCreate.length > 0 || toUpdate.length > 0 || toDelete.length > 0) {
+    logger.info(
+      `Found ${toCreate.length} to create, ${toUpdate.length} to update, ${toDelete.length} to delete.`,
+      {
+        instanceId: instance.id,
+      }
+    );
 
-  await Promise.allSettled([
-    createWorkflows(toCreate, instance.id, instance.workspace.id),
-    updateWorkflows(toUpdate, instance.id),
-    deleteWorkflows(toDelete, instance.id),
-  ]);
+    await Promise.allSettled([
+      createWorkflows(toCreate, instance.id, instance.workspace.id),
+      updateWorkflows(toUpdate, instance.id),
+      deleteWorkflows(toDelete, instance.id),
+    ]);
+  } else {
+    logger.info("No workflows to create, update, or delete. Skipping...", {
+      instanceId: instance.id,
+    });
+  }
+
+  await supabase
+    .from("instances")
+    .update({
+      last_workflow_sync_at: new Date().toISOString(),
+    })
+    .eq("id", instance.id)
+    .throwOnError();
+
+  logger.info("Successfully updated instance last workflow sync timestamp", {
+    instanceId: instance.id,
+  });
 }
 
 function calculateWorkflowDiff(
@@ -188,9 +200,8 @@ async function createWorkflows(
     await supabase.from("workflows").insert(batch).throwOnError();
   }
 
-  console.log(`Successfully inserted ${inserts.length} workflows`, {
+  logger.info(`Successfully inserted ${inserts.length} workflows`, {
     instanceId,
-    workspaceId,
   });
 }
 
@@ -230,7 +241,7 @@ async function updateWorkflows(workflows: Workflow[], instanceId: string) {
     );
   }
 
-  console.log(`Successfully updated ${updates.length} workflows`, {
+  logger.info(`Successfully updated ${updates.length} workflows`, {
     instanceId,
   });
 }
@@ -252,7 +263,7 @@ async function deleteWorkflows(workflows: Workflow[], instanceId: string) {
     );
   }
 
-  console.log(`Successfully deleted ${deletes.length} workflows`, {
+  logger.info(`Successfully deleted ${deletes.length} workflows`, {
     instanceId,
   });
 }

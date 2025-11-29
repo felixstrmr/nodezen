@@ -1,7 +1,5 @@
-import { env } from "@/lib/env";
-
 export async function encrypt(text: string) {
-  const secret = env.ENCRYPTION_KEY;
+  const secret = process.env.ENCRYPTION_KEY as string;
 
   const encoder = new TextEncoder();
 
@@ -29,7 +27,7 @@ export async function encrypt(text: string) {
 }
 
 export async function decrypt(encryptedData: string) {
-  const secret = env.ENCRYPTION_KEY;
+  const secret = process.env.ENCRYPTION_KEY as string;
 
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();

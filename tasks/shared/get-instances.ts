@@ -8,7 +8,9 @@ export async function getInstances(
 ) {
   const { data } = await supabase
     .from("instances")
-    .select("id, n8n_url, n8n_api_key, workspace!inner(id, subscription)")
+    .select(
+      "id, n8n_url, n8n_api_key, last_execution_sync_at, workspace!inner(id, subscription)"
+    )
     .eq("workspace.subscription", subscription)
     .throwOnError();
 
