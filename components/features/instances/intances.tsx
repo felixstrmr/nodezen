@@ -1,3 +1,4 @@
+import InstancesGrid from "@/components/features/instances/instances-grid";
 import { InstanceIcon } from "@/components/icons";
 import CreateInstanceSheet from "@/components/sheets/create-instance-sheet";
 import { getInstances } from "@/queries/instances";
@@ -23,13 +24,7 @@ export default async function Instances({
         </div>
         <CreateInstanceSheet workspaceId={workspaceId} />
       </div>
-      <div className="grid w-full grid-cols-4 p-3">
-        {instances.map((instance) => (
-          <div className="rounded-md border p-3" key={instance.id}>
-            <h2>{instance.name}</h2>
-          </div>
-        ))}
-      </div>
+      <InstancesGrid instances={instances} />
     </div>
   );
 }

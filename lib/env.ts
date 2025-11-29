@@ -6,6 +6,7 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "production"]).default("development"),
   },
   server: {
+    ENCRYPTION_KEY: z.string().min(1),
     LOOPS_API_KEY: z.string().min(1),
   },
   client: {
@@ -14,6 +15,7 @@ export const env = createEnv({
   },
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
     LOOPS_API_KEY: process.env.LOOPS_API_KEY,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
