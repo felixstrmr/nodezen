@@ -18,7 +18,7 @@ export default async function HomeNavbar() {
         {user ? (
           <Link
             className={buttonVariants({ variant: "secondary", size: "sm" })}
-            href="/dashboard"
+            href={`/${user.active_workspace}`}
           >
             Dashboard
           </Link>

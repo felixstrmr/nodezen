@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { n8nClient } from "@/lib/clients/n8n-client";
 import { supabaseClient } from "@/lib/clients/supabase-client";
+import { decrypt } from "@/utils/encryption";
 
 export default function Page() {
   async function test() {
@@ -10,7 +11,7 @@ export default function Page() {
     const { data: instance } = await supabase
       .from("instances")
       .select("*")
-      .eq("id", "b040049b-3964-475f-95ca-0bee29df9f84")
+      .eq("id", "863e49a2-010c-4f62-8720-cd8370527bcd")
       .maybeSingle()
       .throwOnError();
 
@@ -18,9 +19,10 @@ export default function Page() {
       throw new Error("Instance not found");
     }
 
-    const client = new n8nClient(instance.n8n_url, instance.n8n_api_key);
+    const decryptedApiKey = await decrypt(instance.n8n_api_key);
+    const client = new n8nClient(instance.n8n_url, decryptedApiKey);
 
-    const executions = await client.getExecutions();
+    const executions = await client.getExecutions({ includeData: false });
 
     console.log(executions.length);
   }
