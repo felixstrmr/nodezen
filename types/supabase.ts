@@ -157,6 +157,121 @@ export type Database = {
           },
         ];
       };
+      metrics: {
+        Row: {
+          avg_duration_ms: number;
+          canceled_executions: number;
+          created_at: string;
+          executions_per_hour: number;
+          failed_executions: number;
+          failure_rate: number;
+          granularity: string;
+          id: string;
+          instance: string | null;
+          manual_executions: number;
+          max_duration_ms: number;
+          median_duration_ms: number;
+          min_duration_ms: number;
+          p95_duration_ms: number;
+          p99_duration_ms: number;
+          period_end: string;
+          period_start: string;
+          retry_executions: number;
+          running_executions: number;
+          success_rate: number;
+          successful_executions: number;
+          total_duration_ms: number;
+          total_executions: number;
+          trigger_executions: number;
+          waiting_executions: number;
+          webhook_executions: number;
+          workflow: string | null;
+          workspace: string;
+        };
+        Insert: {
+          avg_duration_ms?: number;
+          canceled_executions?: number;
+          created_at?: string;
+          executions_per_hour?: number;
+          failed_executions?: number;
+          failure_rate?: number;
+          granularity: string;
+          id?: string;
+          instance?: string | null;
+          manual_executions?: number;
+          max_duration_ms?: number;
+          median_duration_ms?: number;
+          min_duration_ms?: number;
+          p95_duration_ms?: number;
+          p99_duration_ms?: number;
+          period_end: string;
+          period_start: string;
+          retry_executions?: number;
+          running_executions?: number;
+          success_rate?: number;
+          successful_executions?: number;
+          total_duration_ms?: number;
+          total_executions?: number;
+          trigger_executions?: number;
+          waiting_executions?: number;
+          webhook_executions?: number;
+          workflow?: string | null;
+          workspace: string;
+        };
+        Update: {
+          avg_duration_ms?: number;
+          canceled_executions?: number;
+          created_at?: string;
+          executions_per_hour?: number;
+          failed_executions?: number;
+          failure_rate?: number;
+          granularity?: string;
+          id?: string;
+          instance?: string | null;
+          manual_executions?: number;
+          max_duration_ms?: number;
+          median_duration_ms?: number;
+          min_duration_ms?: number;
+          p95_duration_ms?: number;
+          p99_duration_ms?: number;
+          period_end?: string;
+          period_start?: string;
+          retry_executions?: number;
+          running_executions?: number;
+          success_rate?: number;
+          successful_executions?: number;
+          total_duration_ms?: number;
+          total_executions?: number;
+          trigger_executions?: number;
+          waiting_executions?: number;
+          webhook_executions?: number;
+          workflow?: string | null;
+          workspace?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "metrics_instance_fkey";
+            columns: ["instance"];
+            isOneToOne: false;
+            referencedRelation: "instances";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "metrics_workflow_fkey";
+            columns: ["workflow"];
+            isOneToOne: false;
+            referencedRelation: "workflows";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "metrics_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       users: {
         Row: {
           active_workspace: string | null;
@@ -308,9 +423,151 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      total_instance_metrics: {
+        Row: {
+          avg_duration_ms: number | null;
+          canceled_executions: number | null;
+          failed_executions: number | null;
+          failure_rate: number | null;
+          first_period: string | null;
+          instance: string | null;
+          last_execution_at: string | null;
+          last_execution_status: string | null;
+          last_period: string | null;
+          last_updated: string | null;
+          manual_executions: number | null;
+          max_duration_ms: number | null;
+          median_duration_ms: number | null;
+          min_duration_ms: number | null;
+          p95_duration_ms: number | null;
+          p99_duration_ms: number | null;
+          retry_executions: number | null;
+          running_executions: number | null;
+          success_rate: number | null;
+          successful_executions: number | null;
+          total_duration_ms: number | null;
+          total_executions: number | null;
+          trigger_executions: number | null;
+          waiting_executions: number | null;
+          webhook_executions: number | null;
+          workflow_count: number | null;
+          workspace: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "metrics_instance_fkey";
+            columns: ["instance"];
+            isOneToOne: false;
+            referencedRelation: "instances";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "metrics_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      total_workflow_metrics: {
+        Row: {
+          avg_duration_ms: number | null;
+          canceled_executions: number | null;
+          failed_executions: number | null;
+          failure_rate: number | null;
+          first_period: string | null;
+          instance_count: number | null;
+          last_execution_at: string | null;
+          last_execution_status: string | null;
+          last_period: string | null;
+          last_updated: string | null;
+          manual_executions: number | null;
+          max_duration_ms: number | null;
+          median_duration_ms: number | null;
+          min_duration_ms: number | null;
+          p95_duration_ms: number | null;
+          p99_duration_ms: number | null;
+          retry_executions: number | null;
+          running_executions: number | null;
+          success_rate: number | null;
+          successful_executions: number | null;
+          total_duration_ms: number | null;
+          total_executions: number | null;
+          trigger_executions: number | null;
+          waiting_executions: number | null;
+          webhook_executions: number | null;
+          workflow: string | null;
+          workspace: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "metrics_workflow_fkey";
+            columns: ["workflow"];
+            isOneToOne: false;
+            referencedRelation: "workflows";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "metrics_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      total_workspace_metrics: {
+        Row: {
+          avg_duration_ms: number | null;
+          canceled_executions: number | null;
+          failed_executions: number | null;
+          failure_rate: number | null;
+          first_period: string | null;
+          instance_count: number | null;
+          last_execution_at: string | null;
+          last_execution_status: string | null;
+          last_period: string | null;
+          last_updated: string | null;
+          manual_executions: number | null;
+          max_duration_ms: number | null;
+          median_duration_ms: number | null;
+          min_duration_ms: number | null;
+          p95_duration_ms: number | null;
+          p99_duration_ms: number | null;
+          retry_executions: number | null;
+          running_executions: number | null;
+          success_rate: number | null;
+          successful_executions: number | null;
+          total_duration_ms: number | null;
+          total_executions: number | null;
+          trigger_executions: number | null;
+          waiting_executions: number | null;
+          webhook_executions: number | null;
+          workflow_count: number | null;
+          workspace: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "metrics_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Functions: {
+      aggregate_metrics: {
+        Args: { granularity_param: string };
+        Returns: {
+          instance_count: number;
+          periods_processed: number;
+          workflow_count: number;
+          workspace_count: number;
+        }[];
+      };
       is_workspace_manager: {
         Args: { user_id: string; workspace_id: string };
         Returns: boolean;

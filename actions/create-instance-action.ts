@@ -22,9 +22,11 @@ export const createInstanceAction = authActionClient
 
     const encryptedApiKey = await encrypt(n8nApiKey);
 
+    const id = crypto.randomUUID();
     await supabase
       .from("instances")
       .insert({
+        id,
         name,
         description,
         status,

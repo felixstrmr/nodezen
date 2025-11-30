@@ -28,7 +28,7 @@ export default function InstancesGrid({
   }
 
   return (
-    <div className="grid w-full grid-cols-4 p-3">
+    <div className="grid w-full grid-cols-4 gap-1.5 p-3">
       {instances.map((instance) => (
         <div className="rounded-md border p-3" key={instance.id}>
           <h2>{instance.name}</h2>

@@ -10,7 +10,9 @@ export async function getWorkflows(workspaceId: string) {
 
   const { data, error } = await supabase
     .from("workflows")
-    .select("id, name, n8n_workflow_id, is_active, workspace!inner(id)")
+    .select(
+      "id, name, n8n_workflow_id, is_active, instance!inner(id, name), workspace!inner(id)"
+    )
     .order("created_at", { ascending: false })
     .eq("workspace", workspaceId);
 

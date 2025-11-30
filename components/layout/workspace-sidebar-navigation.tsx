@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
+  BackupIcon,
   DashboardIcon,
   InstanceIcon,
   SettingsIcon,
@@ -49,6 +50,12 @@ export default function WorkspaceSidebarNavigation({
       href: `/${workspaceId}/alerts`,
       icon: AlertIcon,
       isActive: pathname.startsWith(`/${workspaceId}/alerts`),
+    },
+    {
+      name: "Backups",
+      href: `/${workspaceId}/backups`,
+      icon: BackupIcon,
+      isActive: pathname.startsWith(`/${workspaceId}/backups`),
     },
   ];
 

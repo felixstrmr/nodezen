@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AlertTriangleIcon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -128,6 +129,12 @@ export default function CreateInstanceForm({
             </Field>
           )}
         />
+        <div className="flex items-center gap-2 rounded-md border border-yellow-500/15 bg-yellow-500/5 p-3">
+          <AlertTriangleIcon className="size-4 shrink-0 text-yellow-500" />
+          <p className="text-sm text-yellow-500">
+            Keep in mind that only new executions will be included in metrics!
+          </p>
+        </div>
       </FieldGroup>
       <SheetFooter>
         <Button onClick={() => setOpen(false)} type="button" variant="outline">

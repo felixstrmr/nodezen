@@ -1,4 +1,5 @@
 export * from "./alert-icon";
+export * from "./backup-icon";
 export * from "./dashboard-icon";
 export * from "./discord-icon";
 export * from "./execution-icon";

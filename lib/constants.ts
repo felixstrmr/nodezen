@@ -9,7 +9,7 @@ export const WORKSPACE_SUBSCRIPTION_TYPES = [
   },
   {
     name: "pro",
-    executionFrequencyMinutes: 10,
+    executionFrequencyMinutes: 15,
     workflowFrequencyMinutes: 30,
     retentionDays: 90,
   },
