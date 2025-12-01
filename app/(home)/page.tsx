@@ -1,10 +1,5 @@
-import {
-  BellIcon,
-  ChartBarIcon,
-  DatabaseIcon,
-  MegaphoneIcon,
-  MonitorIcon,
-} from "lucide-react";
+import { MegaphoneIcon } from "lucide-react";
+import HeroImageSwitcher from "@/components/features/home/hero-image-switcher";
 import JoinWaitlistForm from "@/components/forms/join-waitlist-form";
 import {
   HeartPulseIcon,
@@ -79,27 +74,7 @@ export default function Page() {
             </p>
           </div>
         </div>
-        <div className="grid h-16 min-h-16 grid-cols-4 bg-muted text-sm">
-          <div className="flex size-full items-center justify-center border-x p-1.5">
-            <div className="flex size-full items-center justify-center gap-2 rounded-md border bg-background shadow-xs">
-              <ChartBarIcon className="size-4 text-muted-foreground" />
-              Analytics
-            </div>
-          </div>
-          <div className="flex size-full items-center justify-center gap-2 border-r border-dashed">
-            <MonitorIcon className="size-4 text-muted-foreground" />
-            Monitoring
-          </div>
-          <div className="flex size-full items-center justify-center gap-2 border-r">
-            <BellIcon className="size-4 text-muted-foreground" />
-            Alerts
-          </div>
-          <div className="flex size-full items-center justify-center gap-2 border-r">
-            <DatabaseIcon className="size-4 text-muted-foreground" />
-            Backups
-          </div>
-        </div>
-        <div className="aspect-video size-full border bg-muted/25" />
+        <HeroImageSwitcher />
       </section>
       <section className="mx-auto flex size-full min-h-64 w-full max-w-5xl flex-col border-x" />
     </div>
