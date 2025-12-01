@@ -310,6 +310,7 @@ export type Database = {
           id: string;
           instance: string;
           is_active: boolean;
+          is_monitored: boolean;
           n8n_version_id: string;
           n8n_workflow_id: string;
           name: string;
@@ -322,6 +323,7 @@ export type Database = {
           id?: string;
           instance: string;
           is_active: boolean;
+          is_monitored?: boolean;
           n8n_version_id: string;
           n8n_workflow_id: string;
           name: string;
@@ -334,6 +336,7 @@ export type Database = {
           id?: string;
           instance?: string;
           is_active?: boolean;
+          is_monitored?: boolean;
           n8n_version_id?: string;
           n8n_workflow_id?: string;
           name?: string;
@@ -423,151 +426,9 @@ export type Database = {
       };
     };
     Views: {
-      total_instance_metrics: {
-        Row: {
-          avg_duration_ms: number | null;
-          canceled_executions: number | null;
-          failed_executions: number | null;
-          failure_rate: number | null;
-          first_period: string | null;
-          instance: string | null;
-          last_execution_at: string | null;
-          last_execution_status: string | null;
-          last_period: string | null;
-          last_updated: string | null;
-          manual_executions: number | null;
-          max_duration_ms: number | null;
-          median_duration_ms: number | null;
-          min_duration_ms: number | null;
-          p95_duration_ms: number | null;
-          p99_duration_ms: number | null;
-          retry_executions: number | null;
-          running_executions: number | null;
-          success_rate: number | null;
-          successful_executions: number | null;
-          total_duration_ms: number | null;
-          total_executions: number | null;
-          trigger_executions: number | null;
-          waiting_executions: number | null;
-          webhook_executions: number | null;
-          workflow_count: number | null;
-          workspace: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "metrics_instance_fkey";
-            columns: ["instance"];
-            isOneToOne: false;
-            referencedRelation: "instances";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "metrics_workspace_fkey";
-            columns: ["workspace"];
-            isOneToOne: false;
-            referencedRelation: "workspaces";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      total_workflow_metrics: {
-        Row: {
-          avg_duration_ms: number | null;
-          canceled_executions: number | null;
-          failed_executions: number | null;
-          failure_rate: number | null;
-          first_period: string | null;
-          instance_count: number | null;
-          last_execution_at: string | null;
-          last_execution_status: string | null;
-          last_period: string | null;
-          last_updated: string | null;
-          manual_executions: number | null;
-          max_duration_ms: number | null;
-          median_duration_ms: number | null;
-          min_duration_ms: number | null;
-          p95_duration_ms: number | null;
-          p99_duration_ms: number | null;
-          retry_executions: number | null;
-          running_executions: number | null;
-          success_rate: number | null;
-          successful_executions: number | null;
-          total_duration_ms: number | null;
-          total_executions: number | null;
-          trigger_executions: number | null;
-          waiting_executions: number | null;
-          webhook_executions: number | null;
-          workflow: string | null;
-          workspace: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "metrics_workflow_fkey";
-            columns: ["workflow"];
-            isOneToOne: false;
-            referencedRelation: "workflows";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "metrics_workspace_fkey";
-            columns: ["workspace"];
-            isOneToOne: false;
-            referencedRelation: "workspaces";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      total_workspace_metrics: {
-        Row: {
-          avg_duration_ms: number | null;
-          canceled_executions: number | null;
-          failed_executions: number | null;
-          failure_rate: number | null;
-          first_period: string | null;
-          instance_count: number | null;
-          last_execution_at: string | null;
-          last_execution_status: string | null;
-          last_period: string | null;
-          last_updated: string | null;
-          manual_executions: number | null;
-          max_duration_ms: number | null;
-          median_duration_ms: number | null;
-          min_duration_ms: number | null;
-          p95_duration_ms: number | null;
-          p99_duration_ms: number | null;
-          retry_executions: number | null;
-          running_executions: number | null;
-          success_rate: number | null;
-          successful_executions: number | null;
-          total_duration_ms: number | null;
-          total_executions: number | null;
-          trigger_executions: number | null;
-          waiting_executions: number | null;
-          webhook_executions: number | null;
-          workflow_count: number | null;
-          workspace: string | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "metrics_workspace_fkey";
-            columns: ["workspace"];
-            isOneToOne: false;
-            referencedRelation: "workspaces";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+      [_ in never]: never;
     };
     Functions: {
-      aggregate_metrics: {
-        Args: { granularity_param: string };
-        Returns: {
-          instance_count: number;
-          periods_processed: number;
-          workflow_count: number;
-          workspace_count: number;
-        }[];
-      };
       is_workspace_manager: {
         Args: { user_id: string; workspace_id: string };
         Returns: boolean;
