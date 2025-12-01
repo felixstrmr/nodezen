@@ -14,6 +14,51 @@ export type Database = {
   };
   public: {
     Tables: {
+      backups: {
+        Row: {
+          created_at: string;
+          id: string;
+          n8n_version_id: string;
+          path: string;
+          size: number;
+          workflow: string;
+          workspace: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          n8n_version_id: string;
+          path: string;
+          size: number;
+          workflow: string;
+          workspace: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          n8n_version_id?: string;
+          path?: string;
+          size?: number;
+          workflow?: string;
+          workspace?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "backups_workflow_fkey";
+            columns: ["workflow"];
+            isOneToOne: false;
+            referencedRelation: "workflows";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "backups_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       executions: {
         Row: {
           created_at: string;
@@ -168,7 +213,6 @@ export type Database = {
           granularity: string;
           id: string;
           instance: string | null;
-          manual_executions: number;
           max_duration_ms: number;
           median_duration_ms: number;
           min_duration_ms: number;
@@ -198,7 +242,6 @@ export type Database = {
           granularity: string;
           id?: string;
           instance?: string | null;
-          manual_executions?: number;
           max_duration_ms?: number;
           median_duration_ms?: number;
           min_duration_ms?: number;
@@ -228,7 +271,6 @@ export type Database = {
           granularity?: string;
           id?: string;
           instance?: string | null;
-          manual_executions?: number;
           max_duration_ms?: number;
           median_duration_ms?: number;
           min_duration_ms?: number;
@@ -426,9 +468,205 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      total_instance_metrics: {
+        Row: {
+          avg_duration_ms: number | null;
+          canceled_executions: number | null;
+          failed_executions: number | null;
+          failure_rate: number | null;
+          first_execution_at: string | null;
+          instance: string | null;
+          last_execution_at: string | null;
+          last_execution_status:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null;
+          last_updated: string | null;
+          max_duration_ms: number | null;
+          median_duration_ms: number | null;
+          min_duration_ms: number | null;
+          p95_duration_ms: number | null;
+          p99_duration_ms: number | null;
+          retry_executions: number | null;
+          running_executions: number | null;
+          success_rate: number | null;
+          successful_executions: number | null;
+          total_duration_ms: number | null;
+          total_executions: number | null;
+          trigger_executions: number | null;
+          waiting_executions: number | null;
+          webhook_executions: number | null;
+          workflow_count: number | null;
+          workspace: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "executions_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflows_instance_fkey";
+            columns: ["instance"];
+            isOneToOne: false;
+            referencedRelation: "instances";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      total_workflow_metrics: {
+        Row: {
+          avg_duration_ms: number | null;
+          canceled_executions: number | null;
+          failed_executions: number | null;
+          failure_rate: number | null;
+          first_execution_at: string | null;
+          instance: string | null;
+          last_execution_at: string | null;
+          last_execution_status:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null;
+          last_updated: string | null;
+          max_duration_ms: number | null;
+          median_duration_ms: number | null;
+          min_duration_ms: number | null;
+          p95_duration_ms: number | null;
+          p99_duration_ms: number | null;
+          retry_executions: number | null;
+          running_executions: number | null;
+          success_rate: number | null;
+          successful_executions: number | null;
+          total_duration_ms: number | null;
+          total_executions: number | null;
+          trigger_executions: number | null;
+          waiting_executions: number | null;
+          webhook_executions: number | null;
+          workflow: string | null;
+          workspace: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "executions_workflow_fkey";
+            columns: ["workflow"];
+            isOneToOne: false;
+            referencedRelation: "workflows";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "executions_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflows_instance_fkey";
+            columns: ["instance"];
+            isOneToOne: false;
+            referencedRelation: "instances";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      total_workspace_metrics: {
+        Row: {
+          avg_duration_ms: number | null;
+          canceled_executions: number | null;
+          failed_executions: number | null;
+          failure_rate: number | null;
+          first_execution_at: string | null;
+          instance_count: number | null;
+          last_execution_at: string | null;
+          last_execution_status:
+            | Database["public"]["Enums"]["execution_statuses"]
+            | null;
+          last_updated: string | null;
+          max_duration_ms: number | null;
+          median_duration_ms: number | null;
+          min_duration_ms: number | null;
+          p95_duration_ms: number | null;
+          p99_duration_ms: number | null;
+          retry_executions: number | null;
+          running_executions: number | null;
+          success_rate: number | null;
+          successful_executions: number | null;
+          total_duration_ms: number | null;
+          total_executions: number | null;
+          trigger_executions: number | null;
+          waiting_executions: number | null;
+          webhook_executions: number | null;
+          workflow_count: number | null;
+          workspace: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "executions_workspace_fkey";
+            columns: ["workspace"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Functions: {
+      aggregate_all_metrics: {
+        Args: {
+          p_end_time?: string;
+          p_granularity?: string;
+          p_start_time?: string;
+        };
+        Returns: {
+          items_processed: number;
+          level: string;
+          metrics_created: number;
+          periods_processed: number;
+        }[];
+      };
+      aggregate_instance_metrics: {
+        Args: {
+          p_end_time?: string;
+          p_granularity?: string;
+          p_start_time?: string;
+        };
+        Returns: {
+          instances_processed: number;
+          metrics_created: number;
+          periods_processed: number;
+        }[];
+      };
+      aggregate_workflow_metrics: {
+        Args: {
+          p_end_time?: string;
+          p_granularity?: string;
+          p_start_time?: string;
+        };
+        Returns: {
+          metrics_created: number;
+          periods_processed: number;
+          workflows_processed: number;
+        }[];
+      };
+      aggregate_workspace_metrics: {
+        Args: {
+          p_end_time?: string;
+          p_granularity?: string;
+          p_start_time?: string;
+        };
+        Returns: {
+          metrics_created: number;
+          periods_processed: number;
+          workspaces_processed: number;
+        }[];
+      };
+      get_period_bounds: {
+        Args: { p_granularity: string; p_timestamp: string };
+        Returns: {
+          period_end: string;
+          period_start: string;
+        }[];
+      };
       is_workspace_manager: {
         Args: { user_id: string; workspace_id: string };
         Returns: boolean;

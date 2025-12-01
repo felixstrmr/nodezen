@@ -30,7 +30,6 @@ export const EXECUTION_STATUSES = [
 ];
 
 export const EXECUTION_MODES = [
-  "manual",
   "trigger",
   "internal",
   "error",

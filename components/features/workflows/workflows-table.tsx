@@ -1,16 +1,26 @@
 import Link from "next/link";
 import { PauseIcon, PlayIcon } from "@/components/icons";
-import type { Workflow } from "@/types";
+import type { TotalWorkflowMetric, Workflow } from "@/types";
 import { cn } from "@/utils/ui";
 
 export default function WorkflowsTable({
   workspaceId,
   workflows,
+  metrics,
 }: {
   workspaceId: string;
   workflows: Workflow[];
+  metrics: TotalWorkflowMetric[];
 }) {
-  const sortedWorkflows = workflows.sort((a, b) => {
+  const workflowsWithMetrics = workflows.map((workflow) => {
+    const metric = metrics.find((m) => m.workflow === workflow.id);
+    return {
+      ...workflow,
+      metric,
+    };
+  });
+
+  const sortedWorkflows = workflowsWithMetrics.sort((a, b) => {
     if (a.is_active && !b.is_active) {
       return -1;
     }
@@ -25,9 +35,11 @@ export default function WorkflowsTable({
       <div className="grid grid-cols-12 items-center border-b bg-muted/50 p-3 text-muted-foreground text-sm">
         <p className="col-span-4">Name</p>
         <p className="col-span-2">Instance</p>
+        <p className="col-span-1">Executions</p>
+        <p className="col-span-1">Success rate</p>
       </div>
       <div className="flex flex-col">
-        {sortedWorkflows.map((workflow) => (
+        {sortedWorkflows.map(({ metric, ...workflow }) => (
           <Link
             className="grid cursor-pointer grid-cols-12 items-center border-b p-3 text-sm last:border-b-0 hover:bg-muted/50"
             href={`/${workspaceId}/workflows/${workflow.id}`}
@@ -49,6 +61,8 @@ export default function WorkflowsTable({
               <p>{workflow.name}</p>
             </div>
             <p className="col-span-2">{workflow.instance.name}</p>
+            <p className="col-span-1">{metric?.total_executions || 0}</p>
+            <p className="col-span-1">{metric?.success_rate || 0}%</p>
           </Link>
         ))}
       </div>
