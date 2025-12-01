@@ -1,7 +1,7 @@
+import Link from "next/link";
 import { PauseIcon, PlayIcon } from "@/components/icons";
 import type { Workflow } from "@/types";
 import { cn } from "@/utils/ui";
-import Link from "next/link";
 
 export default function WorkflowsTable({
   workspaceId,
@@ -29,8 +29,8 @@ export default function WorkflowsTable({
       <div className="flex flex-col">
         {sortedWorkflows.map((workflow) => (
           <Link
+            className="grid cursor-pointer grid-cols-12 items-center border-b p-3 text-sm last:border-b-0 hover:bg-muted/50"
             href={`/${workspaceId}/workflows/${workflow.id}`}
-            className="grid grid-cols-12 hover:bg-muted/50 cursor-pointer items-center border-b p-3 text-sm last:border-b-0"
             key={workflow.id}
           >
             <div className="col-span-4 flex items-center gap-2">

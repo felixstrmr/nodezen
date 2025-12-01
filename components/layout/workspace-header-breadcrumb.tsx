@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Fragment } from "react";
 import { DashboardIcon } from "@/components/icons";
 import {
   Breadcrumb,
@@ -18,9 +20,18 @@ const routeLabels: Record<string, string> = {
   alerts: "Alerts",
   executions: "Executions",
   instances: "Instances",
+  backups: "Backups",
+  channels: "Channels",
+  rules: "Rules",
 };
 
 const TRAILING_SLASH_REGEX = /\/$/;
+
+type BreadcrumbSegment = {
+  label: string;
+  href: string;
+  isLast: boolean;
+};
 
 export default function WorkspaceHeaderBreadcrumb({
   workspaceId,
@@ -32,10 +43,20 @@ export default function WorkspaceHeaderBreadcrumb({
   const isDashboard = normalizedPath === `/${workspaceId}`;
 
   const pathSegments = normalizedPath.split("/").filter(Boolean);
-  const currentRoute = pathSegments.length > 1 ? pathSegments.at(-1) : null;
-  const currentLabel = currentRoute ? routeLabels[currentRoute] : null;
-  const isCurrentRoute =
-    pathSegments.length > 1 && pathSegments.at(-1) === currentRoute;
+  const breadcrumbSegments: BreadcrumbSegment[] = [];
+  const routeSegments = pathSegments.slice(1);
+
+  routeSegments.forEach((segment, index) => {
+    const isLast = index === routeSegments.length - 1;
+    const href = `/${[workspaceId, ...routeSegments.slice(0, index + 1)].join("/")}`;
+    const label = routeLabels[segment] || segment;
+
+    breadcrumbSegments.push({
+      label,
+      href,
+      isLast,
+    });
+  });
 
   return (
     <Breadcrumb>
@@ -53,21 +74,33 @@ export default function WorkspaceHeaderBreadcrumb({
             <DashboardIcon className="size-3.5 opacity-75" />
           </BreadcrumbLink>
         </BreadcrumbItem>
-        {!isDashboard && currentLabel && (
-          <>
+        {breadcrumbSegments.map((segment) => (
+          <Fragment key={segment.href}>
             <BreadcrumbSeparator>/</BreadcrumbSeparator>
-            <BreadcrumbItem
-              className={cn(
-                "flex h-7 items-center rounded-md px-2 transition-colors hover:bg-accent",
-                isCurrentRoute
-                  ? "bg-accent text-foreground"
-                  : "text-muted-foreground hover:bg-accent"
+            <BreadcrumbItem>
+              {segment.isLast ? (
+                <BreadcrumbPage
+                  className={cn(
+                    "flex h-7 items-center rounded-md px-2 transition-colors",
+                    "bg-accent text-foreground"
+                  )}
+                >
+                  {segment.label}
+                </BreadcrumbPage>
+              ) : (
+                <BreadcrumbLink
+                  asChild
+                  className={cn(
+                    "flex h-7 items-center rounded-md px-2 transition-colors",
+                    "text-muted-foreground hover:bg-accent"
+                  )}
+                >
+                  <Link href={segment.href}>{segment.label}</Link>
+                </BreadcrumbLink>
               )}
-            >
-              <BreadcrumbPage>{currentLabel}</BreadcrumbPage>
             </BreadcrumbItem>
-          </>
-        )}
+          </Fragment>
+        ))}
       </BreadcrumbList>
     </Breadcrumb>
   );

@@ -21,6 +21,9 @@ export default async function Instances({
         <div className="flex h-8 items-center gap-2">
           <InstanceIcon className="size-4 text-muted-foreground opacity-75" />
           <h1 className="font-semibold text-xl tracking-tight">Instances</h1>
+          <span className="text-muted-foreground text-sm">
+            {instances.length}
+          </span>
         </div>
         <CreateInstanceSheet workspaceId={workspaceId} />
       </div>

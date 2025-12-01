@@ -20,9 +20,12 @@ export default async function Workflows({
         <div className="flex h-8 items-center gap-2">
           <WorkflowIcon className="size-4 text-muted-foreground opacity-75" />
           <h1 className="font-semibold text-xl tracking-tight">Workflows</h1>
+          <span className="text-muted-foreground text-sm">
+            {workflows.length}
+          </span>
         </div>
       </div>
-      <WorkflowsTable workspaceId={workspaceId} workflows={workflows} />
+      <WorkflowsTable workflows={workflows} workspaceId={workspaceId} />
     </div>
   );
 }
