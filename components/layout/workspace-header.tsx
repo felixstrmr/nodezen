@@ -23,7 +23,7 @@ export default async function WorkspaceHeader({
       <div className="flex h-8 items-center">
         <WorkspaceHeaderBreadcrumb workspaceId={workspaceId} />
       </div>
-      <div className="flex size-7 items-center justify-center rounded-full bg-accent">
+      <div className="flex size-8 items-center justify-center rounded-full bg-accent">
         <p className="text-sm">{user.email[0]}</p>
       </div>
     </nav>

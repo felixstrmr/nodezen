@@ -9,6 +9,8 @@ export * from "./lightning-icon";
 export * from "./lock-icon";
 export * from "./n8n-icon";
 export * from "./nodezen-icon";
+export * from "./pause-icon";
+export * from "./play-icon";
 export * from "./settings-icon";
 export * from "./slack-icon";
 export * from "./webhook-icon";

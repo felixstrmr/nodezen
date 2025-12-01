@@ -98,13 +98,13 @@ function NavigationItem({
   return (
     <Link
       className={cn(
-        "flex h-8 items-center gap-2 rounded-md px-2 transition-colors hover:bg-muted",
+        "flex size-8 items-center justify-center rounded-md transition-colors hover:bg-muted",
         isActive ? "bg-muted text-foreground" : "text-muted-foreground"
       )}
       href={href}
+      title={name}
     >
       <Icon className="size-4 opacity-75" />
-      <span className="text-sm">{name}</span>
     </Link>
   );
 }

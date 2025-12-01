@@ -9,15 +9,15 @@ export default async function HomeNavbar() {
   return (
     <nav className="mx-auto flex w-full max-w-4xl items-center justify-between py-3">
       <Link className="flex items-center gap-1.5" href="/">
-        <div className="flex size-7 items-center justify-center rounded-md bg-primary">
-          <NodezenIcon className="size-3.5 text-primary-foreground" />
+        <div className="flex size-8 items-center justify-center rounded-md bg-primary">
+          <NodezenIcon className="size-4 text-primary-foreground" />
         </div>
-        <span className="font-semibold text-xl tracking-tight">Nodezen</span>
+        <span className="font-semibold text-2xl tracking-tight">Nodezen</span>
       </Link>
       <div className="flex items-center gap-2">
         {user ? (
           <Link
-            className={buttonVariants({ variant: "secondary", size: "sm" })}
+            className={buttonVariants({ variant: "secondary" })}
             href={`/${user.active_workspace}`}
           >
             Dashboard
@@ -25,13 +25,13 @@ export default async function HomeNavbar() {
         ) : (
           <>
             <Link
-              className={buttonVariants({ variant: "secondary", size: "sm" })}
+              className={buttonVariants({ variant: "secondary" })}
               href="/signin"
             >
               Sign in
             </Link>
             <Link
-              className={buttonVariants({ variant: "default", size: "sm" })}
+              className={buttonVariants({ variant: "default" })}
               href="/signup"
             >
               Get started

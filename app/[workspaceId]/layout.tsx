@@ -16,7 +16,7 @@ export default function WorkspaceLayout({
       <Suspense fallback={<WorkspaceSidebarSkeleton />}>
         <WorkspaceSidebar params={params} />
       </Suspense>
-      <div className="flex size-full flex-col gap-1">
+      <div className="flex size-full flex-col gap-1 overflow-hidden">
         <Suspense fallback={<WorkspaceHeaderSkeleton />}>
           <WorkspaceHeader params={params} />
         </Suspense>
