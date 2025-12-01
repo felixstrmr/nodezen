@@ -92,15 +92,19 @@ export class n8nClient {
 
     const { data, nextCursor } = await response.json();
 
+    const filteredData = data.filter(
+      (execution: Execution) => execution.mode !== "manual"
+    );
+
     if (nextCursor) {
       const nextExecutions = await this.getExecutions({
         cursor: nextCursor,
         limit,
         includeData,
       });
-      return [...data, ...nextExecutions];
+      return [...filteredData, ...nextExecutions];
     }
 
-    return data;
+    return filteredData;
   }
 }
