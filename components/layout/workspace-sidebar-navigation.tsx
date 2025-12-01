@@ -11,6 +11,11 @@ import {
 } from "@/components/icons";
 import { AlertIcon } from "@/components/icons/alert-icon";
 import { ExecutionIcon } from "@/components/icons/execution-icon";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/utils/ui";
 
 export default function WorkspaceSidebarNavigation({
@@ -96,15 +101,22 @@ function NavigationItem({
   isActive: boolean;
 }) {
   return (
-    <Link
-      className={cn(
-        "flex size-8 items-center justify-center rounded-md transition-colors hover:bg-muted",
-        isActive ? "bg-muted text-foreground" : "text-muted-foreground"
-      )}
-      href={href}
-      title={name}
-    >
-      <Icon className="size-4 opacity-75" />
-    </Link>
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger asChild>
+        <Link
+          className={cn(
+            "flex size-8 items-center justify-center rounded-md transition-colors hover:bg-muted",
+            isActive ? "bg-muted text-foreground" : "text-muted-foreground"
+          )}
+          href={href}
+          title={name}
+        >
+          <Icon className="size-4 opacity-75" />
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right">
+        <p>{name}</p>
+      </TooltipContent>
+    </Tooltip>
   );
 }
