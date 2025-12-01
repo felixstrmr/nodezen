@@ -19,7 +19,9 @@ export default async function Executions({
       <div className="flex items-center justify-between border-b p-3">
         <div className="flex h-8 items-center gap-2">
           <ExecutionIcon className="size-4 text-muted-foreground opacity-75" />
-          <h1 className="font-semibold text-xl tracking-tight">Executions</h1>
+          <h1 className="font-semibold text-xl tracking-tight">
+            Executions ({executions.length})
+          </h1>
         </div>
       </div>
       <ExecutionsTable executions={executions} />

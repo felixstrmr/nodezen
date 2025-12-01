@@ -28,6 +28,10 @@ export default function ExecutionsFilters({
 }) {
   const { params, setParams } = useExecutionsParams();
 
+  const filteredWorkflows = workflows.filter((workflow) =>
+    params.instanceId ? workflow.instance.id === params.instanceId : true
+  );
+
   return (
     <div className="flex size-full flex-col gap-3 p-3">
       <FieldGroup>
@@ -83,7 +87,7 @@ export default function ExecutionsFilters({
               <SelectValue placeholder="Choose workflow" />
             </SelectTrigger>
             <SelectContent align="start" className="max-w-58">
-              {workflows.map((workflow) => (
+              {filteredWorkflows.map((workflow) => (
                 <SelectItem key={workflow.id} value={workflow.id}>
                   <span className="truncate">{workflow.name}</span>
                 </SelectItem>
