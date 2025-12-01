@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function HomeNavbarSkeleton() {
   return (
-    <div className="flex border-b bg-background">
+    <div className="fixed top-0 right-0 left-0 z-50 flex border-b bg-background">
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between p-3">
         <Link className="flex items-center gap-1.5" href="/">
           <div className="flex size-8 items-center justify-center rounded-md bg-secondary">
