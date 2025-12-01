@@ -20,3 +20,21 @@ export const WORKSPACE_SUBSCRIPTION_TYPES = [
     retentionDays: 365,
   },
 ];
+
+export const EXECUTION_STATUSES = [
+  "error",
+  "success",
+  "waiting",
+  "running",
+  "canceled",
+];
+
+export const EXECUTION_MODES = [
+  "manual",
+  "trigger",
+  "internal",
+  "error",
+  "retry",
+  "webhook",
+  "cli",
+];

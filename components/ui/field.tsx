@@ -28,7 +28,7 @@ function FieldLegend({
   return (
     <legend
       className={cn(
-        "mb-3 font-medium",
+        "font-medium",
         "data-[variant=legend]:text-base",
         "data-[variant=label]:text-sm",
         className
