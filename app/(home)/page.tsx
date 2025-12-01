@@ -1,3 +1,10 @@
+import {
+  BellIcon,
+  ChartBarIcon,
+  DatabaseIcon,
+  MegaphoneIcon,
+  MonitorIcon,
+} from "lucide-react";
 import JoinWaitlistForm from "@/components/forms/join-waitlist-form";
 import {
   HeartPulseIcon,
@@ -5,16 +12,30 @@ import {
   LockIcon,
   N8nIcon,
 } from "@/components/icons";
-import { Badge } from "@/components/ui/badge";
 
 export default function Page() {
   return (
-    <div className="flex flex-col">
-      <section className="mx-auto w-full max-w-4xl pt-24">
-        <div>
-          <Badge className="mb-6 text-muted-foreground" variant="outline">
-            Currently in closed beta
-          </Badge>
+    <div className="flex flex-col pt-14">
+      <div className="mx-auto grid w-full max-w-5xl grid-cols-4">
+        <div
+          className="size-full h-32 border-x"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, transparent 0px, var(--muted) 0.5px, var(--background) 5px)",
+          }}
+        />
+        <div className="size-full h-32 border-r border-dashed" />
+        <div className="size-full h-32 border-r" />
+        <div
+          className="size-full h-32 border-r"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg, transparent 0px, var(--muted) 0.5px, var(--background) 5px)",
+          }}
+        />
+      </div>
+      <section className="mx-auto flex w-full max-w-5xl flex-col">
+        <div className="border p-16">
           <h1 className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs font-semibold text-6xl leading-tight tracking-tight">
             <span className="flex items-center gap-3">
               <div className="flex items-center gap-2">
@@ -50,14 +71,37 @@ export default function Page() {
             when workflows fail. Stay in control of your automation
             infrastructure.
           </p>
-          <div className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-300 mt-12">
+          <div className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs motion-delay-300 mt-9 flex w-full flex-col justify-center">
             <JoinWaitlistForm />
             <p className="mt-2 flex items-center gap-1.5 text-muted-foreground text-xs">
+              <MegaphoneIcon className="innline-block size-3.5" />
               We'll send you an email when we launch.
             </p>
           </div>
         </div>
+        <div className="grid h-16 min-h-16 grid-cols-4 bg-muted text-sm">
+          <div className="flex size-full items-center justify-center border-x p-1.5">
+            <div className="flex size-full items-center justify-center gap-2 rounded-md border bg-background shadow-xs">
+              <ChartBarIcon className="size-4 text-muted-foreground" />
+              Analytics
+            </div>
+          </div>
+          <div className="flex size-full items-center justify-center gap-2 border-r border-dashed">
+            <MonitorIcon className="size-4 text-muted-foreground" />
+            Monitoring
+          </div>
+          <div className="flex size-full items-center justify-center gap-2 border-r">
+            <BellIcon className="size-4 text-muted-foreground" />
+            Alerts
+          </div>
+          <div className="flex size-full items-center justify-center gap-2 border-r">
+            <DatabaseIcon className="size-4 text-muted-foreground" />
+            Backups
+          </div>
+        </div>
+        <div className="aspect-video size-full border bg-muted/25" />
       </section>
+      <section className="mx-auto flex size-full min-h-64 w-full max-w-5xl flex-col border-x" />
     </div>
   );
 }

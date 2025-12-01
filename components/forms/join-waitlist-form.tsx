@@ -44,7 +44,7 @@ export default function JoinWaitlistForm() {
           name="email"
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <div className="flex max-w-96 rounded-lg bg-input/30 p-1">
+              <div className="flex min-w-96 max-w-96 items-center rounded-lg bg-input/30 p-1">
                 <input
                   className="w-full pl-2 text-sm focus:outline-none"
                   {...field}

@@ -12,6 +12,7 @@ export default function HomeLayout({
       <Suspense fallback={<HomeNavbarSkeleton />}>
         <HomeNavbar />
       </Suspense>
+
       {children}
     </div>
   );
