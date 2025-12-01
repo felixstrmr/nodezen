@@ -107,7 +107,7 @@ export default function ExecutionsFilters({
           <FieldGroup className="gap-0 overflow-hidden rounded-md border">
             {EXECUTION_STATUSES.map((status) => (
               <Field
-                className="cursor-pointer border-b p-1.5 transition-colors last:border-b-0 hover:bg-accent"
+                className="cursor-pointer border-b p-1.5 transition-colors last:border-b-0 hover:bg-muted/50"
                 key={status}
                 onClick={() => {
                   if (params.status?.includes(status)) {
@@ -152,7 +152,7 @@ export default function ExecutionsFilters({
           <FieldGroup className="gap-0 overflow-hidden rounded-md border">
             {EXECUTION_MODES.map((mode) => (
               <Field
-                className="cursor-pointer border-b p-1.5 transition-colors last:border-b-0 hover:bg-accent"
+                className="cursor-pointer border-b p-1.5 transition-colors last:border-b-0 hover:bg-muted/50"
                 key={mode}
                 onClick={() => {
                   if (params.mode?.includes(mode)) {

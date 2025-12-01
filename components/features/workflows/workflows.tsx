@@ -22,7 +22,7 @@ export default async function Workflows({
           <h1 className="font-semibold text-xl tracking-tight">Workflows</h1>
         </div>
       </div>
-      <WorkflowsTable workflows={workflows} />
+      <WorkflowsTable workspaceId={workspaceId} workflows={workflows} />
     </div>
   );
 }
