@@ -21,7 +21,8 @@ export async function getExecutions(workspaceId: string, from = 0, to = 100) {
       error_message,
       duration_ms,
       workflow(id, name, instance(id, name)),
-      workspace!inner(id), retry_of`
+      workspace!inner(id),
+      retry_of`
     )
     .order("started_at", { ascending: false })
     .eq("workspace", workspaceId);

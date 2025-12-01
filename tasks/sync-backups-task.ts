@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
-import { schedules } from "@trigger.dev/sdk";
+import { logger, schedules } from "@trigger.dev/sdk";
 import type { Database } from "@/types/supabase";
+import { syncBackups } from "./shared/sync-backups";
 
 const supabase = await createClient<Database>(
   process.env.SUPABASE_URL as string,
@@ -25,6 +26,14 @@ export const syncBackupsTask = schedules.task({
       .eq("status", "connected")
       .throwOnError();
 
-    console.log(instances);
+    logger.info(`Found ${instances.length} instances`, {
+      externalId,
+    });
+
+    await Promise.allSettled(
+      instances.map((instance) =>
+        syncBackups(supabase, instance.id, instance.workspace.id)
+      )
+    );
   },
 });

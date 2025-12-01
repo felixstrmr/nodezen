@@ -12,7 +12,7 @@ export default function WorkspaceLayout({
   params: Promise<{ workspaceId: string }>;
 }) {
   return (
-    <div className="flex size-full gap-1 bg-neutral-900/75 p-1">
+    <div className="flex size-full gap-1 bg-neutral-100 p-1 dark:bg-neutral-900/75">
       <Suspense fallback={<WorkspaceSidebarSkeleton />}>
         <WorkspaceSidebar params={params} />
       </Suspense>

@@ -37,9 +37,9 @@ export async function syncWorkflows(
   );
 
   await Promise.allSettled([
-    ...toCreate.map((workflow) => createWorkflow(supabase, workflow)),
+    createWorkflows(supabase, toCreate),
+    deleteWorkflows(supabase, toDelete),
     ...toUpdate.map((workflow) => updateWorkflow(supabase, workflow)),
-    ...toDelete.map((workflow) => deleteWorkflow(supabase, workflow)),
   ]);
 }
 
@@ -59,16 +59,11 @@ async function getExistingWorkflows(supabase: Supabase, instanceId: string) {
   return data;
 }
 
-async function createWorkflow(
+async function createWorkflows(
   supabase: Supabase,
-  workflow: TablesInsert<"workflows">
+  workflows: TablesInsert<"workflows">[]
 ) {
-  const { data } = await supabase
-    .from("workflows")
-    .insert(workflow)
-    .throwOnError();
-
-  return data;
+  await supabase.from("workflows").insert(workflows).throwOnError();
 }
 
 async function updateWorkflow(
@@ -84,14 +79,18 @@ async function updateWorkflow(
   return data;
 }
 
-async function deleteWorkflow(supabase: Supabase, workflow: ExistingWorkflow) {
-  const { data } = await supabase
+async function deleteWorkflows(
+  supabase: Supabase,
+  workflows: ExistingWorkflow[]
+) {
+  await supabase
     .from("workflows")
     .delete()
-    .eq("id", workflow.id)
+    .in(
+      "id",
+      workflows.map((w) => w.id)
+    )
     .throwOnError();
-
-  return data;
 }
 
 function calculateWorkflowsDiff(
