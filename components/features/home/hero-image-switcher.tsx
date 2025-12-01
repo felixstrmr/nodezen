@@ -41,7 +41,7 @@ export default function HeroImageSwitcher() {
       <div className="grid h-16 min-h-16 grid-cols-4 bg-muted text-sm">
         {TABS.map((tab) => (
           <button
-            className="group flex size-full cursor-pointer items-center justify-center border-x p-1.5"
+            className="group flex size-full cursor-pointer items-center justify-center border-r p-1.5 first:border-x"
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
             type="button"
@@ -59,14 +59,14 @@ export default function HeroImageSwitcher() {
           </button>
         ))}
       </div>
-      <div className="aspect-video size-full border bg-muted/25 p-3">
+      <div className="aspect-video size-full border bg-muted p-1.5">
         {activeTab === "analytics" && (
           <Image
             alt="Analytics"
             className="aspect-video rounded-md border shadow-xs"
-            height={1000}
+            height={1920}
             src="https://qjjarqeqcmhzqknguofp.supabase.co/storage/v1/object/public/media/hero-1.webp"
-            width={1000}
+            width={1080}
           />
         )}
       </div>
