@@ -6,7 +6,6 @@ import {
   DatabaseIcon,
   MonitorIcon,
 } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/utils/ui";
 
@@ -59,17 +58,7 @@ export default function HeroImageSwitcher() {
           </button>
         ))}
       </div>
-      <div className="aspect-video size-full border bg-muted p-1.5">
-        {activeTab === "analytics" && (
-          <Image
-            alt="Analytics"
-            className="aspect-video rounded-md border shadow-xs"
-            height={1920}
-            src="https://qjjarqeqcmhzqknguofp.supabase.co/storage/v1/object/public/media/hero-1.webp"
-            width={1080}
-          />
-        )}
-      </div>
+      <div className="aspect-video size-full border bg-muted p-1.5" />
     </div>
   );
 }
