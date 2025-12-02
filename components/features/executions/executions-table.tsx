@@ -1,10 +1,13 @@
 "use client";
 
 import { format } from "date-fns";
+import { CheckIcon, XIcon } from "lucide-react";
 import { useMemo } from "react";
+import { Badge } from "@/components/ui/badge";
 import { useExecutionsParams } from "@/hooks/use-executions-params";
 import type { Execution } from "@/types";
 import { formatDuration } from "@/utils/time";
+import { cn } from "@/utils/ui";
 
 export default function ExecutionsTable({
   executions,
@@ -45,14 +48,39 @@ export default function ExecutionsTable({
       <div className="flex flex-col overflow-y-auto">
         {filteredExecutions.map((execution) => (
           <div
-            className="grid grid-cols-8 border-b p-3 text-sm"
+            className={cn(
+              "grid grid-cols-8 items-center border-b p-2 text-sm",
+              execution.status === "error" && "bg-red-50"
+            )}
             key={execution.id}
           >
-            <p className="col-span-2">{format(execution.started_at, "PPp")}</p>
+            <div className="col-span-2 flex items-center gap-2">
+              <div
+                className={cn(
+                  "flex size-7 items-center justify-center rounded-md",
+                  execution.status === "success"
+                    ? "bg-green-500/10"
+                    : "bg-red-500/10"
+                )}
+              >
+                {execution.status === "success" ? (
+                  <CheckIcon className="size-3.5 text-green-600" />
+                ) : (
+                  <XIcon className="size-3.5 text-red-600" />
+                )}
+              </div>
+              <p className="col-span-2">
+                {format(execution.started_at, "PPp")}
+              </p>
+            </div>
             <p className="col-span-3">{execution.workflow.name}</p>
-            <p className="col-span-1 capitalize">{execution.status}</p>
-            <p className="col-span-1 capitalize">{execution.mode}</p>
-            <p className="col-span-1 font-mono">
+            <Badge className="rounded-sm px-1.5 capitalize" variant="outline">
+              {execution.status}
+            </Badge>
+            <p className="col-span-1 text-muted-foreground capitalize">
+              {execution.mode}
+            </p>
+            <p className="col-span-1 font-mono text-muted-foreground">
               {execution.duration_ms
                 ? formatDuration(execution.duration_ms)
                 : "N/A"}

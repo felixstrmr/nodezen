@@ -35,20 +35,20 @@ export default function Page() {
             <span className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-md bg-blue-100 dark:bg-blue-950/75">
-                  <HeartPulseIcon className="size-4 text-blue-500" />
+                  <HeartPulseIcon className="size-4 text-blue-600" />
                 </div>
                 <span>Monitor</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-md bg-green-100 dark:bg-green-950/75">
-                  <LockIcon className="size-4 text-green-500" />
+                  <LockIcon className="size-4 text-green-600" />
                 </div>
                 <span>protect</span>
               </div>
               <span>and</span>
               <div className="flex items-center gap-2">
                 <div className="flex size-8 items-center justify-center rounded-md bg-yellow-100 dark:bg-yellow-950/75">
-                  <LightningIcon className="size-4 text-yellow-500" />
+                  <LightningIcon className="size-4 text-yellow-600" />
                 </div>
                 <span>optimize</span>
               </div>
