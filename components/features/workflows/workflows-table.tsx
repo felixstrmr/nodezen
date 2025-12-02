@@ -13,7 +13,7 @@ export default function WorkflowsTable({
   metrics: TotalWorkflowMetric[];
 }) {
   const workflowsWithMetrics = workflows.map((workflow) => {
-    const metric = metrics.find((m) => m.workflow === workflow.id);
+    const metric = metrics?.find((m) => m.workflow === workflow.id);
     return {
       ...workflow,
       metric,

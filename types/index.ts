@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { getExecutions } from "@/queries/executions";
 import type { getInstances } from "@/queries/instances";
-import type { getWorkflowTotalMetrics } from "@/queries/metrics";
+import type { getWorkflowsTotalMetrics } from "@/queries/metrics";
 import type { getWorkflows } from "@/queries/workflows";
 import type { Database } from "@/types/supabase";
 
@@ -23,5 +23,5 @@ export type Execution = Awaited<
 >["executions"][number];
 
 export type TotalWorkflowMetric = Awaited<
-  ReturnType<typeof getWorkflowTotalMetrics>
+  ReturnType<typeof getWorkflowsTotalMetrics>
 >["metrics"][number];

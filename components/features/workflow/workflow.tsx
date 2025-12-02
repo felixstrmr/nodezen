@@ -33,7 +33,7 @@ export default async function Workflow({
         </div>
       </div>
       <div className="flex size-full flex-col p-3">
-        <WorkflowMetricsHeader metrics={metrics} />
+        <WorkflowMetricsHeader metrics={metrics || null} />
       </div>
     </div>
   );

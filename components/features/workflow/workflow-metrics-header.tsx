@@ -4,7 +4,7 @@ import { formatDuration } from "@/utils/time";
 export default function WorkflowMetricsHeader({
   metrics,
 }: {
-  metrics: TotalWorkflowMetric;
+  metrics: TotalWorkflowMetric | null;
 }) {
   return (
     <div className="grid grid-cols-4 gap-1.5 border bg-muted p-1.5">
