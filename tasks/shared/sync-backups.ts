@@ -175,9 +175,11 @@ function calculateBackupsDiff(
     dbWorkflows.map((w) => [w.n8n_workflow_id, w])
   );
 
+  // Map backups by n8n_workflow_id and version_id from backups table
   const existingBackupsMap = new Map<string, ExistingBackup>();
   for (const backup of existingBackups) {
-    const key = `${backup.workflow.id}:${backup.n8n_version_id}`;
+    // Use n8n_workflow_id from the backup's workflow relation, not the database workflow ID
+    const key = `${backup.workflow.n8n_workflow_id}:${backup.n8n_version_id}`;
     existingBackupsMap.set(key, backup);
   }
 
@@ -197,10 +199,21 @@ function calculateBackupsDiff(
       continue;
     }
 
-    const backupKey = `${dbWorkflow.id}:${workflow.versionId}`;
+    // Compare current version ID from n8n against version IDs stored in backups table
+    const backupKey = `${workflow.id}:${workflow.versionId}`;
     const existingBackup = existingBackupsMap.get(backupKey);
 
+    // Create backup if no backup exists for this version in the backups table
     if (!existingBackup) {
+      const versionChanged = dbWorkflow.n8n_version_id !== workflow.versionId;
+      if (versionChanged) {
+        logger.info("Workflow version changed, creating backup", {
+          instanceId,
+          workflowId: workflow.id,
+          oldVersion: dbWorkflow.n8n_version_id,
+          newVersion: workflow.versionId,
+        });
+      }
       toCreate.push(workflow);
     }
   }
