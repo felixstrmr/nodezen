@@ -5,18 +5,21 @@ export const WORKSPACE_SUBSCRIPTION_TYPES = [
     name: "free",
     executionFrequencyMinutes: 30,
     workflowFrequencyMinutes: 60,
+    backupFrequencyMinutes: null,
     retentionDays: 30,
   },
   {
     name: "pro",
     executionFrequencyMinutes: 15,
     workflowFrequencyMinutes: 30,
+    backupFrequencyMinutes: 1440, // 24 hours
     retentionDays: 90,
   },
   {
     name: "ultra",
     executionFrequencyMinutes: 5,
     workflowFrequencyMinutes: 15,
+    backupFrequencyMinutes: 60,
     retentionDays: 365,
   },
 ];

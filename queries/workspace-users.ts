@@ -22,8 +22,10 @@ export async function getWorkspaceUser(workspaceId: string) {
 
   const { data, error: workspaceUsersError } = await supabase
     .from("workspace_users")
-    .select("*, user!inner(id, email, avatar)")
-    .eq("workspace", workspaceId)
+    .select(
+      "*, user!inner(id, email, avatar), workspace!inner(id, subscription)"
+    )
+    .eq("workspace.id", workspaceId)
     .eq("user.id", user.id)
     .maybeSingle();
 
