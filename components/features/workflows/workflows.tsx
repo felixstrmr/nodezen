@@ -1,6 +1,6 @@
 import WorkflowsTable from "@/components/features/workflows/workflows-table";
 import { WorkflowIcon } from "@/components/icons";
-import { getWorkflowTotalMetrics } from "@/queries/metrics";
+import { getWorkflowsTotalMetrics } from "@/queries/metrics";
 import { getWorkflows } from "@/queries/workflows";
 
 export default async function Workflows({
@@ -12,7 +12,7 @@ export default async function Workflows({
   const [{ workflows, error }, { metrics, error: totalMetricsError }] =
     await Promise.all([
       getWorkflows(workspaceId),
-      getWorkflowTotalMetrics(workspaceId),
+      getWorkflowsTotalMetrics(workspaceId),
     ]);
 
   if (error || totalMetricsError) {
