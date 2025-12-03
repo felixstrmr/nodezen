@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import { schemaTask } from "@trigger.dev/sdk";
 import z from "zod";
+import { syncExecutions } from "@/tasks/shared/sync-executions";
+import { syncWorkflows } from "@/tasks/shared/sync-workflows";
 import type { Database } from "@/types/supabase";
-import { syncExecutions } from "./shared/sync-executions";
-import { syncWorkflows } from "./shared/sync-workflows";
 
 const supabase = await createClient<Database>(
   process.env.SUPABASE_URL as string,

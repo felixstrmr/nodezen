@@ -2,7 +2,10 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { getBackups } from "@/queries/backups";
 import type { getExecutions } from "@/queries/executions";
 import type { getInstances } from "@/queries/instances";
-import type { getWorkflowsTotalMetrics } from "@/queries/metrics";
+import type {
+  getWorkflowsTotalMetrics,
+  getWorkspaceTotalMetrics,
+} from "@/queries/metrics";
 import type { getWorkflows } from "@/queries/workflows";
 import type { Database } from "@/types/supabase";
 
@@ -28,3 +31,7 @@ export type TotalWorkflowMetric = Awaited<
 >["metrics"][number];
 
 export type Backup = Awaited<ReturnType<typeof getBackups>>["backups"][number];
+
+export type TotalWorkspaceMetric = Awaited<
+  ReturnType<typeof getWorkspaceTotalMetrics>
+>["metrics"];

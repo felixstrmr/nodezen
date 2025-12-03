@@ -20,6 +20,26 @@ export async function getWorkflowsTotalMetrics(workspaceId: string) {
   return { metrics: data, error: null };
 }
 
+export async function getWorkspaceTotalMetrics(workspaceId: string) {
+  "use cache: private";
+  cacheLife("max");
+  cacheTag(`workspace-total-metrics:${workspaceId}`);
+
+  const supabase = await supabaseClient();
+
+  const { data, error } = await supabase
+    .from("total_workspace_metrics")
+    .select("*")
+    .eq("workspace", workspaceId)
+    .maybeSingle();
+
+  if (error) {
+    return { metrics: null, error };
+  }
+
+  return { metrics: data, error: null };
+}
+
 export async function getWorkflowTotalMetrics(
   workspaceId: string,
   workflowId: string

@@ -17,14 +17,34 @@ import {
 } from "@/components/ui/select";
 import { useExecutionsParams } from "@/hooks/use-executions-params";
 import { EXECUTION_MODES, EXECUTION_STATUSES } from "@/lib/constants";
-import type { Instance, Workflow } from "@/types";
+import type { Instance, TotalWorkspaceMetric, Workflow } from "@/types";
+
+const filterCountMap = {
+  status: {
+    error: "failed_executions",
+    success: "successful_executions",
+    waiting: "waiting_executions",
+    running: "running_executions",
+    canceled: "canceled_executions",
+  },
+  mode: {
+    trigger: "trigger_executions",
+    internal: "internal_executions",
+    error: "error_executions",
+    retry: "retry_executions",
+    webhook: "webhook_executions",
+    cli: "cli_executions",
+  },
+};
 
 export default function ExecutionsFilters({
   instances,
   workflows,
+  metrics,
 }: {
   instances: Instance[];
   workflows: Workflow[];
+  metrics: TotalWorkspaceMetric;
 }) {
   const { params, setParams } = useExecutionsParams();
 

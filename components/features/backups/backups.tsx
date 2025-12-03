@@ -1,4 +1,4 @@
-import BackupsList from "@/components/features/backups/backups-list";
+import BackupsTable from "@/components/features/backups/backups-table";
 import { BackupIcon } from "@/components/icons";
 import { getBackups } from "@/queries/backups";
 
@@ -25,7 +25,7 @@ export default async function Backups({
           </span>
         </div>
       </div>
-      <BackupsList backups={backups} />
+      <BackupsTable backups={backups} />
     </div>
   );
 }

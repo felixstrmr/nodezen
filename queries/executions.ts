@@ -21,26 +21,17 @@ type Execution = {
   };
 };
 
-export async function getExecutions(workspaceId: string) {
+export async function getExecutions(workspaceId: string, start = 0, end = 100) {
   "use cache: private";
   cacheLife("max");
-  cacheTag(`executions:${workspaceId}`);
+  cacheTag(`executions:${workspaceId}:${start}:${end}`);
 
   const supabase = await supabaseClient();
 
-  const PAGE_SIZE = 1000;
-  const executions: Execution[] = [];
-  let page = 0;
-  let hasMore = true;
-
-  while (hasMore) {
-    const start = page * PAGE_SIZE;
-    const end = start + PAGE_SIZE - 1;
-
-    const query = supabase
-      .from("executions")
-      .select(
-        `id,
+  const query = supabase
+    .from("executions")
+    .select(
+      `id,
       n8n_execution_id,
       mode,
       status,
@@ -52,25 +43,16 @@ export async function getExecutions(workspaceId: string) {
       workflow(id, name, instance(id, name)),
       workspace!inner(id),
       retry_of`
-      )
-      .range(start, end)
-      .order("started_at", { ascending: false })
-      .eq("workspace", workspaceId);
+    )
+    .range(start, end - 1)
+    .order("started_at", { ascending: false })
+    .eq("workspace", workspaceId);
 
-    const { data, error } = await query;
+  const { data, error } = await query;
 
-    if (error) {
-      return { executions: [], error };
-    }
-
-    if (data && data.length > 0) {
-      executions.push(...data);
-      hasMore = data.length === PAGE_SIZE;
-      page += 1;
-    } else {
-      hasMore = false;
-    }
+  if (error) {
+    return { executions: [], error };
   }
 
-  return { executions, error: null };
+  return { executions: data ?? [], error: null };
 }
