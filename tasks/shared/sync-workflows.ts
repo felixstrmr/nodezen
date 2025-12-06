@@ -130,6 +130,7 @@ function calculateWorkflowsDiff(
         nodes: workflow.nodes as Json,
         instance: instanceId,
         workspace: workspaceId,
+        tags: workflow.tags?.map((t) => t.name),
       });
     } else if (existing.n8n_version_id !== workflow.versionId) {
       toUpdate.push({
@@ -139,6 +140,7 @@ function calculateWorkflowsDiff(
         n8n_version_id: workflow.versionId,
         nodes: workflow.nodes as Json,
         n8n_workflow_id: workflow.id,
+        tags: workflow.tags?.map((t) => t.name),
       });
     }
   }

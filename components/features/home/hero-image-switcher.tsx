@@ -36,11 +36,12 @@ export default function HeroImageSwitcher() {
   const [activeTab, setActiveTab] = useState<string>("analytics");
 
   return (
-    <div className="flex flex-col">
-      <div className="grid h-16 min-h-16 grid-cols-4 bg-muted text-sm">
+    <div className="relative flex flex-col">
+      <div className="-z-10 absolute size-full border-x" />
+      <div className="grid h-16 min-h-16 grid-cols-4 rounded-t-lg border bg-muted text-sm">
         {TABS.map((tab) => (
           <button
-            className="group flex size-full cursor-pointer items-center justify-center border-r p-1.5 first:border-x"
+            className="group flex size-full cursor-pointer items-center justify-center border-r p-0.5 first:border-r last:border-0"
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
             type="button"
@@ -58,7 +59,7 @@ export default function HeroImageSwitcher() {
           </button>
         ))}
       </div>
-      <div className="aspect-video size-full border bg-muted p-1.5" />
+      <div className="aspect-video size-full border-x border-b bg-muted p-1.5" />
     </div>
   );
 }

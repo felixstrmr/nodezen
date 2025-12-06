@@ -30,7 +30,7 @@ export default function Page() {
         />
       </div>
       <section className="mx-auto flex w-full max-w-5xl flex-col">
-        <div className="border p-16">
+        <div className="border-x border-t p-16">
           <h1 className="motion-opacity-in-0 motion-translate-y-in-100 motion-blur-in-xs font-semibold text-6xl leading-tight tracking-tight">
             <span className="flex items-center gap-3">
               <div className="flex items-center gap-2">

@@ -11,7 +11,7 @@ export async function getWorkflows(workspaceId: string) {
   const { data, error } = await supabase
     .from("workflows")
     .select(
-      "id, name, n8n_workflow_id, is_active, instance!inner(id, name), workspace!inner(id)"
+      "id, name, n8n_workflow_id, is_active, instance!inner(id, n8n_url, name), workspace!inner(id)"
     )
     .order("created_at", { ascending: false })
     .eq("workspace", workspaceId);
@@ -33,7 +33,7 @@ export async function getWorkflow(workspaceId: string, workflowId: string) {
   const { data, error } = await supabase
     .from("workflows")
     .select(
-      "id, name, n8n_workflow_id, is_active, instance!inner(id, name), workspace!inner(id)"
+      "id, name, n8n_workflow_id, is_active, instance!inner(id, n8n_url, name), workspace!inner(id)"
     )
     .eq("id", workflowId)
     .eq("workspace", workspaceId)

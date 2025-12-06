@@ -74,7 +74,16 @@ export default function ExecutionsTable({
               </p>
             </div>
             <p className="col-span-3">{execution.workflow.name}</p>
-            <Badge className="rounded-sm px-1.5 capitalize" variant="outline">
+            <Badge
+              className="gap-1.5 rounded-sm bg-background px-1.5 capitalize"
+              variant="outline"
+            >
+              <div
+                className={cn(
+                  "size-2 rounded-full",
+                  execution.status === "success" ? "bg-green-500" : "bg-red-500"
+                )}
+              />
               {execution.status}
             </Badge>
             <p className="col-span-1 text-muted-foreground capitalize">
