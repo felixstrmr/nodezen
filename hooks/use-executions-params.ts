@@ -1,14 +1,7 @@
 import { useQueryStates } from "nuqs";
-import {
-  createLoader,
-  parseAsArrayOf,
-  parseAsInteger,
-  parseAsString,
-} from "nuqs/server";
+import { parseAsArrayOf, parseAsString } from "nuqs/server";
 
 export type ExecutionsParams = {
-  start: number;
-  end: number;
   instanceId: string;
   workflowId: string;
   status: string[];
@@ -16,8 +9,6 @@ export type ExecutionsParams = {
 };
 
 export const executionsParams = {
-  start: parseAsInteger.withDefault(0),
-  end: parseAsInteger.withDefault(100),
   instanceId: parseAsString,
   workflowId: parseAsString,
   status: parseAsArrayOf(parseAsString),
@@ -34,5 +25,3 @@ export function useExecutionsParams() {
     setParams,
   };
 }
-
-export const loadExecutionsParams = createLoader(executionsParams);

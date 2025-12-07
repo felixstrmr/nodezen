@@ -35,7 +35,7 @@ export default function WorkflowsTable({
 
   return (
     <div className="flex flex-col">
-      <div className="grid grid-cols-6 items-center border-b bg-muted/50 p-3 text-muted-foreground text-sm">
+      <div className="grid grid-cols-6 items-center border-b bg-muted/50 p-2 text-muted-foreground text-sm">
         <p className="col-span-2">Name</p>
         <p className="col-span-1">Instance</p>
         <p className="col-span-1">Status</p>
@@ -72,7 +72,7 @@ export default function WorkflowsTable({
               <div
                 className={cn(
                   "size-2 rounded-full",
-                  workflow.is_active ? "bg-green-500" : "bg-red-500"
+                  workflow.is_active ? "bg-green-500" : "bg-muted-foreground"
                 )}
               />
               {workflow.is_active ? "Active" : "Inactive"}

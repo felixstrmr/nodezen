@@ -1,16 +1,22 @@
-import type { SearchParams } from "nuqs/server";
 import { Suspense } from "react";
 import ExecutionsSidebar from "@/components/features/executions/executions-sidebar";
 import ExecutionsSidebarSkeleton from "@/components/features/executions/executions-sidebar-skeleton";
 import ExecutionsSkeleton from "@/components/features/executions/executions-skeleton";
 import Executions from "@/components/features/executions/executionts";
 
-export default async function Page({
+async function ExecutionsWrapper({
   params,
-  searchParams,
 }: {
   params: Promise<{ workspaceId: string }>;
-  searchParams: Promise<SearchParams>;
+}) {
+  const { workspaceId } = await params;
+  return <Executions workspaceId={workspaceId} />;
+}
+
+export default function Page({
+  params,
+}: {
+  params: Promise<{ workspaceId: string }>;
 }) {
   return (
     <div className="flex size-full gap-1">
@@ -19,7 +25,7 @@ export default async function Page({
       </Suspense>
       <div className="flex size-full flex-col overflow-hidden rounded-lg bg-background">
         <Suspense fallback={<ExecutionsSkeleton />}>
-          <Executions params={params} searchParams={searchParams} />
+          <ExecutionsWrapper params={params} />
         </Suspense>
       </div>
     </div>

@@ -1,26 +1,6 @@
 import { cacheLife, cacheTag } from "next/cache";
 import { supabaseClient } from "@/lib/clients/supabase-client";
 
-type Execution = {
-  id: string;
-  n8n_execution_id: string;
-  mode: string;
-  status: string;
-  started_at: string;
-  stopped_at: string | null;
-  error_node: string | null;
-  error_message: string | null;
-  duration_ms: number | null;
-  workflow: {
-    id: string;
-    name: string;
-    instance: {
-      id: string;
-      name: string;
-    };
-  };
-};
-
 export async function getExecutions(workspaceId: string, start = 0, end = 100) {
   "use cache: private";
   cacheLife("max");
@@ -54,5 +34,42 @@ export async function getExecutions(workspaceId: string, start = 0, end = 100) {
     return { executions: [], error };
   }
 
-  return { executions: data ?? [], error: null };
+  return { executions: data, error: null };
+}
+
+export async function getExecutionsByWorkflowId(
+  workspaceId: string,
+  workflowId: string
+) {
+  "use cache: private";
+  cacheLife("max");
+  cacheTag(`executions:workflow:${workspaceId}:${workflowId}`);
+
+  const supabase = await supabaseClient();
+
+  const { data, error } = await supabase
+    .from("executions")
+    .select(
+      `id,
+      n8n_execution_id,
+      mode,
+      status,
+      started_at,
+      stopped_at,
+      error_node,
+      error_message,
+      duration_ms,
+      workflow(id, name, instance(id, name)),
+      workspace!inner(id),
+      retry_of`
+    )
+    .eq("workspace", workspaceId)
+    .eq("workflow", workflowId)
+    .order("started_at", { ascending: false });
+
+  if (error) {
+    return { executions: [], error };
+  }
+
+  return { executions: data, error: null };
 }
