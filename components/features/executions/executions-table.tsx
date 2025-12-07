@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { CheckIcon, XIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Spinner } from "@/components/ui/spinner";
 import type { Database } from "@/types/supabase";
 import { formatDuration } from "@/utils/time";
 import { cn } from "@/utils/ui";
@@ -147,7 +148,7 @@ export default function ExecutionsTable({
             <div ref={loadMoreSentinelRef} style={{ height: "1px" }} />
             {isFetching ? (
               <div className="flex items-center justify-center p-4 text-muted-foreground text-sm">
-                Loading more...
+                <Spinner />
               </div>
             ) : null}
             {!hasMore && executions.length > 0 ? (

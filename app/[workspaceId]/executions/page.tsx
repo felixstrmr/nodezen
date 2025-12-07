@@ -19,7 +19,7 @@ export default function Page({
   params: Promise<{ workspaceId: string }>;
 }) {
   return (
-    <div className="flex size-full gap-1">
+    <div className="flex size-full gap-1 overflow-hidden">
       <Suspense fallback={<ExecutionsSidebarSkeleton />}>
         <ExecutionsSidebar params={params} />
       </Suspense>
