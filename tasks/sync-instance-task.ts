@@ -12,6 +12,7 @@ const supabase = await createClient<Database>(
 
 export const syncInstanceTask = schemaTask({
   id: "sync-instance-task",
+  machine: "micro",
   schema: z.object({
     instanceId: z.string().min(1),
   }),

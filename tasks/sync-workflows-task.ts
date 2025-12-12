@@ -10,6 +10,7 @@ const supabase = await createClient<Database>(
 
 export const syncWorkflowsTask = schedules.task({
   id: "sync-workflows-task",
+  machine: "micro",
   run: async ({ externalId }) => {
     if (
       externalId !== "free" &&
